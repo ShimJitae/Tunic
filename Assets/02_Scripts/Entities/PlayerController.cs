@@ -2,22 +2,30 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityHFSM;
 
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerController : EntityController
 {
-    private Vector2 moveInput;
+    private Vector3 moveInput;
+    private State<EntityStateId, EntityEvent> dodgeState;
 
 
     // =========================================================
     // Conditions
     // =========================================================
 
-    protected override bool HasMoveInput =>
-        moveInput.sqrMagnitude > 0.01f;
+    public override bool HasMoveInput => moveInput.sqrMagnitude > 0.01f;
 
 
     // =========================================================
     // Input
     // =========================================================
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -49,19 +57,21 @@ public class PlayerController : EntityController
 
 
     // =========================================================
-    // Player State Registration
+    // Player State Creation / Registration
     // =========================================================
+
+    protected override void CreateSpecificStates()
+    {
+        dodgeState = new State<EntityStateId, EntityEvent>(
+            onEnter: _ => EnterDodge(),
+            onLogic: _ => UpdateDodge(),
+            onExit: _ => ExitDodge()
+        );
+    }
 
     protected override void RegisterSpecificStates()
     {
-        Fsm.AddState(
-            EntityStateId.Dodge,
-            new State<EntityStateId, EntityEvent>(
-                onEnter: _ => EnterDodge(),
-                onLogic: _ => UpdateDodge(),
-                onExit: _ => ExitDodge()
-            )
-        );
+        Fsm.AddState(EntityStateId.Dodge, dodgeState);
     }
 
 
@@ -185,56 +195,6 @@ public class PlayerController : EntityController
             _ => !HasMoveInput
         );
     }
-
-
-    // =========================================================
-    // Common State Implementation
-    // =========================================================
-
-    protected override void EnterIdle()
-    {
-        // animator.Play("Idle");
-    }
-
-    protected override void EnterMove()
-    {
-        // animator.Play("Run");
-    }
-
-    protected override void UpdateMove()
-    {
-        /*
-         * 실제 구현에서는:
-         *
-         * movementModule.Move(moveInput);
-         */
-    }
-
-
-    protected override void EnterAttack()
-    {
-        /*
-         * attackModule.Execute();
-         * animator.Play("Attack");
-         */
-    }
-
-    protected override void EnterHit()
-    {
-        /*
-         * movementModule.Stop();
-         * animator.Play("Hit");
-         */
-    }
-
-    protected override void EnterDead()
-    {
-        /*
-         * movementModule.Stop();
-         * animator.Play("Dead");
-         */
-    }
-
 
     // =========================================================
     // Dodge State

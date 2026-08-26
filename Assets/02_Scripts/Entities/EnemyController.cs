@@ -3,6 +3,8 @@ using UnityHFSM;
 
 public class EnemyController : EntityController
 {
+    private State<EntityStateId, EntityEvent> chaseState;
+
     [Header("Target")]
     [SerializeField]
     private Transform target;
@@ -17,7 +19,7 @@ public class EnemyController : EntityController
 
     // Enemy는 Entity의 Move State를 직접 사용하지 않고
     // Chase 상태에서 이동한다고 가정합니다.
-    protected override bool HasMoveInput => false;
+    public override bool HasMoveInput => false;
 
 
     // =========================================================
@@ -64,19 +66,21 @@ public class EnemyController : EntityController
 
 
     // =========================================================
-    // Enemy State Registration
+    // Enemy State Creation / Registration
     // =========================================================
+
+    protected override void CreateSpecificStates()
+    {
+        chaseState = new State<EntityStateId, EntityEvent>(
+            onEnter: _ => EnterChase(),
+            onLogic: _ => UpdateChase(),
+            onExit: _ => ExitChase()
+        );
+    }
 
     protected override void RegisterSpecificStates()
     {
-        Fsm.AddState(
-            EntityStateId.Chase,
-            new State<EntityStateId, EntityEvent>(
-                onEnter: _ => EnterChase(),
-                onLogic: _ => UpdateChase(),
-                onExit: _ => ExitChase()
-            )
-        );
+        Fsm.AddState(EntityStateId.Chase, chaseState);
     }
 
 
@@ -177,45 +181,6 @@ public class EnemyController : EntityController
             EntityStateId.Idle,
             _ => !HasTarget
         );
-    }
-
-
-    // =========================================================
-    // Common State Implementation
-    // =========================================================
-
-    protected override void EnterIdle()
-    {
-        // animator.Play("Idle");
-    }
-
-
-    protected override void EnterAttack()
-    {
-        /*
-         * movementModule.Stop();
-         * attackModule.Execute(target);
-         *
-         * animator.Play("Attack");
-         */
-    }
-
-
-    protected override void EnterHit()
-    {
-        /*
-         * movementModule.Stop();
-         * animator.Play("Hit");
-         */
-    }
-
-
-    protected override void EnterDead()
-    {
-        /*
-         * movementModule.Stop();
-         * animator.Play("Dead");
-         */
     }
 
 
