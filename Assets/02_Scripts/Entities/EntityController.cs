@@ -54,12 +54,9 @@ public abstract class EntityController : MonoBehaviour
     private void RegisterCommonTransitions()
     {
         Fsm.AddTwoWayTransition(new IdleMoveTransition(this));
-
         Fsm.AddTriggerTransitionFromAny(EntityEvent.Damaged, new DamagedToHitTransition(this));
-
         Fsm.AddTriggerTransitionFromAny(EntityEvent.Died, new DiedToDeadTransition(this));
     }
-
 
     // =========================================================
     // Specific State / Transition
@@ -70,13 +67,6 @@ public abstract class EntityController : MonoBehaviour
     protected abstract void RegisterSpecificStates();
 
     protected abstract void RegisterSpecificTransitions();
-
-
-    // =========================================================
-    // Common State Behaviour
-    // =========================================================
-
-
 
     // =========================================================
     // Event API
@@ -107,7 +97,6 @@ public abstract class EntityController : MonoBehaviour
     {
         Fsm.Trigger(EntityEvent.HitFinished);
     }
-
 
     // =========================================================
     // Debug

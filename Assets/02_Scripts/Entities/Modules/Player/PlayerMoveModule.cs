@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour, IMoveStrategy
+public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 {
-
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 15f;
