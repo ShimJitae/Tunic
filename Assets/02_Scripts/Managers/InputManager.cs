@@ -11,6 +11,15 @@ public class InputManager : MonoBehaviour
 
     public Vector3 MoveInput { get; private set; }
 
+    [SerializeField] PlayerController p_Controller;
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            p_Controller.NotifyDamaged();
+        }
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this)

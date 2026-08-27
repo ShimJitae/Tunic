@@ -17,6 +17,7 @@ public class PlayerController : EntityController
         }
 
         MoveModule = playerMoveModule;
+
         base.Awake();
     }
 

@@ -46,4 +46,15 @@ public class EntityAnimationModule : MonoBehaviour
     {
         animator.CrossFadeInFixedTime(Dead, 0.1f);
     }
+
+    public bool IsHitFinished()
+    {
+        // Hit 상태로 CrossFade 중이면 아직 종료로 판단하지 않음
+        if (animator.IsInTransition(0))
+            return false;
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        return stateInfo.fullPathHash == Hit && stateInfo.normalizedTime >= 0.85f;
+    }
 }
