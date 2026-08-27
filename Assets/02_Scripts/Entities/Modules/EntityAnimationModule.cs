@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EntityAnimationModule : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    [SerializeField] protected Animator animator;
 
     void Awake()
     {

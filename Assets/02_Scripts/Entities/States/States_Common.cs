@@ -8,13 +8,13 @@ using UnityHFSM;
 // =========================================================
 
 
-public class EntityState<TController> : StateBase<EntityStateId> where TController : EntityController
+public abstract class EntityState<TController> : StateBase<EntityStateId> where TController : EntityController
 {
-    protected readonly EntityController controller;
+    protected readonly TController controller;
 
-    protected EntityState(EntityController _controller) : base(needsExitTime: false)
+    protected EntityState(TController controller) : base(needsExitTime: false)
     {
-        controller = _controller;
+        this.controller = controller;
     }
 }
 

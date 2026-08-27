@@ -86,9 +86,18 @@ public abstract class EntityController : MonoBehaviour
     // =========================================================
 
     // 공격 요청
+
+    /// <summary>
+    /// AttackModule / AnimationEvent 등에서 호출
+    /// </summary>
     public void RequestAttack()
     {
         Fsm.Trigger(EntityEvent.Attack);
+    }
+
+    public void NotifyAttackFinished()
+    {
+        Fsm.Trigger(EntityEvent.AttackFinished);
     }
 
     /// <summary>
@@ -99,22 +108,14 @@ public abstract class EntityController : MonoBehaviour
         Fsm.Trigger(EntityEvent.Damaged);
     }
 
-    public void NotifyDied()
-    {
-        Fsm.Trigger(EntityEvent.Died);
-    }
-
-    /// <summary>
-    /// AttackModule / AnimationEvent 등에서 호출
-    /// </summary>
-    public void NotifyAttackFinished()
-    {
-        Fsm.Trigger(EntityEvent.AttackFinished);
-    }
-
     public void NotifyHitFinished()
     {
         Fsm.Trigger(EntityEvent.HitFinished);
+    }
+
+    public void NotifyDied()
+    {
+        Fsm.Trigger(EntityEvent.Died);
     }
 
     // =========================================================

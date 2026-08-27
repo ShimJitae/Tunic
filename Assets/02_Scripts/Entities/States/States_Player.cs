@@ -1,12 +1,20 @@
-using UnityEngine;
-
-
-public sealed class DodgeState : EntityState<EntityController>
+public sealed class DodgeState : EntityState<PlayerController>
 {
-    public DodgeState(EntityController controller) : base(controller) { }
+    private const float ExitNormalizedTime = 0.75f;
 
-    public override void OnEnter() { }
-    public override void OnLogic() { }
-    public override void OnExit() { }
+    public DodgeState(PlayerController controller) : base(controller) { }
+
+    public override void OnEnter()
+    {
+        controller.PlayerAnimation.PlayDodge();
+    }
+
+    public override void OnLogic()
+    {
+        if (!controller.PlayerAnimation.IsCurrentAnimationFinished(ExitNormalizedTime))
+            return;
+
+        controller.NotifyDodgeFinished();
+    }
 }
 

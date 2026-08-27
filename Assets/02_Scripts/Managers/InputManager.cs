@@ -23,6 +23,10 @@ public class InputManager : MonoBehaviour
         {
             p_Controller.RequestAttack();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            p_Controller.RequestDodge();
+        }
     }
     #endregion
 

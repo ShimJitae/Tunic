@@ -1,5 +1,3 @@
-using UnityEngine;
-
 // DodgeTransition
 public sealed class IdleDodgeTransition : EntityTransition<EntityController>
 {
@@ -19,5 +17,22 @@ public sealed class DodgeIdleTransition : EntityTransition<EntityController>
 {
     public DodgeIdleTransition(EntityController controller) : base(controller, EntityStateId.Dodge, EntityStateId.Idle)
     {
+    }
+
+    public override bool ShouldTransition()
+    {
+        return !controller.HasMoveInput;
+    }
+}
+
+public sealed class DodgeMoveTransition : EntityTransition<EntityController>
+{
+    public DodgeMoveTransition(EntityController controller) : base(controller, EntityStateId.Dodge, EntityStateId.Move)
+    {
+    }
+
+    public override bool ShouldTransition()
+    {
+        return controller.HasMoveInput;
     }
 }

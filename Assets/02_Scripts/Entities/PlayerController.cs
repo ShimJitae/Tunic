@@ -7,11 +7,21 @@ public class PlayerController : EntityController
     private InputManager inputManager;
     private PlayerMoveModule playerMoveModule;
 
+    public PlayerAnimationModule PlayerAnimation { get; private set; }
+
     protected override void Awake()
     {
         if (!TryGetComponent(out playerMoveModule))
         {
             Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerMoveModule)} component.", this);
+            enabled = false;
+            return;
+        }
+
+        PlayerAnimation = GetComponentInChildren<PlayerAnimationModule>();
+        if (PlayerAnimation == null)
+        {
+            Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerAnimationModule)} component.", this);
             enabled = false;
             return;
         }
@@ -26,9 +36,7 @@ public class PlayerController : EntityController
         if (inputManager == null)
             inputManager = InputManager.Instance;
 
-        MoveModule.MoveInfo = inputManager != null
-            ? inputManager.MoveInput
-            : Vector3.zero;
+        MoveModule.MoveInfo = inputManager != null ? inputManager.MoveInput : Vector3.zero;
 
         base.Update();
     }
@@ -54,7 +62,7 @@ public class PlayerController : EntityController
     {
         base.RegisterTransitions();
 
-        // RegisterDodgeTransitions();
+        RegisterDodgeTransitions();
     }
 
     private void RegisterDodgeTransitions()
@@ -64,12 +72,18 @@ public class PlayerController : EntityController
         // =====================================================
         Fsm.AddTriggerTransition(EntityEvent.Dodge, new IdleDodgeTransition(this));
         Fsm.AddTriggerTransition(EntityEvent.Dodge, new MoveDodgeTransition(this));
-        Fsm.AddTriggerTransitionFromAny(EntityEvent.DodgeFinished, new DodgeIdleTransition(this));
+        Fsm.AddTriggerTransition(EntityEvent.DodgeFinished, new DodgeIdleTransition(this));
+        Fsm.AddTriggerTransition(EntityEvent.DodgeFinished, new DodgeMoveTransition(this));
     }
 
     // =========================================================
     // Dodge Event
     // =========================================================
+
+    public void RequestDodge()
+    {
+        Fsm.Trigger(EntityEvent.Dodge);
+    }
 
     public void NotifyDodgeFinished()
     {
