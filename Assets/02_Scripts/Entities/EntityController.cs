@@ -117,9 +117,4 @@ public abstract class EntityController : MonoBehaviour
     {
         Fsm.Trigger(EntityEvent.Died);
     }
-
-    // =========================================================
-    // Debug
-    // =========================================================
-
 }

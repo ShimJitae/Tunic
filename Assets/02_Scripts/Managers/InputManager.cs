@@ -27,6 +27,10 @@ public class InputManager : MonoBehaviour
         {
             p_Controller.RequestDodge();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            p_Controller.NotifyDied();
+        }
     }
     #endregion
 
