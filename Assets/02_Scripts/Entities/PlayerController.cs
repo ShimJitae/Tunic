@@ -1,50 +1,59 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityHFSM;
 
 [RequireComponent(typeof(PlayerMoveModule))]
 public class PlayerController : EntityController
 {
-    public override bool HasMoveInput => MoveModule.MoveInfo.sqrMagnitude > 0.01f;
+    private InputManager inputManager;
+    private PlayerMoveModule playerMoveModule;
 
     protected override void Awake()
     {
+        if (!TryGetComponent(out playerMoveModule))
+        {
+            Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerMoveModule)} component.", this);
+            enabled = false;
+            return;
+        }
+
+        MoveModule = playerMoveModule;
         base.Awake();
-
-        if (GetComponent<PlayerMoveModule>() == null)
-            gameObject.AddComponent<PlayerMoveModule>();
-
-        MoveModule = GetComponent<PlayerMoveModule>();
     }
 
-    protected override void RegisterSpecificStates()
+    protected override void Update()
     {
+        if (inputManager == null)
+            inputManager = InputManager.Instance;
+
+        MoveModule.MoveInfo = inputManager != null
+            ? inputManager.MoveInput
+            : Vector3.zero;
+
+        base.Update();
+    }
+
+    private void OnDisable()
+    {
+        if (MoveModule != null)
+            MoveModule.MoveInfo = Vector3.zero;
+    }
+
+    protected override void RegisterStates()
+    {
+        base.RegisterStates();
+
         Fsm.AddState(EntityStateId.Dodge, new DodgeState(this));
     }
-
 
     // =========================================================
     // Player Transition Registration
     // =========================================================
 
-    protected override void RegisterSpecificTransitions()
+    protected override void RegisterTransitions()
     {
-        RegisterAttackTransitions();
+        base.RegisterTransitions();
 
-        RegisterDodgeTransitions();
-
-        RegisterHitTransitions();
-    }
-
-
-    private void RegisterAttackTransitions()
-    {
-        // =====================================================
-        // Attack Request
-        // =====================================================
-        Fsm.AddTriggerTransition(EntityEvent.Attack, new IdleAttackTransition(this));
-        Fsm.AddTriggerTransition(EntityEvent.Attack, new MoveAttackTransition(this));
-        Fsm.AddTriggerTransitionFromAny(EntityEvent.AttackFinished, new MoveIdleTransition(this));
+        // RegisterDodgeTransitions();
     }
 
     private void RegisterDodgeTransitions()
@@ -56,30 +65,6 @@ public class PlayerController : EntityController
         Fsm.AddTriggerTransition(EntityEvent.Dodge, new MoveDodgeTransition(this));
         Fsm.AddTriggerTransitionFromAny(EntityEvent.DodgeFinished, new DodgeIdleTransition(this));
     }
-
-
-    private void RegisterHitTransitions()
-    {
-        /*
-         * Hit 상태가 끝났을 때도
-         * 현재 입력 여부에 따라 복귀 상태를 결정.
-         */
-
-        Fsm.AddTriggerTransitionFromAny(
-            EntityEvent.HitFinished,
-            EntityStateId.Hit,
-            EntityStateId.Move,
-            _ => HasMoveInput
-        );
-
-        Fsm.AddTriggerTransitionFromAny(
-            EntityEvent.HitFinished,
-            EntityStateId.Hit,
-            EntityStateId.Idle,
-            _ => !HasMoveInput
-        );
-    }
-
 
     // =========================================================
     // Dodge Event

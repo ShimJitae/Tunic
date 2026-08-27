@@ -16,12 +16,6 @@ public class EnemyController : EntityController
     [SerializeField]
     private float attackRange = 2f;
 
-
-    // Enemy는 Entity의 Move State를 직접 사용하지 않고
-    // Chase 상태에서 이동한다고 가정합니다.
-    public override bool HasMoveInput => false;
-
-
     // =========================================================
     // Conditions
     // =========================================================
@@ -69,33 +63,33 @@ public class EnemyController : EntityController
     // Enemy State Creation / Registration
     // =========================================================
 
-    protected override void CreateSpecificStates()
-    {
-        chaseState = new State<EntityStateId, EntityEvent>(
-            onEnter: _ => EnterChase(),
-            onLogic: _ => UpdateChase(),
-            onExit: _ => ExitChase()
-        );
-    }
+    // protected override void CreateSpecificStates()
+    // {
+    //     chaseState = new State<EntityStateId, EntityEvent>(
+    //         onEnter: _ => EnterChase(),
+    //         onLogic: _ => UpdateChase(),
+    //         onExit: _ => ExitChase()
+    //     );
+    // }
 
-    protected override void RegisterSpecificStates()
-    {
-        Fsm.AddState(EntityStateId.Chase, chaseState);
-    }
+    // protected override void RegisterSpecificStates()
+    // {
+    //     Fsm.AddState(EntityStateId.Chase, chaseState);
+    // }
 
 
-    // =========================================================
-    // Enemy Transitions
-    // =========================================================
+    // // =========================================================
+    // // Enemy Transitions
+    // // =========================================================
 
-    protected override void RegisterSpecificTransitions()
-    {
-        RegisterChaseTransitions();
+    // protected override void RegisterSpecificTransitions()
+    // {
+    //     RegisterChaseTransitions();
 
-        RegisterAttackTransitions();
+    //     RegisterAttackTransitions();
 
-        RegisterHitTransitions();
-    }
+    //     RegisterHitTransitions();
+    // }
 
 
     private void RegisterChaseTransitions()

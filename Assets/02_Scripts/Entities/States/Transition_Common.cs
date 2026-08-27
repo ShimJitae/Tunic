@@ -45,3 +45,42 @@ public sealed class DiedToDeadTransition : EntityTransition<EntityController>
     {
     }
 }
+
+// AttackTransition
+public sealed class IdleAttackTransition : EntityTransition<EntityController>
+{
+    public IdleAttackTransition(EntityController controller) : base(controller, EntityStateId.Idle, EntityStateId.Attack)
+    {
+    }
+}
+
+public sealed class MoveAttackTransition : EntityTransition<EntityController>
+{
+    public MoveAttackTransition(EntityController controller) : base(controller, EntityStateId.Move, EntityStateId.Attack)
+    {
+    }
+}
+
+public sealed class AttackIdleTransition : EntityTransition<EntityController>
+{
+    public AttackIdleTransition(EntityController controller) : base(controller, EntityStateId.Attack, EntityStateId.Idle)
+    {
+    }
+
+    public override bool ShouldTransition()
+    {
+        return !controller.HasMoveInput;
+    }
+}
+
+public sealed class AttackMoveTransition : EntityTransition<EntityController>
+{
+    public AttackMoveTransition(EntityController controller) : base(controller, EntityStateId.Attack, EntityStateId.Move)
+    {
+    }
+
+    public override bool ShouldTransition()
+    {
+        return controller.HasMoveInput;
+    }
+}

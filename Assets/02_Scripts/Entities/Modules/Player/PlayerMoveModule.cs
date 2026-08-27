@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
@@ -15,94 +14,153 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
     [SerializeField] private float gravity = -20f;
     [SerializeField] private float groundedGravity = -2f;
 
+    [SerializeField] private Transform cameraTransform;
+
     private CharacterController characterController;
 
     private float currentSpeed;
     private float rotationVelocity;
     private float verticalVelocity;
+    private int lastMoveFrame = -1;
+    private bool hasLoggedMissingCamera;
 
     public Vector3 MoveInfo { get; set; }
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        TryResolveCamera();
     }
 
-    // 실제 Move는 PlayerController에서 상태 Update로 실행되고 있음.
+    private void LateUpdate()
+    {
+        // 상태 머신이 Move()를 호출하지 않는 Idle/Attack/Hit/Dead 상태에서도
+        // 중력과 CharacterController의 접지 상태를 매 프레임 갱신한다.
+        if (lastMoveFrame == Time.frameCount)
+            return;
+
+        currentSpeed = 0f;
+        ApplyMotion(Vector3.zero);
+    }
+
     public void Move()
     {
-        Vector3 moveDir = MoveInfo;
-        moveDir.y = 0f;
+        if (lastMoveFrame == Time.frameCount)
+            return;
 
-        if (moveDir.sqrMagnitude > 0.001f)
+        lastMoveFrame = Time.frameCount;
+
+        Vector3 inputDirection = new Vector3(MoveInfo.x, 0f, MoveInfo.z);
+        float inputMagnitude = Mathf.Clamp01(inputDirection.magnitude);
+
+        if (inputMagnitude <= 0.001f ||
+            !TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight))
         {
-            float targetAngle = Mathf.Atan2(
-                moveDir.x,
-                moveDir.z
-            ) * Mathf.Rad2Deg;
-
-            float smoothAngle = Mathf.SmoothDampAngle(
-                transform.eulerAngles.y,
-                targetAngle,
-                ref rotationVelocity,
-                rotationSmoothTime
-            );
-
-            transform.rotation = Quaternion.Euler(
-                0f,
-                smoothAngle,
-                0f
-            );
+            currentSpeed = 0f;
+            ApplyMotion(Vector3.zero);
+            return;
         }
 
-        if (characterController.isGrounded &&
-            verticalVelocity < 0f)
+        Vector3 moveDirection =
+            cameraForward * inputDirection.z +
+            cameraRight * inputDirection.x;
+
+        if (moveDirection.sqrMagnitude <= 0.0001f)
         {
-            verticalVelocity = groundedGravity;
-        }
-        else
-        {
-            verticalVelocity += gravity * Time.deltaTime;
+            currentSpeed = 0f;
+            ApplyMotion(Vector3.zero);
+            return;
         }
 
-        Vector3 velocity = moveDir.normalized * currentSpeed;
+        moveDirection.Normalize();
 
-        velocity.y = verticalVelocity;
-
-        characterController.Move(
-            velocity * Time.deltaTime
+        float targetSpeed = moveSpeed * inputMagnitude;
+        currentSpeed = Mathf.MoveTowards(
+            currentSpeed,
+            targetSpeed,
+            acceleration * Time.deltaTime
         );
+
+        RotateTowards(moveDirection);
+        ApplyMotion(moveDirection * currentSpeed);
     }
 
-    // private void HandleMovement()
-    // {
-    //     Vector2 input = moveAction.action.ReadValue<Vector2>();
+    private bool TryResolveCamera()
+    {
+        if (cameraTransform != null)
+        {
+            hasLoggedMissingCamera = false;
+            return true;
+        }
 
-    //     // -------------------------
-    //     // 1. 카메라 기준 이동 방향 계산
-    //     // -------------------------
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            cameraTransform = mainCamera.transform;
+            hasLoggedMissingCamera = false;
+            return true;
+        }
 
-    //     Vector3 cameraForward = cameraTransform.forward;
-    //     Vector3 cameraRight = cameraTransform.right;
+        if (!hasLoggedMissingCamera)
+        {
+            Debug.LogError(
+                "PlayerMoveModule could not find a camera tagged MainCamera.",
+                this
+            );
+            hasLoggedMissingCamera = true;
+        }
 
-    //     // 카메라의 위/아래 기울기는 이동 방향에 영향을 주면 안 되므로
-    //     // Y축을 제거해서 XZ 평면의 방향만 사용합니다.
-    //     cameraForward.y = 0f;
-    //     cameraRight.y = 0f;
+        return false;
+    }
 
-    //     cameraForward.Normalize();
-    //     cameraRight.Normalize();
+    private bool TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight)
+    {
+        cameraForward = Vector3.zero;
+        cameraRight = Vector3.zero;
 
-    //     // W/S = 카메라 Forward
-    //     // A/D = 카메라 Right
-    //     Vector3 moveDirection =
-    //         cameraForward * input.y +
-    //         cameraRight * input.x;
+        if (!TryResolveCamera())
+            return false;
 
-    //     // 대각선 이동 속도가 더 빨라지는 것을 방지
-    //     if (moveDirection.sqrMagnitude > 1f)
-    //     {
-    //         moveDirection.Normalize();
-    //     }
-    // }
+        cameraForward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up);
+
+        // 완전한 탑다운 카메라는 forward의 수평 투영값이 0이므로
+        // 화면의 위쪽을 나타내는 camera up을 대체 방향으로 사용한다.
+        if (cameraForward.sqrMagnitude <= 0.0001f)
+            cameraForward = Vector3.ProjectOnPlane(cameraTransform.up, Vector3.up);
+
+        if (cameraForward.sqrMagnitude <= 0.0001f)
+            return false;
+
+        cameraForward.Normalize();
+        cameraRight = Vector3.Cross(Vector3.up, cameraForward).normalized;
+        return true;
+    }
+
+    private void RotateTowards(Vector3 moveDirection)
+    {
+        float targetAngle = Mathf.Atan2(
+            moveDirection.x,
+            moveDirection.z
+        ) * Mathf.Rad2Deg;
+
+        float smoothAngle = Mathf.SmoothDampAngle(
+            transform.eulerAngles.y,
+            targetAngle,
+            ref rotationVelocity,
+            rotationSmoothTime
+        );
+
+        transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+    }
+
+    private void ApplyMotion(Vector3 horizontalVelocity)
+    {
+        if (characterController.isGrounded && verticalVelocity < 0f)
+            verticalVelocity = groundedGravity;
+        else
+            verticalVelocity += gravity * Time.deltaTime;
+
+        horizontalVelocity.y = verticalVelocity;
+        characterController.Move(horizontalVelocity * Time.deltaTime);
+    }
 }
