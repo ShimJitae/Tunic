@@ -15,9 +15,9 @@ public abstract class EntityTransition<TController> : TransitionBase<EntityState
     }
 }
 
-public sealed class IdleMoveTransition : EntityTransition<EntityController>
+public sealed class IdleToMoveTransition : EntityTransition<EntityController>
 {
-    public IdleMoveTransition(EntityController controller) : base(controller, EntityStateId.Idle, EntityStateId.Move)
+    public IdleToMoveTransition(EntityController controller) : base(controller, EntityStateId.Idle, EntityStateId.Move)
     {
     }
 
@@ -39,6 +39,13 @@ public sealed class DamagedToHitTransition : EntityTransition<EntityController>
     }
 }
 
+public sealed class HitToIdleTransition : EntityTransition<EntityController>
+{
+    public HitToIdleTransition(EntityController controller) : base(controller, EntityStateId.Hit, EntityStateId.Idle, forceInstantly: true)
+    {
+    }
+}
+
 public sealed class DiedToDeadTransition : EntityTransition<EntityController>
 {
     public DiedToDeadTransition(EntityController controller) : base(controller, default, EntityStateId.Dead, forceInstantly: true)
@@ -47,23 +54,23 @@ public sealed class DiedToDeadTransition : EntityTransition<EntityController>
 }
 
 // AttackTransition
-public sealed class IdleAttackTransition : EntityTransition<EntityController>
+public sealed class IdleToAttackTransition : EntityTransition<EntityController>
 {
-    public IdleAttackTransition(EntityController controller) : base(controller, EntityStateId.Idle, EntityStateId.Attack)
+    public IdleToAttackTransition(EntityController controller) : base(controller, EntityStateId.Idle, EntityStateId.Attack)
     {
     }
 }
 
-public sealed class MoveAttackTransition : EntityTransition<EntityController>
+public sealed class MoveToAttackTransition : EntityTransition<EntityController>
 {
-    public MoveAttackTransition(EntityController controller) : base(controller, EntityStateId.Move, EntityStateId.Attack)
+    public MoveToAttackTransition(EntityController controller) : base(controller, EntityStateId.Move, EntityStateId.Attack)
     {
     }
 }
 
-public sealed class AttackIdleTransition : EntityTransition<EntityController>
+public sealed class AttackToIdleTransition : EntityTransition<EntityController>
 {
-    public AttackIdleTransition(EntityController controller) : base(controller, EntityStateId.Attack, EntityStateId.Idle)
+    public AttackToIdleTransition(EntityController controller) : base(controller, EntityStateId.Attack, EntityStateId.Idle)
     {
     }
 
@@ -73,9 +80,9 @@ public sealed class AttackIdleTransition : EntityTransition<EntityController>
     }
 }
 
-public sealed class AttackMoveTransition : EntityTransition<EntityController>
+public sealed class AttackToMoveTransition : EntityTransition<EntityController>
 {
-    public AttackMoveTransition(EntityController controller) : base(controller, EntityStateId.Attack, EntityStateId.Move)
+    public AttackToMoveTransition(EntityController controller) : base(controller, EntityStateId.Attack, EntityStateId.Move)
     {
     }
 
