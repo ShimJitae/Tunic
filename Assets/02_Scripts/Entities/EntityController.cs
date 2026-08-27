@@ -85,6 +85,12 @@ public abstract class EntityController : MonoBehaviour
     // Event API
     // =========================================================
 
+    // 공격 요청
+    public void RequestAttack()
+    {
+        Fsm.Trigger(EntityEvent.Attack);
+    }
+
     /// <summary>
     /// Health 등의 외부 모듈에서 호출
     /// </summary>

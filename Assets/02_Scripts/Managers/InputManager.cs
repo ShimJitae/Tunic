@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
 
     public Vector3 MoveInput { get; private set; }
 
+    #region 테스트용 인풋 코드
     [SerializeField] PlayerController p_Controller;
     void Update()
     {
@@ -18,7 +19,12 @@ public class InputManager : MonoBehaviour
         {
             p_Controller.NotifyDamaged();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            p_Controller.RequestAttack();
+        }
     }
+    #endregion
 
     private void Awake()
     {
