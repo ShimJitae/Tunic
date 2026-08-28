@@ -7,13 +7,13 @@ public class EnemyBrain : MonoBehaviour
     private EnemyController enemyController;
 
     [Header("판단 거리")]
-    [SerializeField, Min(0f)] private float detectionRange = 10f;
-    [SerializeField, Min(0f)] private float giveUpRange = 15f;
-    [SerializeField, Min(0f)] private float attackRange = 2f;
-    [SerializeField, Min(0f)] private float attackCooldown = 1f;
+    [SerializeField, Min(0f)] private float detectionRange = 6f;
+    [SerializeField, Min(0f)] private float giveUpRange = 7.5f;
+    [SerializeField, Min(0f)] private float attackRange = 1.5f;
+    [SerializeField, Min(0f)] private float attackCooltime = 1.5f;
 
     [Header("시야 설정")]
-    [SerializeField, Range(0f, 360f)] private float viewAngle = 90f;
+    [SerializeField, Range(0f, 360f)] private float viewAngle = 120f;
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField, Min(0f)] private float eyeHeight = 1f;
 
@@ -119,8 +119,7 @@ public class EnemyBrain : MonoBehaviour
         }
 
         // 추적 대상은 움직이므로 목적지를 계속 갱신
-        enemyController.SetMoveDestination(
-            target.position);
+        enemyController.SetMoveDestination(target.position);
     }
 
     private void EnterIdle()
