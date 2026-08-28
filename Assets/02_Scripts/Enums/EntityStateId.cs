@@ -9,7 +9,4 @@ public enum EntityStateId
 
     // Player
     Dodge,
-
-    // Enemy
-    Chase,
 }

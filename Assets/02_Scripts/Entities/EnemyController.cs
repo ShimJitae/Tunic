@@ -1,58 +1,41 @@
 using UnityEngine;
-using UnityEngine.AI;
-using UnityHFSM;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(EnemyMoveModule))]
+[RequireComponent(typeof(EnemyAnimationModule))]
 public class EnemyController : EntityController
 {
     private EnemyMoveModule enemyMoveModule;
-    NavMeshAgent agent;
 
-    [Header("Target")]
-    [SerializeField] private Transform target;
-
-    [Header("Range")]
-    [SerializeField, Min(0f)] private float detectionRange = 10f;
-    [SerializeField, Min(0f)] private float attackRange = 2f;
-
-    public bool HasTarget => target != null && DistanceToTarget <= detectionRange;
-    public bool IsTargetInAttackRange => HasTarget && DistanceToTarget <= attackRange;
-
-    public Vector3 ChaseDirection
-    {
-        get
-        {
-            if (target == null)
-                return Vector3.zero;
-
-            Vector3 direction = target.position - transform.position;
-            direction.y = 0f;
-
-            return direction.sqrMagnitude > 0.001f
-                ? direction.normalized
-                : Vector3.zero;
-        }
-    }
-
-    private float DistanceToTarget => target == null
-        ? float.MaxValue
-        : Vector3.Distance(transform.position, target.position);
+    public EnemyMoveType MoveType =>
+        enemyMoveModule.MoveType;
 
     protected override void Awake()
     {
         if (!TryGetComponent(out enemyMoveModule))
         {
-            Debug.LogError($"{nameof(EnemyController)} requires a {nameof(EnemyMoveModule)} component.", this);
+#if UNITY_EDITOR
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a " +
+                $"{nameof(EnemyMoveModule)} component.",
+                this);
+#endif
             enabled = false;
             return;
         }
 
         MoveModule = enemyMoveModule;
 
-        AnimationModule = GetComponentInChildren<EnemyAnimationModule>();
+        AnimationModule =
+            GetComponentInChildren<EnemyAnimationModule>();
+
         if (AnimationModule == null)
         {
-            Debug.LogError($"{nameof(EnemyController)} requires a {nameof(EnemyAnimationModule)} component.", this);
+#if UNITY_EDITOR
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a " +
+                $"{nameof(EnemyAnimationModule)} component.",
+                this);
+#endif
             enabled = false;
             return;
         }
@@ -60,33 +43,38 @@ public class EnemyController : EntityController
         base.Awake();
     }
 
-    protected override void RegisterStates()
+    protected override void Update()
     {
-        base.RegisterStates();
-
-        Fsm.AddState(EntityStateId.Chase, new ChaseState(this));
+        base.Update();
     }
 
-    protected override void RegisterTransitions()
+    public void SetMoveType(EnemyMoveType moveType)
     {
-        base.RegisterTransitions();
-
-        RegisterChaseTransitions();
+        enemyMoveModule.MoveType = moveType;
     }
 
-    private void RegisterChaseTransitions()
+    public void SetMoveDestination(Vector3 destination)
     {
-        Fsm.AddTwoWayTransition(new IdleToChaseTransition(this));
-        Fsm.AddTransition(new ChaseToAttackTransition(this));
+        MoveModule.MoveInfo = destination;
     }
 
-    public void SetTarget(Transform newTarget)
+    public void StopMove()
     {
-        target = newTarget;
+        // 기존 Transition이 Move → Idle로 전환하는 조건
+        MoveModule.MoveInfo = Vector3.zero;
+
+        // 이미 이동 중인 NavMeshAgent 정지
+        enemyMoveModule.Stop();
     }
 
-    public void ClearTarget()
+    public bool HasReachedDestination()
     {
-        target = null;
+        return enemyMoveModule.HasReachedDestination();
+    }
+
+    private void OnDisable()
+    {
+        if (enemyMoveModule != null)
+            StopMove();
     }
 }

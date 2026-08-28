@@ -1,14 +1,14 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMoveModule))]
+[RequireComponent(typeof(PlayerAnimationModule))]
 public class PlayerController : EntityController
 {
     private InputManager inputManager;
-    private PlayerMoveModule playerMoveModule;
 
     protected override void Awake()
     {
-        if (!TryGetComponent(out playerMoveModule))
+        if (!TryGetComponent(out PlayerMoveModule playerMoveModule))
         {
             Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerMoveModule)} component.", this);
             enabled = false;

@@ -37,6 +37,10 @@ public abstract class EntityController : MonoBehaviour
     private void CreateStateMachine()
     {
         Fsm = new StateMachine<EntityStateId, EntityEvent>();
+        Fsm.StateChanged += state =>
+{
+    Debug.Log($"State Changed -> {state.name}");
+};
 
         // 2. State 등록
         RegisterStates();

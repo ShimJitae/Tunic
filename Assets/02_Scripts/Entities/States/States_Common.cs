@@ -1,13 +1,6 @@
 using UnityEngine;
 using UnityHFSM;
 
-
-
-// =========================================================
-// Common State Creation / Registration
-// =========================================================
-
-
 public abstract class EntityState<TController> : StateBase<EntityStateId> where TController : EntityController
 {
     protected readonly TController controller;
@@ -42,7 +35,10 @@ public sealed class MoveState : EntityState<EntityController>
     {
         controller.MoveModule.Move();
     }
-    public override void OnExit() { }
+    public override void OnExit()
+    {
+        controller.MoveModule.MoveInfo = Vector3.zero;
+    }
 }
 
 public sealed class AttackState : EntityState<EntityController>
