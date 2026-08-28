@@ -1,13 +1,10 @@
 using UnityEngine;
-using UnityHFSM;
 
 [RequireComponent(typeof(PlayerMoveModule))]
 public class PlayerController : EntityController
 {
     private InputManager inputManager;
     private PlayerMoveModule playerMoveModule;
-
-    public PlayerAnimationModule PlayerAnimation { get; private set; }
 
     protected override void Awake()
     {
@@ -18,15 +15,15 @@ public class PlayerController : EntityController
             return;
         }
 
-        PlayerAnimation = GetComponentInChildren<PlayerAnimationModule>();
-        if (PlayerAnimation == null)
+        MoveModule = playerMoveModule;
+
+        AnimationModule = GetComponentInChildren<PlayerAnimationModule>();
+        if (AnimationModule == null)
         {
             Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerAnimationModule)} component.", this);
             enabled = false;
             return;
         }
-
-        MoveModule = playerMoveModule;
 
         base.Awake();
     }

@@ -9,19 +9,23 @@ public abstract class EntityController : MonoBehaviour
     // MoveInfo가 Vector3.zero가 아니라 이동 방향 / 이동할 위치 등에 대한 정보가 있는 경우에만 Move, 그 외에 Idle
     public virtual bool HasMoveInput => MoveModule.MoveInfo.sqrMagnitude > 0.01f;
     public IMoveStrategy MoveModule { get; protected set; }
-    public EntityAnimationModule AnimationModule { get; protected set; }
+    public IAnimationModule AnimationModule { get; protected set; }
     public IAttackStrategy AttackModule { get; protected set; }
 
     public EntityStateId CurrentState => Fsm.ActiveStateName;
 
     protected virtual void Awake()
     {
-        AnimationModule = gameObject.GetComponentInChildren<EntityAnimationModule>();
+        AnimationModule = gameObject.GetComponentInChildren<IAnimationModule>();
         if (AnimationModule == null)
         {
             Debug.LogError("해당 EntityController의 하위 오브젝트에 EntityAnimationModule가 없습니다.");
         }
 
+    }
+
+    protected virtual void Start()
+    {
         CreateStateMachine();
     }
 
@@ -53,7 +57,7 @@ public abstract class EntityController : MonoBehaviour
         Fsm.AddState(EntityStateId.Move, new MoveState(this));
         Fsm.AddState(EntityStateId.Attack, new AttackState(this));
         Fsm.AddState(EntityStateId.Hit, new HitState(this));
-        Fsm.AddState(EntityStateId.Dead, new DeadState(this));
+        Fsm.AddState(EntityStateId.Die, new DieState(this));
     }
 
     protected virtual void RegisterTransitions()

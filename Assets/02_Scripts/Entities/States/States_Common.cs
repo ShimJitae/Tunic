@@ -79,13 +79,13 @@ public sealed class HitState : EntityState<EntityController>
     }
     public override void OnExit() { }
 }
-public sealed class DeadState : EntityState<EntityController>
+public sealed class DieState : EntityState<EntityController>
 {
-    public DeadState(EntityController controller) : base(controller) { }
+    public DieState(EntityController controller) : base(controller) { }
 
     public override void OnEnter()
     {
-        controller.AnimationModule.PlayDead();
+        controller.AnimationModule.PlayDie();
     }
     public override void OnLogic() { }
     public override void OnExit() { }
