@@ -4,8 +4,9 @@ using System;
 public class Health : MonoBehaviour, IDamageable
 {
     [SerializeField] private float maxHP = 100f;
+    public float MaxHP => maxHP;
     private float currHP;
-    [SerializeField] private HealthBar healthBar;
+    public float CurrHP => currHP;
 
     public bool IsDied { get; private set; }
 
@@ -21,19 +22,15 @@ public class Health : MonoBehaviour, IDamageable
     void OnEnable()
     {
         OnDamaged += TakeDamage;
-        OnDamaged += healthBar.UpdateHealthBar;
 
         OnRestored += RestoreHp;
-        OnRestored += healthBar.UpdateHealthBar;
     }
 
     void OnDisable()
     {
         OnDamaged -= TakeDamage;
-        OnDamaged -= healthBar.UpdateHealthBar;
 
         OnRestored -= RestoreHp;
-        OnRestored -= healthBar.UpdateHealthBar;
     }
 
     private void SetHealthData()
@@ -41,7 +38,6 @@ public class Health : MonoBehaviour, IDamageable
         // 여기에 나중에 SO로 HEALTH 초기화 하는 코드 추가하기.
 
         currHP = maxHP;
-        healthBar.SetMaxValue(maxHP);
     }
 
     // damage는 음수로 전달
