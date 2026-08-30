@@ -1,13 +1,6 @@
 using UnityEngine;
 using UnityHFSM;
 
-
-
-// =========================================================
-// Common State Creation / Registration
-// =========================================================
-
-
 public abstract class EntityState<TController> : StateBase<EntityStateId> where TController : EntityController
 {
     protected readonly TController controller;
@@ -42,7 +35,10 @@ public sealed class MoveState : EntityState<EntityController>
     {
         controller.MoveModule.Move();
     }
-    public override void OnExit() { }
+    public override void OnExit()
+    {
+        controller.MoveModule.MoveInfo = Vector3.zero;
+    }
 }
 
 public sealed class AttackState : EntityState<EntityController>
@@ -79,13 +75,13 @@ public sealed class HitState : EntityState<EntityController>
     }
     public override void OnExit() { }
 }
-public sealed class DeadState : EntityState<EntityController>
+public sealed class DieState : EntityState<EntityController>
 {
-    public DeadState(EntityController controller) : base(controller) { }
+    public DieState(EntityController controller) : base(controller) { }
 
     public override void OnEnter()
     {
-        controller.AnimationModule.PlayDead();
+        controller.AnimationModule.PlayDie();
     }
     public override void OnLogic() { }
     public override void OnExit() { }

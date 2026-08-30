@@ -1,233 +1,80 @@
 using UnityEngine;
-using UnityHFSM;
 
+[RequireComponent(typeof(EnemyMoveModule))]
+[RequireComponent(typeof(EnemyAnimationModule))]
 public class EnemyController : EntityController
 {
-    private State<EntityStateId, EntityEvent> chaseState;
+    private EnemyMoveModule enemyMoveModule;
 
-    [Header("Target")]
-    [SerializeField]
-    private Transform target;
+    public EnemyMoveType MoveType =>
+        enemyMoveModule.MoveType;
 
-    [Header("Range")]
-    [SerializeField]
-    private float detectionRange = 10f;
-
-    [SerializeField]
-    private float attackRange = 2f;
-
-    // =========================================================
-    // Conditions
-    // =========================================================
-
-    private bool HasTarget
+    protected override void Awake()
     {
-        get
+        if (!TryGetComponent(out enemyMoveModule))
         {
-            if (target == null)
-                return false;
-
-            return DistanceToTarget <= detectionRange;
-        }
-    }
-
-
-    private bool IsTargetInAttackRange
-    {
-        get
-        {
-            if (target == null)
-                return false;
-
-            return DistanceToTarget <= attackRange;
-        }
-    }
-
-
-    private float DistanceToTarget
-    {
-        get
-        {
-            if (target == null)
-                return float.MaxValue;
-
-            return Vector3.Distance(
-                transform.position,
-                target.position
-            );
-        }
-    }
-
-
-    // =========================================================
-    // Enemy State Creation / Registration
-    // =========================================================
-
-    // protected override void CreateSpecificStates()
-    // {
-    //     chaseState = new State<EntityStateId, EntityEvent>(
-    //         onEnter: _ => EnterChase(),
-    //         onLogic: _ => UpdateChase(),
-    //         onExit: _ => ExitChase()
-    //     );
-    // }
-
-    // protected override void RegisterSpecificStates()
-    // {
-    //     Fsm.AddState(EntityStateId.Chase, chaseState);
-    // }
-
-
-    // // =========================================================
-    // // Enemy Transitions
-    // // =========================================================
-
-    // protected override void RegisterSpecificTransitions()
-    // {
-    //     RegisterChaseTransitions();
-
-    //     RegisterAttackTransitions();
-
-    //     RegisterHitTransitions();
-    // }
-
-
-    private void RegisterChaseTransitions()
-    {
-        /*
-         * HasTarget == true
-         * Idle -> Chase
-         *
-         * HasTarget == false
-         * Chase -> Idle
-         */
-
-        Fsm.AddTwoWayTransition(
-            EntityStateId.Idle,
-            EntityStateId.Chase,
-            _ => HasTarget
-        );
-
-
-        /*
-         * Chase -> Attack
-         *
-         * 타겟과의 거리는 계속 변화하므로
-         * Polling Transition.
-         */
-        Fsm.AddTransition(
-            EntityStateId.Chase,
-            EntityStateId.Attack,
-            _ => IsTargetInAttackRange
-        );
-    }
-
-
-    private void RegisterAttackTransitions()
-    {
-        /*
-         * Attack이 완료되었을 때,
-         * 여전히 타겟이 있으면 다시 Chase.
-         *
-         * Chase로 돌아간 다음 다음 OnLogic에서
-         * 여전히 AttackRange 안이라면 다시 Attack.
-         */
-
-        Fsm.AddTriggerTransition(
-            EntityEvent.AttackFinished,
-            EntityStateId.Attack,
-            EntityStateId.Chase,
-            _ => HasTarget
-        );
-
-
-        /*
-         * 공격 도중 타겟이 사라진 경우.
-         */
-        Fsm.AddTriggerTransition(
-            EntityEvent.AttackFinished,
-            EntityStateId.Attack,
-            EntityStateId.Idle,
-            _ => !HasTarget
-        );
-    }
-
-
-    private void RegisterHitTransitions()
-    {
-        /*
-         * Hit 종료 후 Target이 존재하면 Chase.
-         */
-        Fsm.AddTriggerTransition(
-            EntityEvent.HitFinished,
-            EntityStateId.Hit,
-            EntityStateId.Chase,
-            _ => HasTarget
-        );
-
-
-        /*
-         * Target이 없다면 Idle.
-         */
-        Fsm.AddTriggerTransition(
-            EntityEvent.HitFinished,
-            EntityStateId.Hit,
-            EntityStateId.Idle,
-            _ => !HasTarget
-        );
-    }
-
-
-    // =========================================================
-    // Chase
-    // =========================================================
-
-    private void EnterChase()
-    {
-        // animator.Play("Run");
-    }
-
-
-    private void UpdateChase()
-    {
-        if (target == null)
+#if UNITY_EDITOR
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a " +
+                $"{nameof(EnemyMoveModule)} component.",
+                this);
+#endif
+            enabled = false;
             return;
+        }
 
-        Vector3 direction =
-            target.position - transform.position;
+        MoveModule = enemyMoveModule;
 
-        direction.y = 0f;
+        AnimationModule =
+            GetComponentInChildren<EnemyAnimationModule>();
 
-        if (direction.sqrMagnitude <= 0.001f)
+        if (AnimationModule == null)
+        {
+#if UNITY_EDITOR
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a " +
+                $"{nameof(EnemyAnimationModule)} component.",
+                this);
+#endif
+            enabled = false;
             return;
+        }
 
-        direction.Normalize();
-
-        /*
-         * movementModule.Move(direction);
-         */
+        base.Awake();
     }
 
-
-    private void ExitChase()
+    protected override void Update()
     {
-        /*
-         * movementModule.Stop();
-         */
+        base.Update();
     }
 
-
-    // =========================================================
-    // Target API
-    // =========================================================
-
-    public void SetTarget(Transform newTarget)
+    public void SetMoveType(EnemyMoveType moveType)
     {
-        target = newTarget;
+        enemyMoveModule.MoveType = moveType;
     }
 
-    public void ClearTarget()
+    public void SetMoveDestination(Vector3 destination)
     {
-        target = null;
+        MoveModule.MoveInfo = destination;
+    }
+
+    public void StopMove()
+    {
+        // 기존 Transition이 Move → Idle로 전환하는 조건
+        MoveModule.MoveInfo = Vector3.zero;
+
+        // 이미 이동 중인 NavMeshAgent 정지
+        enemyMoveModule.Stop();
+    }
+
+    public bool HasReachedDestination()
+    {
+        return enemyMoveModule.HasReachedDestination();
+    }
+
+    private void OnDisable()
+    {
+        if (enemyMoveModule != null)
+            StopMove();
     }
 }

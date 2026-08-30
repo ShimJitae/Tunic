@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EntityAnimationModule : MonoBehaviour
+public class EntityAnimationModule : MonoBehaviour, IAnimationModule
 {
     [SerializeField] protected Animator animator;
 
@@ -14,13 +14,19 @@ public class EntityAnimationModule : MonoBehaviour
                 Debug.LogError("해당 Entity의 자식 오브젝트에 Animator가 없습니다.");
             }
         }
+
+        Idle = Animator.StringToHash("Base Layer.Idle");
+        Move = Animator.StringToHash("Base Layer.Move");
+        Attack = Animator.StringToHash("Base Layer.Attack.Attack_1");
+        Hit = Animator.StringToHash("Base Layer.Hit");
+        Die = Animator.StringToHash("Base Layer.Die");
     }
 
-    private static readonly int Idle = Animator.StringToHash("Base Layer.Idle");
-    private static readonly int Move = Animator.StringToHash("Base Layer.Move");
-    private static readonly int Attack = Animator.StringToHash("Base Layer.Attack.Attack_1");
-    private static readonly int Hit = Animator.StringToHash("Base Layer.Hit");
-    private static readonly int Dead = Animator.StringToHash("Base Layer.Dead");
+    public int Idle { get; set; }
+    public int Move { get; set; }
+    public int Attack { get; set; }
+    public int Hit { get; set; }
+    public int Die { get; set; }
 
     public void PlayIdle()
     {
@@ -42,9 +48,9 @@ public class EntityAnimationModule : MonoBehaviour
         animator.CrossFadeInFixedTime(Hit, 0.05f);
     }
 
-    public void PlayDead()
+    public void PlayDie()
     {
-        animator.CrossFadeInFixedTime(Dead, 0.1f);
+        animator.CrossFadeInFixedTime(Die, 0.1f);
     }
 
     // 현재 애니메이션의 상태가 completionThreshold 이상으로 진행되면 종료되었다고 판단하는 메서드
