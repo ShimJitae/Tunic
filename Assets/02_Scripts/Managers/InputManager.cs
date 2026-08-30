@@ -17,7 +17,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            p_Controller.NotifyDamaged();
+            p_Controller.NotifyDamaged(0f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
