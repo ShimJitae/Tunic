@@ -1,12 +1,11 @@
 public enum EntityStateId
 {
-    // Common
     Idle,
     Move,
+    Patrol,
+    Chase,
+    Dodge,
     Attack,
     Hit,
-    Die,
-
-    // Player
-    Dodge,
+    Die
 }

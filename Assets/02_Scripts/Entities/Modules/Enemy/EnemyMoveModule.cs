@@ -6,7 +6,6 @@ public class EnemyMoveModule : MonoBehaviour, IMoveStrategy
 {
     private NavMeshAgent agent;
 
-    public EnemyMoveType MoveType { get; set; }
     public Vector3 MoveInfo { get; set; }
 
     private void Awake()
