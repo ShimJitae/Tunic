@@ -25,8 +25,6 @@ public abstract class EntityController : MonoBehaviour
             Debug.LogError("해당 EntityController의 하위 오브젝트에 EntityAnimationModule가 없습니다.");
         }
 
-<<<<<<< Updated upstream
-=======
         if (!gameObject.TryGetComponent(out health))
         {
             Debug.LogError("해당 EntityController에 Health가 없습니다.");
@@ -35,7 +33,6 @@ public abstract class EntityController : MonoBehaviour
 
     protected virtual void Start()
     {
->>>>>>> Stashed changes
         CreateStateMachine();
     }
 
