@@ -35,7 +35,7 @@ public sealed class DamagedToHitTransition : EntityTransition<EntityController>
 
     public override bool ShouldTransition()
     {
-        return controller.CurrentState != EntityStateId.Dead;
+        return controller.CurrentState != EntityStateId.Die;
     }
 }
 
@@ -48,7 +48,7 @@ public sealed class HitToIdleTransition : EntityTransition<EntityController>
 
 public sealed class DiedToDeadTransition : EntityTransition<EntityController>
 {
-    public DiedToDeadTransition(EntityController controller) : base(controller, default, EntityStateId.Dead, forceInstantly: true)
+    public DiedToDeadTransition(EntityController controller) : base(controller, default, EntityStateId.Die, forceInstantly: true)
     {
     }
 }

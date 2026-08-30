@@ -1,32 +1,29 @@
 using UnityEngine;
-using UnityHFSM;
 
 [RequireComponent(typeof(PlayerMoveModule))]
+[RequireComponent(typeof(PlayerAnimationModule))]
 public class PlayerController : EntityController
 {
     private InputManager inputManager;
-    private PlayerMoveModule playerMoveModule;
-
-    public PlayerAnimationModule PlayerAnimation { get; private set; }
 
     protected override void Awake()
     {
-        if (!TryGetComponent(out playerMoveModule))
+        if (!TryGetComponent(out PlayerMoveModule playerMoveModule))
         {
             Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerMoveModule)} component.", this);
             enabled = false;
             return;
         }
 
-        PlayerAnimation = GetComponentInChildren<PlayerAnimationModule>();
-        if (PlayerAnimation == null)
+        MoveModule = playerMoveModule;
+
+        AnimationModule = GetComponentInChildren<PlayerAnimationModule>();
+        if (AnimationModule == null)
         {
             Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerAnimationModule)} component.", this);
             enabled = false;
             return;
         }
-
-        MoveModule = playerMoveModule;
 
         base.Awake();
     }

@@ -5,11 +5,8 @@ public enum EntityStateId
     Move,
     Attack,
     Hit,
-    Dead,
+    Die,
 
     // Player
     Dodge,
-
-    // Enemy
-    Chase,
 }
