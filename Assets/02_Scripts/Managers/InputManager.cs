@@ -13,11 +13,12 @@ public class InputManager : MonoBehaviour
 
     #region 테스트용 인풋 코드
     [SerializeField] PlayerController p_Controller;
+    [SerializeField] Health p_Health;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            p_Controller.NotifyDamaged(0f);
+            p_Health.TakeDamage(10f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
