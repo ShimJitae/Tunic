@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityHFSM;
 
@@ -14,6 +15,8 @@ public abstract class EntityController : MonoBehaviour
 
     public EntityStateId CurrentState => Fsm.ActiveStateName;
 
+    [SerializeField] private Health health;
+
     protected virtual void Awake()
     {
         AnimationModule = gameObject.GetComponentInChildren<EntityAnimationModule>();
@@ -22,7 +25,30 @@ public abstract class EntityController : MonoBehaviour
             Debug.LogError("해당 EntityController의 하위 오브젝트에 EntityAnimationModule가 없습니다.");
         }
 
+<<<<<<< Updated upstream
+=======
+        if (!gameObject.TryGetComponent(out health))
+        {
+            Debug.LogError("해당 EntityController에 Health가 없습니다.");
+        }
+    }
+
+    protected virtual void Start()
+    {
+>>>>>>> Stashed changes
         CreateStateMachine();
+    }
+
+    void OnEnable()
+    {
+        health.OnDamaged += NotifyDamaged;
+        health.OnDied += NotifyDied;
+    }
+
+    void OnDisable()
+    {
+        health.OnDamaged -= NotifyDamaged;
+        health.OnDied -= NotifyDied;
     }
 
     protected virtual void Update()
@@ -103,7 +129,7 @@ public abstract class EntityController : MonoBehaviour
     /// <summary>
     /// Health 등의 외부 모듈에서 호출
     /// </summary>
-    public void NotifyDamaged()
+    public void NotifyDamaged(float _)
     {
         Fsm.Trigger(EntityEvent.Damaged);
     }
