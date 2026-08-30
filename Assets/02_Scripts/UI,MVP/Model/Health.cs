@@ -19,20 +19,6 @@ public class Health : MonoBehaviour, IDamageable
         SetHealthData();
     }
 
-    void OnEnable()
-    {
-        OnDamaged += TakeDamage;
-
-        OnRestored += RestoreHp;
-    }
-
-    void OnDisable()
-    {
-        OnDamaged -= TakeDamage;
-
-        OnRestored -= RestoreHp;
-    }
-
     private void SetHealthData()
     {
         // 여기에 나중에 SO로 HEALTH 초기화 하는 코드 추가하기.
@@ -40,7 +26,6 @@ public class Health : MonoBehaviour, IDamageable
         currHP = maxHP;
     }
 
-    // damage는 음수로 전달
     public void TakeDamage(float value)
     {
         if (IsDied)
@@ -69,7 +54,7 @@ public class Health : MonoBehaviour, IDamageable
             return;
         }
 
-        currHP = Mathf.Max(0f, currHP + value);
+        currHP = Mathf.Min(maxHP, currHP + value);
 
         OnRestored?.Invoke(value);
     }

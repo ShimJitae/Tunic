@@ -1,7 +1,11 @@
-public class HealthPresenter
+using System;
+using UnityEngine;
+
+[Serializable]
+public class HealthPresenter : IDisposable
 {
-    private readonly Health model;
-    private readonly HealthView view;
+    [SerializeField] private readonly Health model;
+    [SerializeField] private readonly HealthView view;
 
     public HealthPresenter(Health model, HealthView view)
     {
@@ -10,13 +14,11 @@ public class HealthPresenter
 
         model.OnDamaged += HandleHealthChanged;
         model.OnRestored += HandleHealthChanged;
-
-        view.SetHealth(model.CurrHP, model.MaxHP);
     }
 
-    private void HandleHealthChanged(float current)
+    private void HandleHealthChanged(float _)
     {
-        view.SetHealth(current, model.MaxHP);
+        view.SetHealth(model.CurrHP, model.MaxHP);
     }
 
     public void Dispose()

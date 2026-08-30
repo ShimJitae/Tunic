@@ -5,9 +5,9 @@ public class HealthView : MonoBehaviour
 {
     [SerializeField] private Slider healthSlider;
 
-    public void SetHealth(float current, float max)
+    public void SetHealth(float currHp, float maxHP)
     {
-        healthSlider.maxValue = max;
-        healthSlider.value = current;
+        healthSlider.maxValue = maxHP;
+        healthSlider.value = currHp;
     }
 }
