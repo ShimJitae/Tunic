@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityHFSM;
 
@@ -9,19 +10,18 @@ public abstract class EntityController : MonoBehaviour
     // MoveInfo가 Vector3.zero가 아니라 이동 방향 / 이동할 위치 등에 대한 정보가 있는 경우에만 Move, 그 외에 Idle
     public virtual bool HasMoveInput => MoveModule.MoveInfo.sqrMagnitude > 0.01f;
     public IMoveStrategy MoveModule { get; protected set; }
-    public IAnimationModule AnimationModule { get; protected set; }
+    public EntityAnimationModule AnimationModule { get; protected set; }
     public IAttackStrategy AttackModule { get; protected set; }
 
     public EntityStateId CurrentState => Fsm.ActiveStateName;
 
     protected virtual void Awake()
     {
-        AnimationModule = gameObject.GetComponentInChildren<IAnimationModule>();
+        AnimationModule = gameObject.GetComponentInChildren<EntityAnimationModule>();
         if (AnimationModule == null)
         {
             Debug.LogError("해당 EntityController의 하위 오브젝트에 EntityAnimationModule가 없습니다.");
         }
-
     }
 
     protected virtual void Start()
@@ -37,10 +37,6 @@ public abstract class EntityController : MonoBehaviour
     private void CreateStateMachine()
     {
         Fsm = new StateMachine<EntityStateId, EntityEvent>();
-        Fsm.StateChanged += state =>
-{
-    Debug.Log($"State Changed -> {state.name}");
-};
 
         // 2. State 등록
         RegisterStates();
@@ -111,7 +107,7 @@ public abstract class EntityController : MonoBehaviour
     /// <summary>
     /// Health 등의 외부 모듈에서 호출
     /// </summary>
-    public void NotifyDamaged()
+    public void NotifyDamaged(float _)
     {
         Fsm.Trigger(EntityEvent.Damaged);
     }
