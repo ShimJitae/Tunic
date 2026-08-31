@@ -11,8 +11,8 @@ public abstract class EntityController : MonoBehaviour
     public virtual bool HasMoveInput => MoveModule.MoveInfo.sqrMagnitude > 0.01f;
     public virtual bool ShouldExitMoveState => !HasMoveInput;
     public virtual bool CanAttackFromMoveState => true;
-    public IMoveStrategy MoveModule { get; protected set; }
     public IAnimationModule AnimationModule { get; protected set; }
+    public IMoveStrategy MoveModule { get; protected set; }
     public IAttackStrategy AttackModule { get; protected set; }
 
     public EntityStateId CurrentState => Fsm.ActiveStateName;
