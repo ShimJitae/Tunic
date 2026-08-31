@@ -1,13 +1,12 @@
 using UnityEngine;
+using UnityHFSM;
 
 [RequireComponent(typeof(EnemyMoveModule))]
 [RequireComponent(typeof(EnemyAnimationModule))]
 public class EnemyController : EntityController
 {
     private EnemyMoveModule enemyMoveModule;
-
-    public EnemyMoveType MoveType =>
-        enemyMoveModule.MoveType;
+    private StateMachine<EntityStateId, EntityEvent> moveFsm;
 
     protected override void Awake()
     {
@@ -48,9 +47,40 @@ public class EnemyController : EntityController
         base.Update();
     }
 
-    public void SetMoveType(EnemyMoveType moveType)
+    protected override StateBase<EntityStateId> CreateMoveState()
     {
-        enemyMoveModule.MoveType = moveType;
+        if (!TryGetComponent(out EnemyBrain enemyBrain))
+        {
+            Debug.LogError("Enemybrain 컴포넌트를 가지고 있지 않음");
+            return null;
+        }
+
+        moveFsm = new StateMachine<EntityStateId, EntityEvent>();
+
+        moveFsm.AddState(EntityStateId.Patrol, new PatrolState(this, enemyBrain));
+        moveFsm.AddState(EntityStateId.Chase, new ChaseState(this, enemyBrain));
+
+        moveFsm.SetStartState(EntityStateId.Patrol);
+
+        moveFsm.AddTransition(new PatrolToChaseTransition(this, enemyBrain));
+
+        return moveFsm;
+    }
+
+    public void RequestMoveState(EntityStateId moveState)
+    {
+        if (moveFsm.IsInitialized)
+        {
+            moveFsm.RequestStateChange(moveState);
+            return;
+        }
+
+        moveFsm.SetStartState(moveState);
+    }
+
+    internal void ResetMoveStartState()
+    {
+        moveFsm.SetStartState(EntityStateId.Patrol);
     }
 
     public void SetMoveDestination(Vector3 destination)

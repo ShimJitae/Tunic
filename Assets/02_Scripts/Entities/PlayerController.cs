@@ -1,10 +1,18 @@
 using UnityEngine;
+using UnityHFSM;
 
 [RequireComponent(typeof(PlayerMoveModule))]
 [RequireComponent(typeof(PlayerAnimationModule))]
 public class PlayerController : EntityController
 {
     private InputManager inputManager;
+    private StateMachine<EntityStateId, EntityEvent> moveFsm;
+
+    internal bool IsDodging => moveFsm != null && moveFsm.IsInitialized && moveFsm.ActiveStateName == EntityStateId.Dodge;
+
+    public override bool ShouldExitMoveState => !IsDodging && base.ShouldExitMoveState;
+
+    public override bool CanAttackFromMoveState => !IsDodging;
 
     protected override void Awake()
     {
@@ -44,11 +52,19 @@ public class PlayerController : EntityController
             MoveModule.MoveInfo = Vector3.zero;
     }
 
-    protected override void RegisterStates()
+    protected override StateBase<EntityStateId> CreateMoveState()
     {
-        base.RegisterStates();
+        moveFsm = new StateMachine<EntityStateId, EntityEvent>();
 
-        Fsm.AddState(EntityStateId.Dodge, new DodgeState(this));
+        moveFsm.AddState(EntityStateId.Move, new MoveState(this));
+        moveFsm.AddState(EntityStateId.Dodge, new DodgeState(this));
+
+        moveFsm.SetStartState(EntityStateId.Move);
+
+        moveFsm.AddTriggerTransition(EntityEvent.Dodge, new MoveDodgeTransition(this));
+        moveFsm.AddTriggerTransition(EntityEvent.DodgeFinished, new DodgeMoveTransition(this));
+
+        return moveFsm;
     }
 
     // =========================================================
@@ -68,9 +84,7 @@ public class PlayerController : EntityController
         // Dodge Request
         // =====================================================
         Fsm.AddTriggerTransition(EntityEvent.Dodge, new IdleDodgeTransition(this));
-        Fsm.AddTriggerTransition(EntityEvent.Dodge, new MoveDodgeTransition(this));
         Fsm.AddTriggerTransition(EntityEvent.DodgeFinished, new DodgeIdleTransition(this));
-        Fsm.AddTriggerTransition(EntityEvent.DodgeFinished, new DodgeMoveTransition(this));
     }
 
     // =========================================================
@@ -79,6 +93,14 @@ public class PlayerController : EntityController
 
     public void RequestDodge()
     {
+        if (CurrentState == EntityStateId.Idle)
+        {
+            moveFsm.SetStartState(EntityStateId.Dodge);
+            Fsm.Trigger(EntityEvent.Dodge);
+            moveFsm.SetStartState(EntityStateId.Move);
+            return;
+        }
+
         Fsm.Trigger(EntityEvent.Dodge);
     }
 

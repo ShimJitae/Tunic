@@ -9,8 +9,10 @@ public class EnemyBrain : MonoBehaviour
     [Header("판단 거리")]
     [SerializeField, Min(0f)] private float detectionRange = 6f;
     [SerializeField, Min(0f)] private float giveUpRange = 7.5f;
+    [Header("공격")]
     [SerializeField, Min(0f)] private float attackRange = 1.5f;
     [SerializeField, Min(0f)] private float attackCooltime = 1.5f;
+    private float nextAttackTime;
 
     [Header("시야 설정")]
     [SerializeField, Range(0f, 360f)] private float viewAngle = 120f;
@@ -19,13 +21,14 @@ public class EnemyBrain : MonoBehaviour
 
     [Header("추적 대상")]
     [SerializeField] private Transform target;
+    private float chaseUpdateDuration;
 
     [Header("순찰")]
     [SerializeField] private List<Transform> patrolPoints = new();
     [SerializeField, Min(0f)] private float patrolWaitDuration = 2f;
-
-    private float idleDuration;
     private int currentPatrolIndex = -1;
+    private float idleDuration;
+
 
     private void Start()
     {
@@ -46,41 +49,16 @@ public class EnemyBrain : MonoBehaviour
 
     private void Update()
     {
-        // 공통 Entity 상태가 Idle일 때의 판단
-        if (enemyController.CurrentState == EntityStateId.Idle)
-        {
-            if (CanDetectTarget())
-            {
-                EnterChase();
-                return;
-            }
-
-            UpdateIdle();
-            return;
-        }
-
-        // Attack, Hit, Die 상태에서는 이동 판단을 하지 않음
-        if (enemyController.CurrentState != EntityStateId.Move)
+        if (enemyController.CurrentState != EntityStateId.Idle)
             return;
 
-        // 순찰 중 플레이어를 발견하면 Chase로 변경
-        if (enemyController.MoveType == EnemyMoveType.Patrol &&
-            CanDetectTarget())
+        if (CanDetectTarget())
         {
             EnterChase();
             return;
         }
 
-        switch (enemyController.MoveType)
-        {
-            case EnemyMoveType.Patrol:
-                UpdatePatrol();
-                break;
-
-            case EnemyMoveType.Chase:
-                UpdateChase();
-                break;
-        }
+        UpdateIdle();
     }
 
     private void UpdateIdle()
@@ -93,7 +71,7 @@ public class EnemyBrain : MonoBehaviour
         EnterNextPatrol();
     }
 
-    private void UpdatePatrol()
+    internal void UpdatePatrol()
     {
         if (!enemyController.HasReachedDestination())
             return;
@@ -101,32 +79,63 @@ public class EnemyBrain : MonoBehaviour
         EnterIdle();
     }
 
-    private void UpdateChase()
+    internal bool UpdateChase()
     {
+        if (!ShouldUpdateChase())
+            return false;
+
         if (target == null)
         {
             EnterIdle();
-            return;
+            return false;
         }
 
-        float sqrDistance =
-            (target.position - transform.position).sqrMagnitude;
+        float sqrDistance = (target.position - transform.position).sqrMagnitude;
 
         if (sqrDistance > giveUpRange * giveUpRange)
         {
             EnterIdle();
-            return;
+            return false;
         }
 
-        // 추적 대상은 움직이므로 목적지를 계속 갱신
-        enemyController.SetMoveDestination(target.position);
+        if (TryRequestAttack(sqrDistance))
+            return false;
+
+        RefreshChaseDestination();
+        return true;
+    }
+
+    private bool ShouldUpdateChase()
+    {
+        chaseUpdateDuration += Time.deltaTime;
+
+        if (chaseUpdateDuration < 0.1f)
+            return false;
+
+        chaseUpdateDuration = 0f;
+        return true;
+    }
+
+    private bool TryRequestAttack(float sqrDistance)
+    {
+        if (sqrDistance > attackRange * attackRange)
+            return false;
+
+        if (Time.time < nextAttackTime)
+            return false;
+
+        nextAttackTime = Time.time + attackCooltime;
+
+        enemyController.StopMove();
+        enemyController.RequestAttack();
+
+        return true;
     }
 
     private void EnterIdle()
     {
         idleDuration = 0f;
 
-        // MoveType을 Idle로 바꾸지 않는다.
         // MoveInfo를 비워서 기존 Transition이 Idle로 전환하게 한다.
         enemyController.StopMove();
     }
@@ -145,8 +154,8 @@ public class EnemyBrain : MonoBehaviour
         if (patrolPoint == null)
             return;
 
-        enemyController.SetMoveType(
-            EnemyMoveType.Patrol);
+        enemyController.RequestMoveState(
+            EntityStateId.Patrol);
 
         enemyController.SetMoveDestination(
             patrolPoint.position);
@@ -157,14 +166,21 @@ public class EnemyBrain : MonoBehaviour
         if (target == null)
             return;
 
-        enemyController.SetMoveType(
-            EnemyMoveType.Chase);
+        enemyController.RequestMoveState(EntityStateId.Chase);
 
-        enemyController.SetMoveDestination(
-            target.position);
+        RefreshChaseDestination();
     }
 
-    private bool CanDetectTarget()
+    internal void RefreshChaseDestination()
+    {
+        if (target == null)
+            return;
+
+        chaseUpdateDuration = 0f;
+        enemyController.SetMoveDestination(target.position);
+    }
+
+    internal bool CanDetectTarget()
     {
         if (target == null)
             return false;
