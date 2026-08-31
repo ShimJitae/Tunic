@@ -9,6 +9,8 @@ public abstract class EntityController : MonoBehaviour
     // 제곱근 연산을 피하고 벡터의 크기만 비교하기 위해 sqrMagnitude를 사용
     // MoveInfo가 Vector3.zero가 아니라 이동 방향 / 이동할 위치 등에 대한 정보가 있는 경우에만 Move, 그 외에 Idle
     public virtual bool HasMoveInput => MoveModule.MoveInfo.sqrMagnitude > 0.01f;
+    public virtual bool ShouldExitMoveState => !HasMoveInput;
+    public virtual bool CanAttackFromMoveState => true;
     public IMoveStrategy MoveModule { get; protected set; }
     public IAnimationModule AnimationModule { get; protected set; }
     public IAttackStrategy AttackModule { get; protected set; }
@@ -77,15 +79,19 @@ public abstract class EntityController : MonoBehaviour
     protected virtual void RegisterStates()
     {
         Fsm.AddState(EntityStateId.Idle, new IdleState(this));
-        Fsm.AddState(EntityStateId.Move, new MoveState(this));
+        Fsm.AddState(EntityStateId.Move, CreateMoveState());
         Fsm.AddState(EntityStateId.Attack, new AttackState(this));
         Fsm.AddState(EntityStateId.Hit, new HitState(this));
         Fsm.AddState(EntityStateId.Die, new DieState(this));
     }
 
+    // 이동 상태의 경우, Player와 Enemy는 CreateMoveState()를 오버라이드하여 자식 FSM을 반환한다.
+    protected abstract StateBase<EntityStateId> CreateMoveState();
+
     protected virtual void RegisterTransitions()
     {
-        Fsm.AddTwoWayTransition(new IdleToMoveTransition(this)); // 움직임 트랜지션
+        Fsm.AddTransition(new IdleToMoveTransition(this));
+        Fsm.AddTransition(new MoveToIdleTransition(this));
 
         RegisterAttackTransition();
 

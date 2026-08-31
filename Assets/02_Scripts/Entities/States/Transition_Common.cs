@@ -27,6 +27,18 @@ public sealed class IdleToMoveTransition : EntityTransition<EntityController>
     }
 }
 
+public sealed class MoveToIdleTransition : EntityTransition<EntityController>
+{
+    public MoveToIdleTransition(EntityController controller) : base(controller, EntityStateId.Move, EntityStateId.Idle)
+    {
+    }
+
+    public override bool ShouldTransition()
+    {
+        return controller.ShouldExitMoveState;
+    }
+}
+
 public sealed class DamagedToHitTransition : EntityTransition<EntityController>
 {
     public DamagedToHitTransition(EntityController controller) : base(controller, default, EntityStateId.Hit, forceInstantly: true)
@@ -65,6 +77,11 @@ public sealed class MoveToAttackTransition : EntityTransition<EntityController>
 {
     public MoveToAttackTransition(EntityController controller) : base(controller, EntityStateId.Move, EntityStateId.Attack)
     {
+    }
+
+    public override bool ShouldTransition()
+    {
+        return controller.CanAttackFromMoveState;
     }
 }
 
