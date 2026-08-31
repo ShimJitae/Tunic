@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
@@ -6,7 +7,9 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 15f;
-
+    [Header("Dodge")]
+    [SerializeField] private float dodgeDist = 4f;
+    [SerializeField] private float dodgeDuration = 0.25f;
     [Header("Rotation")]
     [SerializeField] private float rotationSmoothTime = 0.1f;
 
@@ -83,6 +86,65 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 
         RotateTowards(moveDirection);
         ApplyMotion(moveDirection * currentSpeed);
+    }
+
+    public void Dodge()
+    {
+        Vector3 inputDirection =
+            InputManager.Instance != null
+                ? InputManager.Instance.MoveInput
+                : MoveInfo;
+
+        inputDirection.y = 0f;
+
+        Vector3 moveDirection;
+
+        if (inputDirection.sqrMagnitude > 0.0001f)
+        {
+            if (!TryGetCameraBasis(
+                    out Vector3 cameraForward,
+                    out Vector3 cameraRight
+                ))
+            {
+                return;
+            }
+
+            // 현재 플레이어 방향과 관계없이 카메라 기준 입력 방향 사용
+            moveDirection =
+                cameraForward * inputDirection.z +
+                cameraRight * inputDirection.x;
+        }
+        else
+        {
+            // 방향 입력이 없을 때만 현재 정면으로 회피
+            moveDirection = transform.forward;
+        }
+
+        moveDirection.y = 0f;
+
+        if (moveDirection.sqrMagnitude <= 0.0001f)
+            return;
+
+        moveDirection.Normalize();
+
+        // 회피 방향을 즉시 바라봄
+        transform.rotation = Quaternion.LookRotation(
+            moveDirection,
+            Vector3.up
+        );
+
+        float movedDistance = 0f;
+
+        DOVirtual.Float(0f, dodgeDist, dodgeDuration, distance =>
+        {
+            float deltaDistance = distance - movedDistance;
+            movedDistance = distance;
+
+            characterController.Move(
+                moveDirection * deltaDistance
+            );
+        })
+        .SetEase(Ease.OutCubic);
     }
 
     private bool TryResolveCamera()
