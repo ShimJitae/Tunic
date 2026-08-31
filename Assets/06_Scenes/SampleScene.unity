@@ -588,6 +588,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &908914401 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3436882221212187946, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
+  m_PrefabInstance: {fileID: 1032714676}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &908914410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908914401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370b134d266594c488928a72656d39f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHP: 100
 --- !u!1001 &1032714676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -652,10 +670,17 @@ PrefabInstance:
       propertyPath: 'patrolPoints.Array.data[1]'
       value: 
       objectReference: {fileID: 67642059}
+    - target: {fileID: 8819691982753884246, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 908914410}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3436882221212187946, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 908914410}
   m_SourcePrefab: {fileID: 100100000, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
 --- !u!134 &1261937874
 PhysicsMaterial:
@@ -1034,6 +1059,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
   playerInput: {fileID: 1561839885}
   p_Controller: {fileID: 1648606550}
+  p_Health: {fileID: 0}
 --- !u!4 &1648606546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856528990535871650, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
