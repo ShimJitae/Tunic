@@ -11,8 +11,8 @@ public abstract class EntityController : MonoBehaviour
     public virtual bool HasMoveInput => MoveModule.MoveInfo.sqrMagnitude > 0.01f;
     public virtual bool ShouldExitMoveState => !HasMoveInput;
     public virtual bool CanAttackFromMoveState => true;
-    public IAnimationModule AnimationModule { get; protected set; }
     public IMoveStrategy MoveModule { get; protected set; }
+    public IAnimationModule AnimationModule { get; protected set; }
     public IAttackStrategy AttackModule { get; protected set; }
 
     public EntityStateId CurrentState => Fsm.ActiveStateName;
@@ -25,6 +25,12 @@ public abstract class EntityController : MonoBehaviour
         if (AnimationModule == null)
         {
             Debug.LogError("해당 EntityController의 하위 오브젝트에 EntityAnimationModule가 없습니다.");
+        }
+
+        AttackModule = gameObject.GetComponentInChildren<IAttackStrategy>();
+        if (AttackModule == null)
+        {
+            Debug.LogError("해당 EntityController의 하위 오브젝트에 AttackModule가 없습니다.");
         }
 
         if (!gameObject.TryGetComponent(out health))
@@ -42,12 +48,16 @@ public abstract class EntityController : MonoBehaviour
     {
         health.OnDamaged += NotifyDamaged;
         health.OnDied += NotifyDied;
+
+        AttackModule.OnAttack += RequestAttack;
     }
 
     void OnDisable()
     {
         health.OnDamaged -= NotifyDamaged;
         health.OnDied -= NotifyDied;
+
+        AttackModule.OnAttack -= RequestAttack;
     }
 
     protected virtual void Update()

@@ -1,19 +1,41 @@
+using System;
 using UnityEngine;
 
 public class PlayerAttackModule : MonoBehaviour, IAttackStrategy
 {
-    public Weapon Weapon { get; set; }
+    [SerializeField] private Weapon weapon;
+
+    public event Action OnAttack;
+
+    public Weapon Weapon { get => weapon; set => weapon = value; }
 
     private void Awake()
     {
-        Weapon = transform.GetComponentInChildren<Weapon>();
+        weapon = GetComponentInChildren<Weapon>();
+    }
+
+    void Start()
+    {
+        ActiveAttackZone(false);
+    }
+
+    public void ActiveAttackZone(bool enable)
+    {
         if (Weapon == null)
         {
-            Debug.LogError($"PlayerAttackModule : {gameObject.name}의 하위 컴포넌트에서 Weapon을 발견하지 못했습니다.");
+            Debug.LogError($"PlayerAttackModule : {gameObject.name}의 Weapon이 비어있습니다.");
+            return;
         }
+        if (Weapon.AttackZone == null)
+        {
+            Debug.LogError($"PlayerAttackModule : {gameObject.name}의 Weapon.AttackZone이 비어있습니다.");
+            return;
+        }
+        Weapon.AttackZone.enabled = enable;
     }
 
     public void Attack()
     {
+        OnAttack?.Invoke();
     }
 }
