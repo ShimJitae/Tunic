@@ -49,14 +49,11 @@ public sealed class AttackState : EntityState<EntityController>
     {
         controller.AnimationModule.PlayAttack();
     }
-    public override void OnLogic()
+
+    public override void OnExit()
     {
-        if (controller.AnimationModule.IsCurrentAnimationFinished())
-        {
-            controller.NotifyAttackFinished();
-        }
+        controller.AttackModule.ActiveAttackZone(false);
     }
-    public override void OnExit() { }
 }
 public sealed class HitState : EntityState<EntityController>
 {
@@ -66,13 +63,7 @@ public sealed class HitState : EntityState<EntityController>
     {
         controller.AnimationModule.PlayHit();
     }
-    public override void OnLogic()
-    {
-        if (controller.AnimationModule.IsCurrentAnimationFinished())
-        {
-            controller.NotifyHitFinished();
-        }
-    }
+
     public override void OnExit() { }
 }
 public sealed class DieState : EntityState<EntityController>

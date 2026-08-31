@@ -10,13 +10,5 @@ public sealed class DodgeState : EntityState<PlayerController>
     {
         animModule.PlayDodge();
     }
-
-    public override void OnLogic()
-    {
-        if (!animModule.IsCurrentAnimationFinished(0.75f))
-            return;
-
-        controller.NotifyDodgeFinished();
-    }
 }
 
