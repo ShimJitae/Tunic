@@ -9,8 +9,10 @@ public class EnemyBrain : MonoBehaviour
     [Header("판단 거리")]
     [SerializeField, Min(0f)] private float detectionRange = 6f;
     [SerializeField, Min(0f)] private float giveUpRange = 7.5f;
+    [Header("공격")]
     [SerializeField, Min(0f)] private float attackRange = 1.5f;
     [SerializeField, Min(0f)] private float attackCooltime = 1.5f;
+    private float nextAttackTime;
 
     [Header("시야 설정")]
     [SerializeField, Range(0f, 360f)] private float viewAngle = 120f;
@@ -19,14 +21,14 @@ public class EnemyBrain : MonoBehaviour
 
     [Header("추적 대상")]
     [SerializeField] private Transform target;
+    private float chaseUpdateDuration;
 
     [Header("순찰")]
     [SerializeField] private List<Transform> patrolPoints = new();
     [SerializeField, Min(0f)] private float patrolWaitDuration = 2f;
-
-    private float idleDuration;
-    private float chaseUpdateDuration;
     private int currentPatrolIndex = -1;
+    private float idleDuration;
+
 
     private void Start()
     {
@@ -79,12 +81,8 @@ public class EnemyBrain : MonoBehaviour
 
     internal bool UpdateChase()
     {
-        chaseUpdateDuration += Time.deltaTime;
-
-        if (chaseUpdateDuration < 0.1f)
+        if (!ShouldUpdateChase())
             return false;
-
-        chaseUpdateDuration = 0f;
 
         if (target == null)
         {
@@ -100,7 +98,37 @@ public class EnemyBrain : MonoBehaviour
             return false;
         }
 
+        if (TryRequestAttack(sqrDistance))
+            return false;
+
         RefreshChaseDestination();
+        return true;
+    }
+
+    private bool ShouldUpdateChase()
+    {
+        chaseUpdateDuration += Time.deltaTime;
+
+        if (chaseUpdateDuration < 0.1f)
+            return false;
+
+        chaseUpdateDuration = 0f;
+        return true;
+    }
+
+    private bool TryRequestAttack(float sqrDistance)
+    {
+        if (sqrDistance > attackRange * attackRange)
+            return false;
+
+        if (Time.time < nextAttackTime)
+            return false;
+
+        nextAttackTime = Time.time + attackCooltime;
+
+        enemyController.StopMove();
+        enemyController.RequestAttack();
+
         return true;
     }
 

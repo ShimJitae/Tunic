@@ -30,27 +30,27 @@ public class EntityAnimationModule : MonoBehaviour, IAnimationModule
 
     public void PlayIdle()
     {
-        animator.CrossFadeInFixedTime(Idle, 0.15f);
+        animator.CrossFadeInFixedTime("Idle", 0.15f);
     }
 
     public void PlayMove()
     {
-        animator.CrossFadeInFixedTime(Move, 0.15f);
+        animator.CrossFadeInFixedTime("Move", 0.15f);
     }
 
     public void PlayAttack()
     {
-        animator.CrossFadeInFixedTime(Attack, 0.05f);
+        animator.CrossFadeInFixedTime("Attack", 0.05f);
     }
 
     public void PlayHit()
     {
-        animator.CrossFadeInFixedTime(Hit, 0.05f);
+        animator.CrossFadeInFixedTime("Hit", 0.05f);
     }
 
     public void PlayDie()
     {
-        animator.CrossFadeInFixedTime(Die, 0.1f);
+        animator.CrossFadeInFixedTime("Die", 0.1f);
     }
 
     // 현재 애니메이션의 상태가 completionThreshold 이상으로 진행되면 종료되었다고 판단하는 메서드

@@ -455,6 +455,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 295322371093021576, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 1648606552}
     - target: {fileID: 4856528990535871650, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1159,7 +1163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
   playerInput: {fileID: 1561839885}
   p_Controller: {fileID: 1648606550}
-  p_Health: {fileID: 0}
+  p_Health: {fileID: 1648606552}
 --- !u!4 &1648606546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856528990535871650, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
