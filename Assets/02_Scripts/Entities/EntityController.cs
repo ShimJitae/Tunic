@@ -18,6 +18,7 @@ public abstract class EntityController : MonoBehaviour
     public EntityStateId CurrentState => Fsm.ActiveStateName;
 
     [SerializeField] private Health health;
+    public Health Health => health;
 
     protected virtual void Awake()
     {

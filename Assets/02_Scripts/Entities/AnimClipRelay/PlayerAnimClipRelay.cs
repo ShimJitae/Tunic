@@ -4,6 +4,6 @@ public class PlayerAnimClipRelay : EntityAnimClipRelay
 {
     public void DodgeFinished()
     {
-        entityController.NotifyHitFinished();
+        (entityController as PlayerController).NotifyDodgeFinished();
     }
 }

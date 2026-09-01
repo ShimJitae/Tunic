@@ -9,6 +9,7 @@ public class Health : MonoBehaviour, IDamageable
     public float CurrHP => currHP;
 
     public bool IsDied { get; private set; }
+    public bool IsInvincible { get; set; }
 
     public event Action<float> OnDamaged;
     public event Action<float> OnRestored;
@@ -28,7 +29,7 @@ public class Health : MonoBehaviour, IDamageable
 
     public void TakeDamage(float value)
     {
-        if (IsDied)
+        if (IsDied || IsInvincible)
             return;
 
         float damage = -value;
