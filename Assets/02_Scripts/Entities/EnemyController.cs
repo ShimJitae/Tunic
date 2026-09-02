@@ -83,6 +83,19 @@ public class EnemyController : EntityController
         moveFsm.SetStartState(EntityStateId.Patrol);
     }
 
+    protected override void RegisterTransitions()
+    {
+        if (!TryGetComponent(out EnemyBrain enemyBrain))
+        {
+            Debug.LogError("Enemybrain 컴포넌트를 가지고 있지 않음");
+            return;
+        }
+
+        Fsm.AddTriggerTransition(EntityEvent.HitFinished, new HitToChaseTransition(this, enemyBrain));
+
+        base.RegisterTransitions();
+    }
+
     public void SetMoveDestination(Vector3 destination)
     {
         MoveModule.MoveInfo = destination;

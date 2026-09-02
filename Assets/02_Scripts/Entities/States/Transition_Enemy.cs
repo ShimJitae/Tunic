@@ -12,3 +12,18 @@ public sealed class PatrolToChaseTransition : EntityTransition<EnemyController>
         return brain.CanDetectTarget();
     }
 }
+
+public sealed class HitToChaseTransition : EntityTransition<EnemyController>
+{
+    private readonly EnemyBrain brain;
+
+    public HitToChaseTransition(EnemyController controller, EnemyBrain brain) : base(controller, EntityStateId.Hit, EntityStateId.Move, forceInstantly: true)
+    {
+        this.brain = brain;
+    }
+
+    public override void BeforeTransition()
+    {
+        brain.EnterChase();
+    }
+}

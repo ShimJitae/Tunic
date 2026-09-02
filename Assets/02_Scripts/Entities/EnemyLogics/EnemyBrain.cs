@@ -96,7 +96,8 @@ public class EnemyBrain : MonoBehaviour
 
         if (sqrDistance > giveUpRange * giveUpRange)
         {
-            EnterIdle();
+            enemyController.RequestMoveState(
+                EntityStateId.Patrol);
             return false;
         }
 
@@ -163,7 +164,7 @@ public class EnemyBrain : MonoBehaviour
             patrolPoint.position);
     }
 
-    private void EnterChase()
+    internal void EnterChase()
     {
         if (target == null)
             return;
