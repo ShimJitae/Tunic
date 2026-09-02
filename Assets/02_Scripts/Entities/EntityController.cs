@@ -115,8 +115,8 @@ public abstract class EntityController : MonoBehaviour
     {
         Fsm.AddTriggerTransition(EntityEvent.Attack, new IdleToAttackTransition(this)); // idle -> attack
         Fsm.AddTriggerTransition(EntityEvent.Attack, new MoveToAttackTransition(this)); // move -> attack
-        Fsm.AddTriggerTransition(EntityEvent.AttackFinished, new AttackToIdleTransition(this)); // attack -> idle
         Fsm.AddTriggerTransition(EntityEvent.AttackFinished, new AttackToMoveTransition(this)); // attack -> move
+        Fsm.AddTriggerTransition(EntityEvent.AttackFinished, new AttackToIdleTransition(this)); // attack -> idle
     }
 
     private void RegisterHitTransition()
