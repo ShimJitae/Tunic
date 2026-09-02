@@ -11,29 +11,7 @@ public class InputManager : MonoBehaviour
 
     public Vector3 MoveInput { get; private set; }
 
-    #region 테스트용 인풋 코드
     [SerializeField] PlayerController p_Controller;
-    [SerializeField] Health p_Health;
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            p_Health.TakeDamage(10f);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            p_Controller.RequestAttack();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            p_Controller.RequestDodge();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            p_Controller.NotifyDied();
-        }
-    }
-    #endregion
 
     private void Awake()
     {
@@ -71,5 +49,21 @@ public class InputManager : MonoBehaviour
             : Vector2.ClampMagnitude(context.ReadValue<Vector2>(), 1f);
 
         MoveInput = new Vector3(input.x, 0f, input.y);
+    }
+
+    public void OnAttackInput(InputAction.CallbackContext context)
+    {
+        if (!context.performed || p_Controller == null)
+            return;
+
+        p_Controller.RequestAttack();
+    }
+
+    public void OnDodgeInput(InputAction.CallbackContext context)
+    {
+        if (!context.performed || p_Controller == null)
+            return;
+
+        p_Controller.RequestDodge();
     }
 }
