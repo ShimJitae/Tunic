@@ -45,6 +45,8 @@ public class EnemyBrain : MonoBehaviour
         }
 
         EnterIdle();
+
+        target = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     private void Update()
