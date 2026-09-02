@@ -2904,7 +2904,7 @@ PrefabInstance:
     - target: {fileID: 7093683128025573757, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1293727388}
+      objectReference: {fileID: 1857666374}
     - target: {fileID: 7162340367961516608, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3499,6 +3499,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5098102422403095738, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
+      propertyPath: attackRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098102422403095738, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
       propertyPath: 'patrolPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 377827797}
@@ -3513,6 +3517,10 @@ PrefabInstance:
     - target: {fileID: 6088490129925521640, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
       propertyPath: m_Name
       value: Bumble_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7434888728555411012, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 1.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6530,6 +6538,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bee_1
       objectReference: {fileID: 0}
+    - target: {fileID: 3964256504922611042, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 1841923252}
     - target: {fileID: 6209891873137248166, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
       propertyPath: 'patrolPoints.Array.data[0]'
       value: 
@@ -6724,19 +6736,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4008777888120669041, guid: 4d57f3247874d5443804901940901a33, type: 3}
   m_PrefabInstance: {fileID: 1288015474}
   m_PrefabAsset: {fileID: 0}
---- !u!134 &1293727388
-PhysicsMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: ' (Instance) (Instance) (Instance)'
-  serializedVersion: 2
-  m_DynamicFriction: 0.6
-  m_StaticFriction: 0.6
-  m_Bounciness: 0
-  m_FrictionCombine: 0
-  m_BounceCombine: 0
 --- !u!1 &1305798524
 GameObject:
   m_ObjectHideFlags: 0
@@ -9102,6 +9101,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!134 &1841923252
+PhysicsMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 2
+  m_DynamicFriction: 0.6
+  m_StaticFriction: 0.6
+  m_Bounciness: 0
+  m_FrictionCombine: 0
+  m_BounceCombine: 0
 --- !u!1 &1842337139
 GameObject:
   m_ObjectHideFlags: 0
@@ -9155,6 +9167,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.4, y: 2, z: 10.4}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!134 &1857666374
+PhysicsMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ' (Instance) (Instance) (Instance) (Instance)'
+  serializedVersion: 2
+  m_DynamicFriction: 0.6
+  m_StaticFriction: 0.6
+  m_Bounciness: 0
+  m_FrictionCombine: 0
+  m_BounceCombine: 0
 --- !u!1 &1863789373
 GameObject:
   m_ObjectHideFlags: 0

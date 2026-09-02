@@ -96,8 +96,7 @@ public class EnemyBrain : MonoBehaviour
 
         if (sqrDistance > giveUpRange * giveUpRange)
         {
-            enemyController.RequestMoveState(
-                EntityStateId.Patrol);
+            enemyController.RequestMoveState(EntityStateId.Patrol);
             return false;
         }
 

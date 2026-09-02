@@ -8,9 +8,12 @@ public class EnemyMoveModule : MonoBehaviour, IMoveStrategy
 
     public Vector3 MoveInfo { get; set; }
 
+
+    [SerializeField] private float angularSpeed = 360f;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.angularSpeed = angularSpeed;
     }
 
     public void Move()
