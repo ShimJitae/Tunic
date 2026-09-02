@@ -3499,10 +3499,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5098102422403095738, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
-      propertyPath: attackRange
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5098102422403095738, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
       propertyPath: 'patrolPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 377827797}
@@ -3517,10 +3513,6 @@ PrefabInstance:
     - target: {fileID: 6088490129925521640, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
       propertyPath: m_Name
       value: Bumble_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7434888728555411012, guid: 2a77579746dbee6418f71f517df36feb, type: 3}
-      propertyPath: m_StoppingDistance
-      value: 1.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
