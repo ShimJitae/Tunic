@@ -5,6 +5,7 @@ using UnityHFSM;
 [RequireComponent(typeof(EnemyAnimationModule))]
 public class EnemyController : EntityController
 {
+    [SerializeField] private EnemyData enemyData;
     private EnemyMoveModule enemyMoveModule;
     private StateMachine<EntityStateId, EntityEvent> moveFsm;
 
@@ -45,6 +46,10 @@ public class EnemyController : EntityController
     protected override void Update()
     {
         base.Update();
+    }
+
+    protected override void SetUpEntityData()
+    {
     }
 
     protected override StateBase<EntityStateId> CreateMoveState()

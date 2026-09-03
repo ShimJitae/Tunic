@@ -66,6 +66,8 @@ public abstract class EntityController : MonoBehaviour
         Fsm.OnLogic();
     }
 
+    protected abstract void SetUpEntityData();
+
     private void CreateStateMachine()
     {
         Fsm = new StateMachine<EntityStateId, EntityEvent>();

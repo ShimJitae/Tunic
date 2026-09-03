@@ -6,4 +6,17 @@ public class PlayerAnimClipRelay : EntityAnimClipRelay
     {
         (entityController as PlayerController).NotifyDodgeFinished();
     }
+
+    [SerializeField] private ParticleSystem attackParticleSystem;
+    public override void OpenAttackZone()
+    {
+        base.OpenAttackZone();
+        attackParticleSystem.Play();
+    }
+
+    public override void CloseAttackZone()
+    {
+        base.CloseAttackZone();
+        attackParticleSystem.Stop();
+    }
 }

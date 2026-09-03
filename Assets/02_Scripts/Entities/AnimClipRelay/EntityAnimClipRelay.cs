@@ -13,7 +13,7 @@ public class EntityAnimClipRelay : MonoBehaviour
         }
     }
 
-    public void OpenAttackZone()
+    public virtual void OpenAttackZone()
     {
         if (entityController.AttackModule == null)
         {
@@ -23,7 +23,7 @@ public class EntityAnimClipRelay : MonoBehaviour
         entityController.AttackModule.ActiveAttackZone(true);
     }
 
-    public void CloseAttackZone()
+    public virtual void CloseAttackZone()
     {
         if (entityController.AttackModule == null)
         {
