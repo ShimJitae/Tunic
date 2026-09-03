@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
 
     public Collider AttackZone => attackZone;
 
-    [SerializeField] private float damage = 10f;
+    public float Damage { get; set; } = 10f;
 
     private void Awake()
     {
@@ -98,7 +98,7 @@ public class Weapon : MonoBehaviour
             if (!other.TryGetComponent<IDamageable>(out var damageable))
                 return;
 
-            damageable.TakeDamage(damage);
+            damageable.TakeDamage(Damage);
             return;
         }
     }

@@ -22,9 +22,13 @@ public class Health : MonoBehaviour, IDamageable
 
     private void SetHealthData()
     {
-        // 여기에 나중에 SO로 HEALTH 초기화 하는 코드 추가하기.
-
         currHP = maxHP;
+    }
+
+    public void SetUpData(EntityData entityData)
+    {
+        maxHP = entityData.MaxHP;
+        SetHealthData();
     }
 
     public void TakeDamage(float value)

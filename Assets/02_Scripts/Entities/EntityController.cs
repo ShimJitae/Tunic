@@ -14,6 +14,7 @@ public abstract class EntityController : MonoBehaviour
     public IMoveStrategy MoveModule { get; protected set; }
     public IAnimationModule AnimationModule { get; protected set; }
     public IAttackStrategy AttackModule { get; protected set; }
+    [SerializeField] private IDataSetUp dataSetUp;
 
     public EntityStateId CurrentState => Fsm.ActiveStateName;
 
@@ -43,6 +44,13 @@ public abstract class EntityController : MonoBehaviour
     protected virtual void Start()
     {
         CreateStateMachine();
+
+        if (dataSetUp == null && !TryGetComponent(out dataSetUp))
+        {
+            Debug.LogError($"EntityController : {gameObject.name}에 IDataSetUp을 구현한 컴포넌트가 없습니다.");
+            return;
+        }
+        dataSetUp.SetUpData();
     }
 
     protected virtual void OnEnable()

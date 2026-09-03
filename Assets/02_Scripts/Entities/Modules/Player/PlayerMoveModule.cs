@@ -48,6 +48,15 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
         ApplyGravity();
     }
 
+    public void SetUpData(PlayerData playerData)
+    {
+        moveSpeed = playerData.MoveSpeed;
+        dodgeDist = playerData.DodgeDist;
+        dodgeDuration = playerData.DodgeDuration;
+        gravity = playerData.Gravity;
+        groundedGravity = playerData.GroundedGravity;
+    }
+
     public void Move()
     {
         Vector3 inputDirection = new Vector3(MoveInfo.x, 0f, MoveInfo.z);

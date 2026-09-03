@@ -9,12 +9,8 @@ using UnityEngine;
 [RequireComponent(typeof(CinemachineImpulseSource))]
 public class HitEffect : MonoBehaviour
 {
-    [Header("넉백")]
-    [SerializeField, Min(0f)] private float knockbackDist = 0.3f;
-    [SerializeField, Min(0f)] private float knockbackDuration = 0.15f;
-
     [Header("피격 색상")]
-    [SerializeField] private Color hitColor = Color.white;
+    [SerializeField] private Color hitColor = Color.orange;
     [SerializeField, Min(0f)] private float hitColorDuration = 0.1f;
 
     [Header("카메라 흔들림")]
@@ -22,7 +18,6 @@ public class HitEffect : MonoBehaviour
 
     private Health health;
     private CinemachineImpulseSource impulseSource;
-    private Tween knockbackTween;
 
     private readonly List<Material> materials = new();
     private readonly List<Color> originalColors = new();
@@ -46,21 +41,16 @@ public class HitEffect : MonoBehaviour
 
     private void OnDisable()
     {
-        if (health != null)
-            health.OnDamaged -= HandleDamaged;
+        health.OnDamaged -= HandleDamaged;
 
         hitColorVersion++;
 
         RestoreOriginalColors();
-
-        knockbackTween?.Kill();
-        knockbackTween = null;
     }
 
     private void HandleDamaged(float _)
     {
         PlayHitColorAsync().Forget();
-        PlayKnockback();
         PlayCameraImpulse();
     }
 
@@ -120,35 +110,6 @@ public class HitEffect : MonoBehaviour
     {
         for (int i = 0; i < materials.Count; i++)
             materials[i].color = originalColors[i];
-    }
-
-    private void PlayKnockback()
-    {
-        if (knockbackDist <= 0f)
-            return;
-
-        Vector3 knockbackDirection =
-            -transform.forward;
-
-        knockbackDirection.y = 0f;
-
-        if (knockbackDirection.sqrMagnitude <=
-            Mathf.Epsilon)
-        {
-            return;
-        }
-
-        knockbackDirection.Normalize();
-
-        knockbackTween?.Kill();
-
-        Vector3 destination =
-            transform.position +
-            knockbackDirection * knockbackDist;
-
-        knockbackTween = transform
-            .DOMove(destination, knockbackDuration)
-            .SetEase(Ease.OutCubic);
     }
 
     private void PlayCameraImpulse()
