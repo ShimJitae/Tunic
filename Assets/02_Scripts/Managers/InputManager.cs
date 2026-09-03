@@ -64,6 +64,6 @@ public class InputManager : MonoBehaviour
         if (!context.performed || p_Controller == null)
             return;
 
-        p_Controller.PlayerMoveModule.Dodge();
+        p_Controller.RequestDodge();
     }
 }
