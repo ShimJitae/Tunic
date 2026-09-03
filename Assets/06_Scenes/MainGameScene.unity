@@ -7277,6 +7277,18 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 1841923252}
+    - target: {fileID: 5853801532884530742, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
+      propertyPath: DefaultVelocity.x
+      value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853801532884530742, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
+      propertyPath: DefaultVelocity.y
+      value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853801532884530742, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
+      propertyPath: DefaultVelocity.z
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6209891873137248166, guid: ef8dd5fe81eb1e54eadcfa9ed67f4215, type: 3}
       propertyPath: 'patrolPoints.Array.data[0]'
       value: 
@@ -8422,6 +8434,7 @@ GameObject:
   - component: {fileID: 1467652731}
   - component: {fileID: 1467652733}
   - component: {fileID: 1467652734}
+  - component: {fileID: 1467652735}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -8535,6 +8548,30 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!114 &1467652735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467652729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseListener
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  SignalCombinationMode: 0
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1502089984 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3069897003608875913, guid: 5127f4e82cad3644a926214a8b92e6b8, type: 3}
