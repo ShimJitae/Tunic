@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
@@ -21,10 +22,11 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 
     private CharacterController characterController;
 
+    public event Action OnDodge;
+
     private float currentSpeed;
     private float rotationVelocity;
     private float verticalVelocity;
-    //private int lastMoveFrame = -1;
 
     public Vector3 MoveInfo { get; set; }
 
@@ -37,17 +39,12 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
         }
 
         characterController = GetComponent<CharacterController>();
-        //TryResolveCamera();
     }
 
     private void LateUpdate()
     {
         // 상태 머신이 Move()를 호출하지 않는 Idle/Attack/Hit/Dead 상태에서도
         // 중력과 CharacterController의 접지 상태를 매 프레임 갱신한다.
-        //if (lastMoveFrame == Time.frameCount)
-        //    return;
-
-        //currentSpeed = 0f;
         ApplyGravity();
     }
 
@@ -75,6 +72,8 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 
     public void Dodge()
     {
+        OnDodge?.Invoke();
+
         Vector3 inputDirection = InputManager.Instance != null ? InputManager.Instance.MoveInput : MoveInfo;
 
         inputDirection.y = 0f;

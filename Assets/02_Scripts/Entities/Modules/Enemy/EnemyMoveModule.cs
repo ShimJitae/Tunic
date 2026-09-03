@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,6 @@ public class EnemyMoveModule : MonoBehaviour, IMoveStrategy
     private NavMeshAgent agent;
 
     public Vector3 MoveInfo { get; set; }
-
 
     [SerializeField] private float angularSpeed = 360f;
     private void Awake()
