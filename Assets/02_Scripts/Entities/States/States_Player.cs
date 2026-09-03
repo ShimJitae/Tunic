@@ -11,8 +11,8 @@ public sealed class DodgeState : EntityState<PlayerController>
     public override void OnEnter()
     {
         animModule.PlayDodge();
-        (controller.MoveModule as PlayerMoveModule).Dodge();
         controller.Health.IsInvincible = true;
+        controller.PlayerMoveModule.Dodge();
     }
 
     public override void OnExit()

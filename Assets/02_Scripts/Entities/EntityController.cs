@@ -45,7 +45,7 @@ public abstract class EntityController : MonoBehaviour
         CreateStateMachine();
     }
 
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         health.OnDamaged += NotifyDamaged;
         health.OnDied += NotifyDied;
@@ -53,7 +53,7 @@ public abstract class EntityController : MonoBehaviour
         AttackModule.OnAttack += RequestAttack;
     }
 
-    void OnDisable()
+    protected virtual void OnDisable()
     {
         health.OnDamaged -= NotifyDamaged;
         health.OnDied -= NotifyDied;
@@ -134,7 +134,7 @@ public abstract class EntityController : MonoBehaviour
     /// <summary>
     /// AttackModule / AnimationEvent 등에서 호출
     /// </summary>
-    public void RequestAttack()
+    public virtual void RequestAttack()
     {
         Fsm.Trigger(EntityEvent.Attack);
     }

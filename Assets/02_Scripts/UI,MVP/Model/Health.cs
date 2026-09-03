@@ -3,19 +3,19 @@ using System;
 
 public class Health : MonoBehaviour, IDamageable
 {
-    [SerializeField] private float maxHP = 100f;
+    [SerializeField] protected float maxHP = 100f;
     public float MaxHP => maxHP;
-    private float currHP;
+    protected float currHP;
     public float CurrHP => currHP;
 
-    public bool IsDied { get; private set; }
+    public bool IsDied { get; protected set; }
     public bool IsInvincible { get; set; }
 
     public event Action<float> OnDamaged;
     public event Action<float> OnRestored;
     public event Action OnDied;
 
-    private void Start()
+    protected virtual void Awake()
     {
         SetHealthData();
     }

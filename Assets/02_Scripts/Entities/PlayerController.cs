@@ -8,11 +8,23 @@ public class PlayerController : EntityController
     private InputManager inputManager;
     private StateMachine<EntityStateId, EntityEvent> moveFsm;
 
+    [Header("Stamina Costs")]
+    [SerializeField] private float attackStaminaCost = 10f;
+    [SerializeField] private float dodgeStaminaCost = 5f;
+
     internal bool IsDodging => moveFsm != null && moveFsm.IsInitialized && moveFsm.ActiveStateName == EntityStateId.Dodge;
 
     public override bool ShouldExitMoveState => !IsDodging && base.ShouldExitMoveState;
 
     public override bool CanAttackFromMoveState => !IsDodging;
+    public PlayerMoveModule PlayerMoveModule => MoveModule as PlayerMoveModule;
+    public Status Status => Health as Status;
+
+    private bool CanStartAction => isActiveAndEnabled
+        && Fsm != null && Fsm.IsInitialized
+        && Status != null && !Status.IsDied
+        && (CurrentState == EntityStateId.Idle
+            || (CurrentState == EntityStateId.Move && !IsDodging));
 
     protected override void Awake()
     {
@@ -46,10 +58,20 @@ public class PlayerController : EntityController
         base.Update();
     }
 
-    private void OnDisable()
+    protected override void OnEnable()
+    {
+        if (PlayerMoveModule != null)
+            PlayerMoveModule.OnDodge += RequestDodge;
+
+        base.OnEnable();
+    }
+
+    protected override void OnDisable()
     {
         if (MoveModule != null)
             MoveModule.MoveInfo = Vector3.zero;
+
+        base.OnDisable();
     }
 
     protected override StateBase<EntityStateId> CreateMoveState()
@@ -91,8 +113,19 @@ public class PlayerController : EntityController
     // Dodge Event
     // =========================================================
 
+    public override void RequestAttack()
+    {
+        if (!CanStartAction || !Status.TakeStamina(attackStaminaCost))
+            return;
+
+        base.RequestAttack();
+    }
+
     public void RequestDodge()
     {
+        if (!CanStartAction || !Status.TakeStamina(dodgeStaminaCost))
+            return;
+
         if (CurrentState == EntityStateId.Idle)
         {
             moveFsm.SetStartState(EntityStateId.Dodge);

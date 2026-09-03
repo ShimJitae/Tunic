@@ -56,7 +56,7 @@ public class InputManager : MonoBehaviour
         if (!context.performed || p_Controller == null)
             return;
 
-        p_Controller.RequestAttack();
+        p_Controller.AttackModule.Attack();
     }
 
     public void OnDodgeInput(InputAction.CallbackContext context)

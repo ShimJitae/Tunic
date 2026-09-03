@@ -3271,6 +3271,35 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &548937102 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1103506885718615007, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
+  m_PrefabInstance: {fileID: 699151845}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &548937104 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6377721676686627463, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
+  m_PrefabInstance: {fileID: 699151845}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548937102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!114 &548937105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548937102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2edaecd5baa87954eb5b832aefc80d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GaugeView
+  gaugeSlider: {fileID: 548937104}
 --- !u!1001 &556639254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4423,10 +4452,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5958974315609693792, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
+    - target: {fileID: 7240621549384894758, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
       propertyPath: health
       value: 
-      objectReference: {fileID: 1648606552}
+      objectReference: {fileID: 1712479082}
+    - target: {fileID: 7240621549384894758, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
+      propertyPath: status
+      value: 
+      objectReference: {fileID: 1712479082}
+    - target: {fileID: 7240621549384894758, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
+      propertyPath: statusView
+      value: 
+      objectReference: {fileID: 548937105}
     - target: {fileID: 9175310211683383727, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -4438,7 +4475,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1103506885718615007, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 548937105}
   m_SourcePrefab: {fileID: 100100000, guid: f62a4c6a412c3584a8bddbdc1fc7bfb5, type: 3}
 --- !u!1 &705082131 stripped
 GameObject:
@@ -9436,17 +9476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2bb17d3f4966b4c8a83a0ebb5193fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
---- !u!114 &1648606552 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7229572029631945368, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
-  m_PrefabInstance: {fileID: 520674957}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370b134d266594c488928a72656d39f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
 --- !u!1001 &1653568011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9801,6 +9830,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1712479082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3246185151505030993, guid: 90bb46e5dbc2c8e41ba2ad609f28d263, type: 3}
+  m_PrefabInstance: {fileID: 520674957}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7885f39875672d144b45b3c374774614, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Status
 --- !u!1 &1735449405
 GameObject:
   m_ObjectHideFlags: 0

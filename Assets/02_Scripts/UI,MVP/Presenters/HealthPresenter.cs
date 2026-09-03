@@ -5,9 +5,9 @@ using UnityEngine;
 public class HealthPresenter : IDisposable
 {
     [SerializeField] private readonly Health model;
-    [SerializeField] private readonly HealthView view;
+    [SerializeField] private readonly GaugeView view;
 
-    public HealthPresenter(Health model, HealthView view)
+    public HealthPresenter(Health model, GaugeView view)
     {
         this.model = model;
         this.view = view;
@@ -18,12 +18,17 @@ public class HealthPresenter : IDisposable
 
     private void HandleHealthChanged(float _)
     {
-        view.SetHealth(model.CurrHP, model.MaxHP);
+        view.SetGauge(model.CurrHP, model.MaxHP);
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         model.OnDamaged -= HandleHealthChanged;
         model.OnRestored -= HandleHealthChanged;
+    }
+
+    public virtual void RefreshView()
+    {
+        view.SetGauge(model.CurrHP, model.MaxHP);
     }
 }
