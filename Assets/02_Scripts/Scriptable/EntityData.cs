@@ -7,4 +7,6 @@ public class EntityData : ScriptableObject
     public float MaxHP => maxHP;
     [SerializeField] protected float moveSpeed = 5f;
     public float MoveSpeed => moveSpeed;
+    [SerializeField] protected float attackDamage = 10f;
+    public float AttackDamage => attackDamage;
 }

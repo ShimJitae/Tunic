@@ -5,7 +5,6 @@ using UnityHFSM;
 [RequireComponent(typeof(PlayerAnimationModule))]
 public class PlayerController : EntityController
 {
-    [SerializeField] private PlayerData playerData;
     private InputManager inputManager;
     private StateMachine<EntityStateId, EntityEvent> moveFsm;
 
@@ -73,10 +72,6 @@ public class PlayerController : EntityController
             MoveModule.MoveInfo = Vector3.zero;
 
         base.OnDisable();
-    }
-
-    protected override void SetUpEntityData()
-    {
     }
 
     protected override StateBase<EntityStateId> CreateMoveState()

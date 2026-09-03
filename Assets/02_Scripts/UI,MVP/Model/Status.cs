@@ -21,12 +21,13 @@ public class Status : Health
     protected override void Awake()
     {
         base.Awake();
-        SetStaminaData();
     }
 
-    private void SetStaminaData()
+    public void SetUpData(PlayerData playerData)
     {
-        // 여기에 나중에 SO로 Stamina 초기화 하는 코드 추가하기.
+        maxStamina = playerData.MaxStamina;
+        staminaRecoveryDelay = playerData.StaminaRecoveryDelay;
+        staminaRecoveryPerSecond = playerData.StaminaRecoveryPerSecond;
 
         currStamina = maxStamina;
     }

@@ -17,6 +17,11 @@ public class EnemyAttackModule : MonoBehaviour, IAttackStrategy
         ActiveAttackZone(false);
     }
 
+    public void SetUpData(EnemyData enemyData)
+    {
+        weapon.Damage = enemyData.AttackDamage;
+    }
+
     public void ActiveAttackZone(bool enable)
     {
         if (Weapon == null)

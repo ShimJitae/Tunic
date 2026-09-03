@@ -16,6 +16,11 @@ public class EnemyMoveModule : MonoBehaviour, IMoveStrategy
         agent.angularSpeed = angularSpeed;
     }
 
+    public void SetUpData(EnemyData enemyData)
+    {
+        agent.speed = enemyData.MoveSpeed;
+    }
+
     public void Move()
     {
         agent.isStopped = false;
