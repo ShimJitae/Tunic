@@ -24,35 +24,35 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
     private float currentSpeed;
     private float rotationVelocity;
     private float verticalVelocity;
-    private int lastMoveFrame = -1;
-    private bool hasLoggedMissingCamera;
+    //private int lastMoveFrame = -1;
 
     public Vector3 MoveInfo { get; set; }
 
     private void Awake()
     {
+        cameraTransform = Camera.main != null ? Camera.main.transform : null;
+        if (cameraTransform == null)
+        {
+            Debug.LogError("PlayerMoveModule : Main 카메라를 찾지 못했습니다. cameraTransform에는 null 값이 할당되어 있습니다.");
+        }
+
         characterController = GetComponent<CharacterController>();
-        TryResolveCamera();
+        //TryResolveCamera();
     }
 
     private void LateUpdate()
     {
         // 상태 머신이 Move()를 호출하지 않는 Idle/Attack/Hit/Dead 상태에서도
         // 중력과 CharacterController의 접지 상태를 매 프레임 갱신한다.
-        if (lastMoveFrame == Time.frameCount)
-            return;
+        //if (lastMoveFrame == Time.frameCount)
+        //    return;
 
-        currentSpeed = 0f;
-        ApplyMotion(Vector3.zero);
+        //currentSpeed = 0f;
+        ApplyGravity();
     }
 
     public void Move()
     {
-        if (lastMoveFrame == Time.frameCount)
-            return;
-
-        lastMoveFrame = Time.frameCount;
-
         Vector3 inputDirection = new Vector3(MoveInfo.x, 0f, MoveInfo.z);
         float inputMagnitude = Mathf.Clamp01(inputDirection.magnitude);
 
@@ -60,40 +60,22 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
             !TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight))
         {
             currentSpeed = 0f;
-            ApplyMotion(Vector3.zero);
             return;
         }
 
-        Vector3 moveDirection =
-            cameraForward * inputDirection.z +
-            cameraRight * inputDirection.x;
-
-        if (moveDirection.sqrMagnitude <= 0.0001f)
-        {
-            currentSpeed = 0f;
-            ApplyMotion(Vector3.zero);
-            return;
-        }
-
-        moveDirection.Normalize();
+        Vector3 moveDirection = (cameraForward * inputDirection.z + cameraRight * inputDirection.x).normalized;
 
         float targetSpeed = moveSpeed * inputMagnitude;
-        currentSpeed = Mathf.MoveTowards(
-            currentSpeed,
-            targetSpeed,
-            acceleration * Time.deltaTime
-        );
+
+        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime);
 
         RotateTowards(moveDirection);
-        ApplyMotion(moveDirection * currentSpeed);
+        characterController.Move(moveDirection * currentSpeed * Time.deltaTime);
     }
 
     public void Dodge()
     {
-        Vector3 inputDirection =
-            InputManager.Instance != null
-                ? InputManager.Instance.MoveInput
-                : MoveInfo;
+        Vector3 inputDirection = InputManager.Instance != null ? InputManager.Instance.MoveInput : MoveInfo;
 
         inputDirection.y = 0f;
 
@@ -101,18 +83,13 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 
         if (inputDirection.sqrMagnitude > 0.0001f)
         {
-            if (!TryGetCameraBasis(
-                    out Vector3 cameraForward,
-                    out Vector3 cameraRight
-                ))
+            if (!TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight))
             {
                 return;
             }
 
             // 현재 플레이어 방향과 관계없이 카메라 기준 입력 방향 사용
-            moveDirection =
-                cameraForward * inputDirection.z +
-                cameraRight * inputDirection.x;
+            moveDirection = cameraForward * inputDirection.z + cameraRight * inputDirection.x;
         }
         else
         {
@@ -128,10 +105,7 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
         moveDirection.Normalize();
 
         // 회피 방향을 즉시 바라봄
-        transform.rotation = Quaternion.LookRotation(
-            moveDirection,
-            Vector3.up
-        );
+        transform.rotation = Quaternion.LookRotation(moveDirection, Vector3.up);
 
         float movedDistance = 0f;
 
@@ -140,39 +114,9 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
             float deltaDistance = distance - movedDistance;
             movedDistance = distance;
 
-            characterController.Move(
-                moveDirection * deltaDistance
-            );
+            characterController.Move(moveDirection * deltaDistance);
         })
         .SetEase(Ease.OutCubic);
-    }
-
-    private bool TryResolveCamera()
-    {
-        if (cameraTransform != null)
-        {
-            hasLoggedMissingCamera = false;
-            return true;
-        }
-
-        Camera mainCamera = Camera.main;
-        if (mainCamera != null)
-        {
-            cameraTransform = mainCamera.transform;
-            hasLoggedMissingCamera = false;
-            return true;
-        }
-
-        if (!hasLoggedMissingCamera)
-        {
-            Debug.LogError(
-                "PlayerMoveModule could not find a camera tagged MainCamera.",
-                this
-            );
-            hasLoggedMissingCamera = true;
-        }
-
-        return false;
     }
 
     private bool TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight)
@@ -180,8 +124,8 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
         cameraForward = Vector3.zero;
         cameraRight = Vector3.zero;
 
-        if (!TryResolveCamera())
-            return false;
+        // if (!TryResolveCamera())
+        //     return false;
 
         cameraForward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up);
 
@@ -200,29 +144,20 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 
     private void RotateTowards(Vector3 moveDirection)
     {
-        float targetAngle = Mathf.Atan2(
-            moveDirection.x,
-            moveDirection.z
-        ) * Mathf.Rad2Deg;
+        float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
 
-        float smoothAngle = Mathf.SmoothDampAngle(
-            transform.eulerAngles.y,
-            targetAngle,
-            ref rotationVelocity,
-            rotationSmoothTime
-        );
+        float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationVelocity, rotationSmoothTime);
 
         transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
     }
 
-    private void ApplyMotion(Vector3 horizontalVelocity)
+    private void ApplyGravity()
     {
-        if (characterController.isGrounded && verticalVelocity < 0f)
+        if (characterController.isGrounded)
             verticalVelocity = groundedGravity;
         else
             verticalVelocity += gravity * Time.deltaTime;
 
-        horizontalVelocity.y = verticalVelocity;
-        characterController.Move(horizontalVelocity * Time.deltaTime);
+        characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
     }
 }
