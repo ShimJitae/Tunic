@@ -1,0 +1,2654 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad8f2220607dac4db5082ff333fafb8, type: 3}
+  m_Name: BossBehavior
+  m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorAuthoringGraph
+  Blackboard: {fileID: 8870009666113070909}
+  m_Description: 
+  m_Nodes:
+  - rid: 3302646048444121384
+  - rid: 3302646048444121393
+  - rid: 3302646048444121394
+  - rid: 3302646048444121395
+  - rid: 3302646048444121396
+  - rid: 3302646048444121397
+  - rid: 3302646048444121398
+  - rid: 3302646048444121399
+  - rid: 3302646048444121400
+  - rid: 3302646048444121401
+  - rid: 3302646048444121402
+  - rid: 3302646048444121403
+  - rid: 3302646048444121404
+  - rid: 3302646048444121405
+  - rid: 3302646048444121406
+  - rid: 3302646048444121407
+  - rid: 3302646048444121408
+  - rid: 3302646048444121409
+  - rid: 3302646048444121410
+  - rid: 3302646048444121411
+  - rid: 3302646048444121412
+  - rid: 3302646048444121413
+  - rid: 3302646048444121414
+  - rid: 3302646048444121415
+  - rid: 3302646048444121416
+  - rid: 3302646048444121417
+  - rid: 3302646048444121418
+  - rid: 3302646048444121419
+  - rid: 3302646048444121420
+  - rid: 3302646048444121421
+  - rid: 3302646048444121422
+  - rid: 3302646048444121423
+  m_VersionTimestamp: 639241244069265939
+  m_SerializedVersion: 3
+  m_DebugInfo: {fileID: 683310896772465463}
+  m_RuntimeGraph: {fileID: 4416919047830658450}
+  AssetID:
+    m_Value0: 2613854020402715618
+    m_Value1: 11809268693876005083
+  Story:
+    Story: 
+    StoryVariableNames: []
+    Variables: []
+  m_NodeModelsInfo:
+  - Name: On Start
+    Story: 
+    RuntimeTypeString: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 3335272451348827663
+      m_Value1: 11549843281177505721
+    Variables: []
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Boss Priority
+    Story: Death > No Target > Special > Combat
+    RuntimeTypeString: Tunic.BossCombat.BossPriority, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 12559673189379454799
+      m_Value1: 11093535063471750819
+    Variables: []
+    NamedChildren:
+    - Death
+    - NoTarget
+    - Special
+    - Combat
+    IsPlaceholder: 0
+  - Name: Boss Action
+    Story: '[Task]'
+    RuntimeTypeString: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 883955275958542356
+      m_Value1: 12687182658969323663
+    Variables:
+    - Name: Task
+      Type:
+        m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Sequence
+    Story: 
+    RuntimeTypeString: Unity.Behavior.SequenceComposite, Unity.Behavior, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 10181448252506100447
+      m_Value1: 8737116843063128493
+    Variables: []
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Boss Attack Branch
+    Story: Selected attack kind
+    RuntimeTypeString: Tunic.BossCombat.BossAttackBranch, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 9245792979708462392
+      m_Value1: 7981400713434833308
+    Variables: []
+    NamedChildren:
+    - Melee
+    - Charge
+    - Ranged
+    IsPlaceholder: 0
+  - Name: Boss Combo Loop
+    Story: Repeat each motion until complete or cancellation latched
+    RuntimeTypeString: Tunic.BossCombat.BossComboLoop, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 16234582960940827680
+      m_Value1: 5423943585091958448
+    Variables: []
+    NamedChildren: []
+    IsPlaceholder: 0
+  m_Blackboards: []
+  m_MainBlackboardAuthoringAsset: {fileID: 8870009666113070909}
+  m_CommandBuffer:
+    m_Commands: []
+  m_SubgraphsInfo: []
+  m_BlackboardMissingManagedRef: 0
+  m_GraphMissingManagedRef: 0
+  m_HasMissingTypeInManagedRef: 0
+  m_EnumDependencyCache:
+    Entries:
+    - EnumTypeId: Tunic.BossCombat.BossTask, Assembly-CSharp
+      SignatureHash: 0561317e506e6509ad3d89bf5773edc7
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3302646048444121384
+      type: {class: StartNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 0, y: 0}
+        ID:
+          m_Value0: 990063215964720865
+          m_Value1: 10685396543781891411
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121385
+        NodeType:
+          m_SerializableType: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 3335272451348827663
+          m_Value1: 11549843281177505721
+        m_FieldValues: []
+        Repeat: 0
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 3302646048444121385
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121384
+        m_Connections:
+        - rid: 3302646048444121432
+    - rid: 3302646048444121393
+      type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: -861, y: 211}
+        ID:
+          m_Value0: 3733893576463645784
+          m_Value1: 4117319158890976084
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121424
+        - rid: 3302646048444121425
+        ParentNodeID:
+          m_Value0: 7148816121793819497
+          m_Value1: 11762605464312607113
+        PortName: Death
+        Metadata: 
+    - rid: 3302646048444121394
+      type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: -663.5, y: 211}
+        ID:
+          m_Value0: 10874226006460592684
+          m_Value1: 16612049718445468006
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121426
+        - rid: 3302646048444121427
+        ParentNodeID:
+          m_Value0: 7148816121793819497
+          m_Value1: 11762605464312607113
+        PortName: NoTarget
+        Metadata: 
+    - rid: 3302646048444121395
+      type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: -442, y: 211}
+        ID:
+          m_Value0: 16260907238255956663
+          m_Value1: 16755888444159607846
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121428
+        - rid: 3302646048444121429
+        ParentNodeID:
+          m_Value0: 7148816121793819497
+          m_Value1: 11762605464312607113
+        PortName: Special
+        Metadata: 
+    - rid: 3302646048444121396
+      type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: 317.5, y: 211}
+        ID:
+          m_Value0: 4430010106304502896
+          m_Value1: 380243287107442842
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121430
+        - rid: 3302646048444121431
+        ParentNodeID:
+          m_Value0: 7148816121793819497
+          m_Value1: 11762605464312607113
+        PortName: Combat
+        Metadata: 
+    - rid: 3302646048444121397
+      type: {class: CompositeNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -223.12798, y: -67.370895}
+        ID:
+          m_Value0: 7148816121793819497
+          m_Value1: 11762605464312607113
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121432
+        - rid: 3302646048444121433
+        - rid: 3302646048444121434
+        - rid: 3302646048444121435
+        - rid: 3302646048444121436
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossPriority, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 12559673189379454799
+          m_Value1: 11093535063471750819
+        m_FieldValues: []
+    - rid: 3302646048444121398
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -861, y: 299}
+        ID:
+          m_Value0: 5576490738330639109
+          m_Value1: 18078684580336680044
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121437
+        - rid: 3302646048444121438
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121439
+    - rid: 3302646048444121399
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -663.5, y: 299}
+        ID:
+          m_Value0: 2068690210815648013
+          m_Value1: 2389891926366950174
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121440
+        - rid: 3302646048444121441
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121442
+    - rid: 3302646048444121400
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -442, y: 299}
+        ID:
+          m_Value0: 2147280540992767357
+          m_Value1: 18428353114358249290
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121443
+        - rid: 3302646048444121444
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121445
+    - rid: 3302646048444121401
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -442, y: 387}
+        ID:
+          m_Value0: 1639362227653839706
+          m_Value1: 18259819240529324533
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121446
+        - rid: 3302646048444121447
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121448
+    - rid: 3302646048444121402
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -442, y: 495}
+        ID:
+          m_Value0: 17944259935706359729
+          m_Value1: 4085332268544317861
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121449
+        - rid: 3302646048444121450
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121451
+    - rid: 3302646048444121403
+      type: {class: CompositeNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 317.5, y: 299}
+        ID:
+          m_Value0: 16644291054092833541
+          m_Value1: 4269748013104926310
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121452
+        - rid: 3302646048444121453
+        NodeType:
+          m_SerializableType: Unity.Behavior.SequenceComposite, Unity.Behavior, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 10181448252506100447
+          m_Value1: 8737116843063128493
+        m_FieldValues: []
+    - rid: 3302646048444121404
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -204, y: 387}
+        ID:
+          m_Value0: 3191921932862004988
+          m_Value1: 16272039452958132775
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121454
+        - rid: 3302646048444121455
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121456
+    - rid: 3302646048444121405
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -204, y: 495}
+        ID:
+          m_Value0: 9145724186331157418
+          m_Value1: 6889549392840114063
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121457
+        - rid: 3302646048444121458
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121459
+    - rid: 3302646048444121406
+      type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: 104.5, y: 495}
+        ID:
+          m_Value0: 8798458254490087779
+          m_Value1: 9811860552368623209
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121460
+        - rid: 3302646048444121461
+        ParentNodeID:
+          m_Value0: 4793940068692250336
+          m_Value1: 753503668298113344
+        PortName: Melee
+        Metadata: 
+    - rid: 3302646048444121407
+      type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: 400.5, y: 495}
+        ID:
+          m_Value0: 11605672927441126147
+          m_Value1: 6876021909405100966
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121462
+        - rid: 3302646048444121463
+        ParentNodeID:
+          m_Value0: 4793940068692250336
+          m_Value1: 753503668298113344
+        PortName: Charge
+        Metadata: 
+    - rid: 3302646048444121408
+      type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: 611.5, y: 495}
+        ID:
+          m_Value0: 9185327937030534334
+          m_Value1: 9708820383441792383
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121464
+        - rid: 3302646048444121465
+        ParentNodeID:
+          m_Value0: 4793940068692250336
+          m_Value1: 753503668298113344
+        PortName: Ranged
+        Metadata: 
+    - rid: 3302646048444121409
+      type: {class: CompositeNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 315.5, y: 387}
+        ID:
+          m_Value0: 4793940068692250336
+          m_Value1: 753503668298113344
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121466
+        - rid: 3302646048444121467
+        - rid: 3302646048444121468
+        - rid: 3302646048444121469
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAttackBranch, Assembly-CSharp,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 9245792979708462392
+          m_Value1: 7981400713434833308
+        m_FieldValues: []
+    - rid: 3302646048444121410
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 837, y: 387}
+        ID:
+          m_Value0: 10855036704087766783
+          m_Value1: 7776382453028425827
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121470
+        - rid: 3302646048444121471
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121472
+    - rid: 3302646048444121411
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 837, y: 495}
+        ID:
+          m_Value0: 8465839875968763785
+          m_Value1: 13201330030796799983
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121473
+        - rid: 3302646048444121474
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121475
+    - rid: 3302646048444121412
+      type: {class: ModifierNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 104.5, y: 583}
+        ID:
+          m_Value0: 17349368816692910424
+          m_Value1: 2288242108283048260
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121476
+        - rid: 3302646048444121477
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossComboLoop, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 16234582960940827680
+          m_Value1: 5423943585091958448
+        m_FieldValues: []
+    - rid: 3302646048444121413
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 104.5, y: 691}
+        ID:
+          m_Value0: 4127152199338041592
+          m_Value1: 7996657868796466906
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121478
+        - rid: 3302646048444121479
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121480
+    - rid: 3302646048444121414
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 104.5, y: 779}
+        ID:
+          m_Value0: 7216830022910252520
+          m_Value1: 896110396945806973
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121481
+        - rid: 3302646048444121482
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121483
+    - rid: 3302646048444121415
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 104.5, y: 867}
+        ID:
+          m_Value0: 15259960377188175868
+          m_Value1: 3426234126243299689
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121484
+        - rid: 3302646048444121485
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121486
+    - rid: 3302646048444121416
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 104.5, y: 955}
+        ID:
+          m_Value0: 7426654708826133829
+          m_Value1: 10292508401588427106
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121487
+        - rid: 3302646048444121488
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121489
+    - rid: 3302646048444121417
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 104.5, y: 1043}
+        ID:
+          m_Value0: 5926275965150666524
+          m_Value1: 5139541074937793835
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121490
+        - rid: 3302646048444121491
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121492
+    - rid: 3302646048444121418
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 400.5, y: 583}
+        ID:
+          m_Value0: 15000905542945146845
+          m_Value1: 1594064447113061596
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121493
+        - rid: 3302646048444121494
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121495
+    - rid: 3302646048444121419
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 400.5, y: 691}
+        ID:
+          m_Value0: 16897591083225537703
+          m_Value1: 957412389119296369
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121496
+        - rid: 3302646048444121497
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121498
+    - rid: 3302646048444121420
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 400.5, y: 779}
+        ID:
+          m_Value0: 13867804785530257732
+          m_Value1: 16669168832582130915
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121499
+        - rid: 3302646048444121500
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121501
+    - rid: 3302646048444121421
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 611.5, y: 583}
+        ID:
+          m_Value0: 11420623851951739655
+          m_Value1: 17186125639678217485
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121502
+        - rid: 3302646048444121503
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121504
+    - rid: 3302646048444121422
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 611.5, y: 691}
+        ID:
+          m_Value0: 16308808192353117199
+          m_Value1: 16696424608941088619
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121505
+        - rid: 3302646048444121506
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121507
+    - rid: 3302646048444121423
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 611.5, y: 779}
+        ID:
+          m_Value0: 3665966356011670212
+          m_Value1: 16239957379252076759
+        Parents: []
+        PortModels:
+        - rid: 3302646048444121508
+        - rid: 3302646048444121509
+        NodeType:
+          m_SerializableType: Tunic.BossCombat.BossAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 883955275958542356
+          m_Value1: 12687182658969323663
+        m_FieldValues:
+        - rid: 3302646048444121510
+    - rid: 3302646048444121424
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121393
+        m_Connections:
+        - rid: 3302646048444121433
+    - rid: 3302646048444121425
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121393
+        m_Connections:
+        - rid: 3302646048444121437
+    - rid: 3302646048444121426
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121394
+        m_Connections:
+        - rid: 3302646048444121434
+    - rid: 3302646048444121427
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121394
+        m_Connections:
+        - rid: 3302646048444121440
+    - rid: 3302646048444121428
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121395
+        m_Connections:
+        - rid: 3302646048444121435
+    - rid: 3302646048444121429
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121395
+        m_Connections:
+        - rid: 3302646048444121443
+    - rid: 3302646048444121430
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121396
+        m_Connections:
+        - rid: 3302646048444121436
+    - rid: 3302646048444121431
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121396
+        m_Connections:
+        - rid: 3302646048444121452
+    - rid: 3302646048444121432
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121397
+        m_Connections:
+        - rid: 3302646048444121385
+    - rid: 3302646048444121433
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: Death
+        m_PortDataFlowType: 1
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121397
+        m_Connections:
+        - rid: 3302646048444121424
+    - rid: 3302646048444121434
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: NoTarget
+        m_PortDataFlowType: 1
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121397
+        m_Connections:
+        - rid: 3302646048444121426
+    - rid: 3302646048444121435
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: Special
+        m_PortDataFlowType: 1
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121397
+        m_Connections:
+        - rid: 3302646048444121428
+    - rid: 3302646048444121436
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: Combat
+        m_PortDataFlowType: 1
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121397
+        m_Connections:
+        - rid: 3302646048444121430
+    - rid: 3302646048444121437
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121398
+        m_Connections:
+        - rid: 3302646048444121425
+    - rid: 3302646048444121438
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121398
+        m_Connections: []
+    - rid: 3302646048444121439
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121511
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121440
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121399
+        m_Connections:
+        - rid: 3302646048444121427
+    - rid: 3302646048444121441
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121399
+        m_Connections: []
+    - rid: 3302646048444121442
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121512
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121443
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121400
+        m_Connections:
+        - rid: 3302646048444121429
+    - rid: 3302646048444121444
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121400
+        m_Connections:
+        - rid: 3302646048444121446
+    - rid: 3302646048444121445
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121513
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121446
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121401
+        m_Connections:
+        - rid: 3302646048444121444
+    - rid: 3302646048444121447
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121401
+        m_Connections:
+        - rid: 3302646048444121449
+    - rid: 3302646048444121448
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121514
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121449
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121402
+        m_Connections:
+        - rid: 3302646048444121447
+    - rid: 3302646048444121450
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121402
+        m_Connections: []
+    - rid: 3302646048444121451
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121515
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121452
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121403
+        m_Connections:
+        - rid: 3302646048444121431
+    - rid: 3302646048444121453
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121403
+        m_Connections:
+        - rid: 3302646048444121454
+        - rid: 3302646048444121466
+        - rid: 3302646048444121470
+    - rid: 3302646048444121454
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121404
+        m_Connections:
+        - rid: 3302646048444121453
+    - rid: 3302646048444121455
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121404
+        m_Connections:
+        - rid: 3302646048444121457
+    - rid: 3302646048444121456
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121516
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121457
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121405
+        m_Connections:
+        - rid: 3302646048444121455
+    - rid: 3302646048444121458
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121405
+        m_Connections: []
+    - rid: 3302646048444121459
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121517
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121460
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121406
+        m_Connections:
+        - rid: 3302646048444121467
+    - rid: 3302646048444121461
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121406
+        m_Connections:
+        - rid: 3302646048444121476
+    - rid: 3302646048444121462
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121407
+        m_Connections:
+        - rid: 3302646048444121468
+    - rid: 3302646048444121463
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121407
+        m_Connections:
+        - rid: 3302646048444121493
+    - rid: 3302646048444121464
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121408
+        m_Connections:
+        - rid: 3302646048444121469
+    - rid: 3302646048444121465
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121408
+        m_Connections:
+        - rid: 3302646048444121502
+    - rid: 3302646048444121466
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121409
+        m_Connections:
+        - rid: 3302646048444121453
+    - rid: 3302646048444121467
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: Melee
+        m_PortDataFlowType: 1
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121409
+        m_Connections:
+        - rid: 3302646048444121460
+    - rid: 3302646048444121468
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: Charge
+        m_PortDataFlowType: 1
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121409
+        m_Connections:
+        - rid: 3302646048444121462
+    - rid: 3302646048444121469
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: Ranged
+        m_PortDataFlowType: 1
+        m_IsFloating: 1
+        m_NodeModel:
+          rid: 3302646048444121409
+        m_Connections:
+        - rid: 3302646048444121464
+    - rid: 3302646048444121470
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121410
+        m_Connections:
+        - rid: 3302646048444121453
+    - rid: 3302646048444121471
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121410
+        m_Connections:
+        - rid: 3302646048444121473
+    - rid: 3302646048444121472
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121518
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121473
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121411
+        m_Connections:
+        - rid: 3302646048444121471
+    - rid: 3302646048444121474
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121411
+        m_Connections: []
+    - rid: 3302646048444121475
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121519
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121476
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121412
+        m_Connections:
+        - rid: 3302646048444121461
+    - rid: 3302646048444121477
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121412
+        m_Connections:
+        - rid: 3302646048444121478
+    - rid: 3302646048444121478
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121413
+        m_Connections:
+        - rid: 3302646048444121477
+    - rid: 3302646048444121479
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121413
+        m_Connections:
+        - rid: 3302646048444121481
+    - rid: 3302646048444121480
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121520
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121481
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121414
+        m_Connections:
+        - rid: 3302646048444121479
+    - rid: 3302646048444121482
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121414
+        m_Connections:
+        - rid: 3302646048444121484
+    - rid: 3302646048444121483
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121521
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121484
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121415
+        m_Connections:
+        - rid: 3302646048444121482
+    - rid: 3302646048444121485
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121415
+        m_Connections:
+        - rid: 3302646048444121487
+    - rid: 3302646048444121486
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121522
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121487
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121416
+        m_Connections:
+        - rid: 3302646048444121485
+    - rid: 3302646048444121488
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121416
+        m_Connections:
+        - rid: 3302646048444121490
+    - rid: 3302646048444121489
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121523
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121490
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121417
+        m_Connections:
+        - rid: 3302646048444121488
+    - rid: 3302646048444121491
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121417
+        m_Connections: []
+    - rid: 3302646048444121492
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121524
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121493
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121418
+        m_Connections:
+        - rid: 3302646048444121463
+    - rid: 3302646048444121494
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121418
+        m_Connections:
+        - rid: 3302646048444121496
+    - rid: 3302646048444121495
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121525
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121496
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121419
+        m_Connections:
+        - rid: 3302646048444121494
+    - rid: 3302646048444121497
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121419
+        m_Connections:
+        - rid: 3302646048444121499
+    - rid: 3302646048444121498
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121526
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121499
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121420
+        m_Connections:
+        - rid: 3302646048444121497
+    - rid: 3302646048444121500
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121420
+        m_Connections: []
+    - rid: 3302646048444121501
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121527
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121502
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121421
+        m_Connections:
+        - rid: 3302646048444121465
+    - rid: 3302646048444121503
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121421
+        m_Connections:
+        - rid: 3302646048444121505
+    - rid: 3302646048444121504
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121528
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121505
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121422
+        m_Connections:
+        - rid: 3302646048444121503
+    - rid: 3302646048444121506
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121422
+        m_Connections:
+        - rid: 3302646048444121508
+    - rid: 3302646048444121507
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121529
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121508
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121423
+        m_Connections:
+        - rid: 3302646048444121506
+    - rid: 3302646048444121509
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 3302646048444121423
+        m_Connections: []
+    - rid: 3302646048444121510
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Task
+        Type:
+          m_SerializableType: Tunic.BossCombat.BossTask, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 3302646048444121530
+        LinkedVariable:
+          rid: -2
+    - rid: 3302646048444121511
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 12
+    - rid: 3302646048444121512
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 11
+    - rid: 3302646048444121513
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 10
+    - rid: 3302646048444121514
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 8
+    - rid: 3302646048444121515
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 9
+    - rid: 3302646048444121516
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 0
+    - rid: 3302646048444121517
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 1
+    - rid: 3302646048444121518
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 8
+    - rid: 3302646048444121519
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 9
+    - rid: 3302646048444121520
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 2
+    - rid: 3302646048444121521
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 3
+    - rid: 3302646048444121522
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 4
+    - rid: 3302646048444121523
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 5
+    - rid: 3302646048444121524
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 6
+    - rid: 3302646048444121525
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 7
+    - rid: 3302646048444121526
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 3
+    - rid: 3302646048444121527
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 4
+    - rid: 3302646048444121528
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 7
+    - rid: 3302646048444121529
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 3
+    - rid: 3302646048444121530
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 4
+--- !u!114 &683310896772465463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b27bb6d9a2c8d540a10dff10acc543e, type: 3}
+  m_Name: BossBehavior Debug Info
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphDebugInfo
+  m_CodeBreakPointsList: []
+--- !u!114 &4416919047830658450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db920e62f70f420bb33c771449926fa4, type: 3}
+  m_Name: BossBehavior
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraph
+  Graphs:
+  - rid: 3302646048444121386
+  m_DebugInfo: {fileID: 683310896772465463}
+  m_WasCompileWithPlaceholderNode: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3302646048444121386
+      type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        AuthoringAssetID:
+          m_Value0: 2613854020402715618
+          m_Value1: 11809268693876005083
+        m_DebugInfo: {fileID: 683310896772465463}
+        BlackboardReference:
+          rid: 3302646048444121387
+        BlackboardGroupReferences: []
+        Root:
+          rid: 3302646048444121886
+        m_VersionTimestamp: 639241244069265939
+    - rid: 3302646048444121387
+      type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        m_Blackboard:
+          rid: 3302646048444121389
+        m_Source: {fileID: 5335696526833551214}
+    - rid: 3302646048444121389
+      type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        m_Variables:
+        - rid: 3302646048444121888
+    - rid: 3302646048444121886
+      type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 990063215964720865
+          m_Value1: 10685396543781891411
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: -2
+        m_Child:
+          rid: 3302646048444121887
+        Repeat: 0
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 3302646048444121887
+      type: {class: BossPriority, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 7148816121793819497
+          m_Value1: 11762605464312607113
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121886
+        m_Children:
+        - rid: 3302646048444121889
+        - rid: 3302646048444121890
+        - rid: 3302646048444121891
+        - rid: 3302646048444121892
+        m_RegisteredObservers: []
+        Death:
+          rid: 3302646048444121889
+        NoTarget:
+          rid: 3302646048444121890
+        Special:
+          rid: 3302646048444121891
+        Combat:
+          rid: 3302646048444121892
+    - rid: 3302646048444121888
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 0}
+    - rid: 3302646048444121889
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 5576490738330639109
+          m_Value1: 18078684580336680044
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121887
+        Task:
+          rid: 3302646048444121893
+    - rid: 3302646048444121890
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 2068690210815648013
+          m_Value1: 2389891926366950174
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121887
+        Task:
+          rid: 3302646048444121894
+    - rid: 3302646048444121891
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 2147280540992767357
+          m_Value1: 18428353114358249290
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121887
+        m_Children:
+        - rid: 3302646048444121895
+        - rid: 3302646048444121896
+        m_RegisteredObservers: []
+    - rid: 3302646048444121892
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 16644291054092833541
+          m_Value1: 4269748013104926310
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121887
+        m_Children:
+        - rid: 3302646048444121897
+        - rid: 3302646048444121898
+        - rid: 3302646048444121899
+        m_RegisteredObservers: []
+    - rid: 3302646048444121893
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 12
+    - rid: 3302646048444121894
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 11
+    - rid: 3302646048444121895
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 2147280540992767357
+          m_Value1: 18428353114358249290
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121891
+        Task:
+          rid: 3302646048444121900
+    - rid: 3302646048444121896
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 1639362227653839706
+          m_Value1: 18259819240529324533
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121891
+        m_Children:
+        - rid: 3302646048444121901
+        - rid: 3302646048444121902
+        m_RegisteredObservers: []
+    - rid: 3302646048444121897
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 3191921932862004988
+          m_Value1: 16272039452958132775
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121892
+        m_Children:
+        - rid: 3302646048444121903
+        - rid: 3302646048444121904
+        m_RegisteredObservers: []
+    - rid: 3302646048444121898
+      type: {class: BossAttackBranch, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 4793940068692250336
+          m_Value1: 753503668298113344
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121892
+        m_Children:
+        - rid: 3302646048444121905
+        - rid: 3302646048444121906
+        - rid: 3302646048444121907
+        m_RegisteredObservers: []
+        Melee:
+          rid: 3302646048444121905
+        Charge:
+          rid: 3302646048444121906
+        Ranged:
+          rid: 3302646048444121907
+    - rid: 3302646048444121899
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 10855036704087766783
+          m_Value1: 7776382453028425827
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121892
+        m_Children:
+        - rid: 3302646048444121908
+        - rid: 3302646048444121909
+        m_RegisteredObservers: []
+    - rid: 3302646048444121900
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 10
+    - rid: 3302646048444121901
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 1639362227653839706
+          m_Value1: 18259819240529324533
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121896
+        Task:
+          rid: 3302646048444121910
+    - rid: 3302646048444121902
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 17944259935706359729
+          m_Value1: 4085332268544317861
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121896
+        Task:
+          rid: 3302646048444121911
+    - rid: 3302646048444121903
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 3191921932862004988
+          m_Value1: 16272039452958132775
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121897
+        Task:
+          rid: 3302646048444121912
+    - rid: 3302646048444121904
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 9145724186331157418
+          m_Value1: 6889549392840114063
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121897
+        Task:
+          rid: 3302646048444121913
+    - rid: 3302646048444121905
+      type: {class: BossComboLoop, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 17349368816692910424
+          m_Value1: 2288242108283048260
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121898
+        m_Child:
+          rid: 3302646048444121914
+    - rid: 3302646048444121906
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 15000905542945146845
+          m_Value1: 1594064447113061596
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121898
+        m_Children:
+        - rid: 3302646048444121915
+        - rid: 3302646048444121916
+        m_RegisteredObservers: []
+    - rid: 3302646048444121907
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 11420623851951739655
+          m_Value1: 17186125639678217485
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121898
+        m_Children:
+        - rid: 3302646048444121917
+        - rid: 3302646048444121918
+        m_RegisteredObservers: []
+    - rid: 3302646048444121908
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 10855036704087766783
+          m_Value1: 7776382453028425827
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121899
+        Task:
+          rid: 3302646048444121919
+    - rid: 3302646048444121909
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 8465839875968763785
+          m_Value1: 13201330030796799983
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121899
+        Task:
+          rid: 3302646048444121920
+    - rid: 3302646048444121910
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 8
+    - rid: 3302646048444121911
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 9
+    - rid: 3302646048444121912
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 0
+    - rid: 3302646048444121913
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 1
+    - rid: 3302646048444121914
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 4127152199338041592
+          m_Value1: 7996657868796466906
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121905
+        m_Children:
+        - rid: 3302646048444121921
+        - rid: 3302646048444121922
+        m_RegisteredObservers: []
+    - rid: 3302646048444121915
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 15000905542945146845
+          m_Value1: 1594064447113061596
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121906
+        Task:
+          rid: 3302646048444121923
+    - rid: 3302646048444121916
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 16897591083225537703
+          m_Value1: 957412389119296369
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121906
+        m_Children:
+        - rid: 3302646048444121924
+        - rid: 3302646048444121925
+        m_RegisteredObservers: []
+    - rid: 3302646048444121917
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 11420623851951739655
+          m_Value1: 17186125639678217485
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121907
+        Task:
+          rid: 3302646048444121926
+    - rid: 3302646048444121918
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 16308808192353117199
+          m_Value1: 16696424608941088619
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121907
+        m_Children:
+        - rid: 3302646048444121927
+        - rid: 3302646048444121928
+        m_RegisteredObservers: []
+    - rid: 3302646048444121919
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 8
+    - rid: 3302646048444121920
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 9
+    - rid: 3302646048444121921
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 4127152199338041592
+          m_Value1: 7996657868796466906
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121914
+        Task:
+          rid: 3302646048444121929
+    - rid: 3302646048444121922
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 7216830022910252520
+          m_Value1: 896110396945806973
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121914
+        m_Children:
+        - rid: 3302646048444121930
+        - rid: 3302646048444121931
+        m_RegisteredObservers: []
+    - rid: 3302646048444121923
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 7
+    - rid: 3302646048444121924
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 16897591083225537703
+          m_Value1: 957412389119296369
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121916
+        Task:
+          rid: 3302646048444121932
+    - rid: 3302646048444121925
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 13867804785530257732
+          m_Value1: 16669168832582130915
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121916
+        Task:
+          rid: 3302646048444121933
+    - rid: 3302646048444121926
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 7
+    - rid: 3302646048444121927
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 16308808192353117199
+          m_Value1: 16696424608941088619
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121918
+        Task:
+          rid: 3302646048444121934
+    - rid: 3302646048444121928
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 3665966356011670212
+          m_Value1: 16239957379252076759
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121918
+        Task:
+          rid: 3302646048444121935
+    - rid: 3302646048444121929
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 2
+    - rid: 3302646048444121930
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 7216830022910252520
+          m_Value1: 896110396945806973
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121922
+        Task:
+          rid: 3302646048444121936
+    - rid: 3302646048444121931
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 15259960377188175868
+          m_Value1: 3426234126243299689
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121922
+        m_Children:
+        - rid: 3302646048444121937
+        - rid: 3302646048444121938
+        m_RegisteredObservers: []
+    - rid: 3302646048444121932
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 3
+    - rid: 3302646048444121933
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 4
+    - rid: 3302646048444121934
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 3
+    - rid: 3302646048444121935
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 4
+    - rid: 3302646048444121936
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 3
+    - rid: 3302646048444121937
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 15259960377188175868
+          m_Value1: 3426234126243299689
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121931
+        Task:
+          rid: 3302646048444121939
+    - rid: 3302646048444121938
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 7426654708826133829
+          m_Value1: 10292508401588427106
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121931
+        m_Children:
+        - rid: 3302646048444121940
+        - rid: 3302646048444121941
+        m_RegisteredObservers: []
+    - rid: 3302646048444121939
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 4
+    - rid: 3302646048444121940
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 7426654708826133829
+          m_Value1: 10292508401588427106
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121938
+        Task:
+          rid: 3302646048444121942
+    - rid: 3302646048444121941
+      type: {class: BossAction, ns: Tunic.BossCombat, asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 5926275965150666524
+          m_Value1: 5139541074937793835
+        Graph:
+          rid: 3302646048444121386
+        m_Parent:
+          rid: 3302646048444121938
+        Task:
+          rid: 3302646048444121943
+    - rid: 3302646048444121942
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 5
+    - rid: 3302646048444121943
+      type: {class: 'BlackboardVariable`1[[Tunic.BossCombat.BossTask, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 6
+--- !u!114 &5335696526833551214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: BossBehavior Blackboard
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.RuntimeBlackboardAsset
+  VersionTimestamp: 639241169808026261
+  AssetID:
+    m_Value0: 0
+    m_Value1: 0
+  m_Blackboard:
+    m_Variables:
+    - rid: 3302646048444121391
+  m_SharedBlackboardVariableGuids: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 3302646048444121391
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 0}
+--- !u!114 &8870009666113070909
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: BossBehavior Blackboard
+  m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorBlackboardAuthoringAsset
+  AssetID:
+    m_Value0: 2613854020402715618
+    m_Value1: 11809268693876005083
+  m_Variables:
+  - rid: 3302646048444121392
+  - rid: 3302646048444121531
+  - rid: 3302646048444121532
+  - rid: 3302646048444121533
+  - rid: 3302646048444121534
+  - rid: 3302646048444121535
+  - rid: 3302646048444121536
+  - rid: 3302646048444121537
+  m_VersionTimestamp: 639241169808026261
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: 5335696526833551214}
+  references:
+    version: 2
+    RefIds:
+    - rid: 3302646048444121392
+      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 3302646048444121531
+      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9638041187028385889
+          m_Value1: 5274400380806027473
+        Name: Target
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 3302646048444121532
+      type: {class: 'TypedVariableModel`1[[Tunic.BossCombat.BossAttackData, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 15883165151989520713
+          m_Value1: 117560556302294679
+        Name: SelectedAttack
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 3302646048444121533
+      type: {class: 'TypedVariableModel`1[[System.Int32, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 3269291533319953249
+          m_Value1: 11663587746942562705
+        Name: MotionIndex
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0
+    - rid: 3302646048444121534
+      type: {class: 'TypedVariableModel`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 6442874249432550613
+          m_Value1: 15178000952583655875
+        Name: ComboCancelled
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0
+    - rid: 3302646048444121535
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 12812299546800947057
+          m_Value1: 12822817871378053024
+        Name: NextAttackTime
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0
+    - rid: 3302646048444121536
+      type: {class: 'TypedVariableModel`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 3772977859803959344
+          m_Value1: 13902201202465551671
+        Name: SpecialPending
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0
+    - rid: 3302646048444121537
+      type: {class: 'TypedVariableModel`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 13469754679910802511
+          m_Value1: 285696968109217089
+        Name: SpecialUsed
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0

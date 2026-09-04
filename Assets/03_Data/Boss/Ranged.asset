@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4377a9b2fd9e26041ae314a4aa418ce3, type: 3}
+  m_Name: Ranged
+  m_EditorClassIdentifier: Assembly-CSharp::Tunic.BossCombat.BossAttackData
+  kind: 2
+  available: 1
+  minimumRange: 4
+  maximumRange: 12
+  comboBreakRange: 12
+  weight: 1
+  recovery: 0.7
+  comboGap: 0.15
+  preparation: 0.5
+  motions:
+  - animatorState: Base Layer.Boss_Ranged
+    clip: {fileID: 7400000, guid: 22842c5fbdf613043b78eb85560caa74, type: 2}
+    speed: 1
+    hitStart: 0.2
+    hitEnd: 0.6
+    fireTime: 0.5
+    damage: 10
+    hitCenter: {x: 0, y: 1.2, z: 1.8}
+    hitHalfExtents: {x: 1, y: 1.2, z: 1.2}
+  chargeSpeed: 12
+  chargeDistance: 9
+  projectilePrefab: {fileID: 1212614636801046893, guid: 3340336064bda174d8b1ee85f03c6bb1, type: 3}
+  muzzleOffset: {x: 0, y: 1.5, z: 1.3}
+  projectileSpeed: 12
+  projectileLifetime: 3

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff4dc115afb99e4898115924881ed22, type: 3}
+  m_Name: BossCombat
+  m_EditorClassIdentifier: Assembly-CSharp::Tunic.BossCombat.BossCombatData
+  maxHP: 300
+  moveSpeed: 5
+  attackDamage: 10
+  minimumDistance: 3
+  maximumDistance: 4
+  retreatSpeed: 2
+  approachSpeed: 4
+  turnSpeed: 360
+  decisionInterval: 0.1
+  attackInterval: 2.5
+  repeatedAttackWeight: 0.25
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  attacks:
+  - {fileID: 11400000, guid: 638be4592492fdc4ab20cdce521dfea0, type: 2}
+  - {fileID: 11400000, guid: 37b008662adf3c6498e0aa7284390e7d, type: 2}
+  - {fileID: 11400000, guid: 2446f51c760c94748a34edcac095c0a1, type: 2}
+  - {fileID: 11400000, guid: 532a6bd2dcff9f04f9a5ff1b7bb10d1f, type: 2}

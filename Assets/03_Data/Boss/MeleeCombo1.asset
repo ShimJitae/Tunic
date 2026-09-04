@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4377a9b2fd9e26041ae314a4aa418ce3, type: 3}
+  m_Name: MeleeCombo1
+  m_EditorClassIdentifier: Assembly-CSharp::Tunic.BossCombat.BossAttackData
+  kind: 0
+  available: 1
+  minimumRange: 0
+  maximumRange: 3.5
+  comboBreakRange: 3.5
+  weight: 1
+  recovery: 0.7
+  comboGap: 0.15
+  preparation: 0.5
+  motions:
+  - animatorState: Base Layer.Boss_Melee1_1
+    clip: {fileID: 7400000, guid: b985c3857bac59d4bbe6a411973af9d3, type: 2}
+    speed: 1
+    hitStart: 0.2
+    hitEnd: 0.6
+    fireTime: 0.5
+    damage: 10
+    hitCenter: {x: 0, y: 1.2, z: 1.8}
+    hitHalfExtents: {x: 1, y: 1.2, z: 1.2}
+  - animatorState: Base Layer.Boss_Melee1_2
+    clip: {fileID: 7400000, guid: 2e5d7c2ddc23ea043a4e943f66872d66, type: 2}
+    speed: 1
+    hitStart: 0.2
+    hitEnd: 0.6
+    fireTime: 0.5
+    damage: 10
+    hitCenter: {x: 0, y: 1.2, z: 1.8}
+    hitHalfExtents: {x: 1, y: 1.2, z: 1.2}
+  - animatorState: Base Layer.Boss_Melee1_3
+    clip: {fileID: 7400000, guid: fd4e35bf7a8cdc74a87dc3da05063f35, type: 2}
+    speed: 1
+    hitStart: 0.2
+    hitEnd: 0.6
+    fireTime: 0.5
+    damage: 10
+    hitCenter: {x: 0, y: 1.2, z: 1.8}
+    hitHalfExtents: {x: 1, y: 1.2, z: 1.2}
+  chargeSpeed: 12
+  chargeDistance: 9
+  projectilePrefab: {fileID: 0}
+  muzzleOffset: {x: 0, y: 1.5, z: 1.3}
+  projectileSpeed: 12
+  projectileLifetime: 3
