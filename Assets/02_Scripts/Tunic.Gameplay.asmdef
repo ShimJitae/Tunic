@@ -1,0 +1,20 @@
+{
+    "name": "Tunic.Gameplay",
+    "rootNamespace": "",
+    "references": [
+        "UnityHFSM",
+        "Unity.InputSystem",
+        "Unity.Cinemachine",
+        "UniTask",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

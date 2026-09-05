@@ -10,6 +10,13 @@ public class PlayerData : EntityData
     public float StaminaRecoveryDelay => staminaRecoveryDelay;
     [SerializeField] private float staminaRecoveryPerSecond = 15f;
     public float StaminaRecoveryPerSecond => staminaRecoveryPerSecond;
+
+    [Header("Action Costs")]
+    [SerializeField, Min(0f)] private float attackStaminaCost = 10f;
+    public float AttackStaminaCost => attackStaminaCost;
+    [SerializeField, Min(0f)] private float dodgeStaminaCost = 5f;
+    public float DodgeStaminaCost => dodgeStaminaCost;
+
     [Header("Dodge")]
     [SerializeField] private float dodgeDist = 4f;
     public float DodgeDist => dodgeDist;

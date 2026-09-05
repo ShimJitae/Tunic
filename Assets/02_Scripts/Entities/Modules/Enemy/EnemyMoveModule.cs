@@ -1,15 +1,13 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class EnemyMoveModule : MonoBehaviour, IMoveStrategy
+public class EnemyMoveModule : MonoBehaviour
 {
     private NavMeshAgent agent;
 
-    public Vector3 MoveInfo { get; set; }
-
     [SerializeField] private float angularSpeed = 360f;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -21,10 +19,13 @@ public class EnemyMoveModule : MonoBehaviour, IMoveStrategy
         agent.speed = enemyData.MoveSpeed;
     }
 
-    public void Move()
+    public void MoveTo(Vector3 destination)
     {
+        if (agent == null || !agent.isOnNavMesh)
+            return;
+
         agent.isStopped = false;
-        agent.SetDestination(MoveInfo);
+        agent.SetDestination(destination);
     }
 
     public void Stop()
@@ -38,6 +39,9 @@ public class EnemyMoveModule : MonoBehaviour, IMoveStrategy
 
     public bool HasReachedDestination()
     {
+        if (agent == null || !agent.isOnNavMesh)
+            return false;
+
         if (agent.pathPending)
             return false;
 

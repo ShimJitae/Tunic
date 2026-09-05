@@ -1,8 +1,10 @@
 using UnityEngine;
 
-public class DataSetUp_Player : MonoBehaviour, IDataSetUp
+public class DataSetUp_Player : MonoBehaviour
 {
     [SerializeField] private PlayerData playerData;
+    public PlayerData PlayerData => playerData;
+
     private PlayerMoveModule playerMoveModule;
     private PlayerAttackModule playerAttackModule;
     private Status playerStatus;

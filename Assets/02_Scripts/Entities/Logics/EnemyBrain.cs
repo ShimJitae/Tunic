@@ -1,210 +1,201 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyController))]
 public class EnemyBrain : MonoBehaviour
 {
-    private EnemyController enemyController;
+    private const float ChaseUpdateInterval = 0.1f;
 
-    [Header("판단 거리")]
-    [SerializeField, Min(0f)] private float detectionRange = 6f;
-    [SerializeField, Min(0f)] private float giveUpRange = 7.5f;
-    [Header("공격")]
-    [SerializeField, Min(0f)] private float attackRange = 1.5f;
-    [SerializeField, Min(0f)] private float attackCooltime = 1.5f;
+    [Header("순찰 지점")]
+    [SerializeField] private List<Transform> patrolPoints = new();
+
+    private Transform target;
+
+    private float detectionRange;
+    private float giveUpRange;
+    private float attackRange;
+    private float attackCooltime;
+    private float viewAngle;
+    private LayerMask obstacleMask;
+    private float eyeHeight;
+    private float patrolWaitDuration;
+
+    private int currentPatrolIndex = -1;
+    private float idleEndTime;
     private float nextAttackTime;
 
-    [Header("시야 설정")]
-    [SerializeField, Range(0f, 360f)] private float viewAngle = 120f;
-    [SerializeField] private LayerMask obstacleMask;
-    [SerializeField, Min(0f)] private float eyeHeight = 1f;
+    private bool hasChaseSnapshot;
+    private float nextChaseUpdateTime;
+    private bool shouldGiveUpTarget;
+    private bool canAttack;
+    private bool hasChaseDestination;
+    private Vector3 chaseDestination;
 
-    [Header("추적 대상")]
-    [SerializeField] private Transform target;
-    private float chaseUpdateDuration;
-
-    [Header("순찰")]
-    [SerializeField] private List<Transform> patrolPoints = new();
-    [SerializeField, Min(0f)] private float patrolWaitDuration = 2f;
-    private int currentPatrolIndex = -1;
-    private float idleDuration;
-
-
-    private void Start()
+    internal bool HasPatrolPoint
     {
-        if (!TryGetComponent(out enemyController))
+        get
         {
-#if UNITY_EDITOR
-            Debug.LogError(
-                $"{nameof(EnemyBrain)} requires a " +
-                $"{nameof(EnemyController)} component.",
-                this);
-#endif
-            enabled = false;
-            return;
+            foreach (Transform patrolPoint in patrolPoints)
+            {
+                if (patrolPoint != null)
+                    return true;
+            }
+
+            return false;
         }
+    }
 
-        EnterIdle();
-
+    private void Awake()
+    {
         target = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
-    private void Update()
+    internal void SetUpData(EnemyData enemyData)
     {
-        if (enemyController.CurrentState != EntityStateId.Idle)
-            return;
-
-        if (CanDetectTarget())
-        {
-            EnterChase();
-            return;
-        }
-
-        UpdateIdle();
+        detectionRange = enemyData.DetectionRange;
+        giveUpRange = enemyData.GiveUpRange;
+        attackRange = enemyData.AttackRange;
+        attackCooltime = enemyData.AttackCooltime;
+        viewAngle = enemyData.ViewAngle;
+        obstacleMask = enemyData.ObstacleMask;
+        eyeHeight = enemyData.EyeHeight;
+        patrolWaitDuration = enemyData.PatrolWaitDuration;
     }
 
-    private void UpdateIdle()
+    internal void BeginIdle()
     {
-        idleDuration += Time.deltaTime;
-
-        if (idleDuration < patrolWaitDuration)
-            return;
-
-        EnterNextPatrol();
+        idleEndTime = Time.time + patrolWaitDuration;
+        hasChaseSnapshot = false;
+        hasChaseDestination = false;
     }
 
-    internal void UpdatePatrol()
+    internal bool IsIdleWaitComplete()
     {
-        if (!enemyController.HasReachedDestination())
-            return;
-
-        EnterIdle();
+        return Time.time >= idleEndTime;
     }
 
-    internal bool UpdateChase()
+    internal void BeginChase()
     {
-        if (!ShouldUpdateChase())
-            return false;
-
-        if (target == null)
-        {
-            EnterIdle();
-            return false;
-        }
-
-        float sqrDistance = (target.position - transform.position).sqrMagnitude;
-
-        if (sqrDistance > giveUpRange * giveUpRange)
-        {
-            enemyController.RequestMoveState(EntityStateId.Patrol);
-            return false;
-        }
-
-        if (TryRequestAttack(sqrDistance))
-            return false;
-
-        RefreshChaseDestination();
-        return true;
-    }
-
-    private bool ShouldUpdateChase()
-    {
-        chaseUpdateDuration += Time.deltaTime;
-
-        if (chaseUpdateDuration < 0.1f)
-            return false;
-
-        chaseUpdateDuration = 0f;
-        return true;
-    }
-
-    private bool TryRequestAttack(float sqrDistance)
-    {
-        if (sqrDistance > attackRange * attackRange)
-            return false;
-
-        if (Time.time < nextAttackTime)
-            return false;
-
-        nextAttackTime = Time.time + attackCooltime;
-
-        enemyController.StopMove();
-        enemyController.RequestAttack();
-
-        return true;
-    }
-
-    private void EnterIdle()
-    {
-        idleDuration = 0f;
-
-        // MoveInfo를 비워서 기존 Transition이 Idle로 전환하게 한다.
-        enemyController.StopMove();
-    }
-
-    private void EnterNextPatrol()
-    {
-        if (patrolPoints.Count == 0)
-            return;
-
-        currentPatrolIndex =
-            (currentPatrolIndex + 1) % patrolPoints.Count;
-
-        Transform patrolPoint =
-            patrolPoints[currentPatrolIndex];
-
-        if (patrolPoint == null)
-            return;
-
-        enemyController.RequestMoveState(
-            EntityStateId.Patrol);
-
-        enemyController.SetMoveDestination(
-            patrolPoint.position);
-    }
-
-    internal void EnterChase()
-    {
-        if (target == null)
-            return;
-
-        enemyController.RequestMoveState(EntityStateId.Chase);
-
-        RefreshChaseDestination();
-    }
-
-    internal void RefreshChaseDestination()
-    {
-        if (target == null)
-            return;
-
-        chaseUpdateDuration = 0f;
-        enemyController.SetMoveDestination(target.position);
+        hasChaseSnapshot = false;
+        hasChaseDestination = false;
+        nextChaseUpdateTime = 0f;
     }
 
     internal bool CanDetectTarget()
     {
-        if (target == null)
+        if (!TryGetSqrDistanceToTarget(out float sqrDistance))
             return false;
 
-        float sqrDistance =
-            (target.position - transform.position).sqrMagnitude;
-
-        if (sqrDistance >
-            detectionRange * detectionRange)
-        {
+        if (sqrDistance > detectionRange * detectionRange)
             return false;
-        }
 
         return IsInViewAngle() && HasLineOfSight();
     }
 
-    // 기존 IsInViewAngle() 그대로 사용
+    internal bool ShouldGiveUpTarget()
+    {
+        RefreshChaseSnapshot();
+        return shouldGiveUpTarget;
+    }
+
+    internal bool CanAttack()
+    {
+        RefreshChaseSnapshot();
+        return canAttack;
+    }
+
+    internal bool TryGetChaseDestination(out Vector3 destination)
+    {
+        RefreshChaseSnapshot();
+
+        if (!hasChaseDestination)
+        {
+            destination = default;
+            return false;
+        }
+
+        destination = chaseDestination;
+        hasChaseDestination = false;
+        return true;
+    }
+
+    internal void MarkAttackStarted()
+    {
+        nextAttackTime = Time.time + attackCooltime;
+    }
+
+    internal bool TryGetTargetPosition(out Vector3 targetPosition)
+    {
+        if (target == null)
+        {
+            targetPosition = default;
+            return false;
+        }
+
+        targetPosition = target.position;
+        return true;
+    }
+
+    internal bool TryGetNextPatrolDestination(out Vector3 destination)
+    {
+        for (int i = 0; i < patrolPoints.Count; i++)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Count;
+            Transform patrolPoint = patrolPoints[currentPatrolIndex];
+
+            if (patrolPoint == null)
+                continue;
+
+            destination = patrolPoint.position;
+            return true;
+        }
+
+        destination = default;
+        return false;
+    }
+
+    private void RefreshChaseSnapshot()
+    {
+        if (hasChaseSnapshot && Time.time < nextChaseUpdateTime)
+            return;
+
+        hasChaseSnapshot = true;
+        nextChaseUpdateTime = Time.time + ChaseUpdateInterval;
+        hasChaseDestination = false;
+
+        if (!TryGetSqrDistanceToTarget(out float sqrDistance))
+        {
+            shouldGiveUpTarget = true;
+            canAttack = false;
+            return;
+        }
+
+        shouldGiveUpTarget = sqrDistance > giveUpRange * giveUpRange;
+        canAttack = !shouldGiveUpTarget
+            && Time.time >= nextAttackTime
+            && sqrDistance <= attackRange * attackRange;
+
+        if (shouldGiveUpTarget)
+            return;
+
+        chaseDestination = target.position;
+        hasChaseDestination = true;
+    }
+
+    private bool TryGetSqrDistanceToTarget(out float sqrDistance)
+    {
+        if (target == null)
+        {
+            sqrDistance = default;
+            return false;
+        }
+
+        sqrDistance = (target.position - transform.position).sqrMagnitude;
+        return true;
+    }
+
     private bool IsInViewAngle()
     {
-        Vector3 directionToTarget =
-            target.position - transform.position;
-
+        Vector3 directionToTarget = target.position - transform.position;
         directionToTarget.y = 0f;
 
         if (directionToTarget.sqrMagnitude <= Mathf.Epsilon)
@@ -217,21 +208,14 @@ public class EnemyBrain : MonoBehaviour
             forward.normalized,
             directionToTarget.normalized);
 
-        float threshold = Mathf.Cos(
-            viewAngle * 0.5f * Mathf.Deg2Rad);
-
+        float threshold = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
         return dot >= threshold;
     }
 
-    // 기존 HasLineOfSight() 그대로 사용
     private bool HasLineOfSight()
     {
-        Vector3 origin =
-            transform.position + Vector3.up * eyeHeight;
-
-        Vector3 toTarget =
-            target.position - origin;
-
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+        Vector3 toTarget = target.position - origin;
         float distanceToTarget = toTarget.magnitude;
 
         if (distanceToTarget <= Mathf.Epsilon)

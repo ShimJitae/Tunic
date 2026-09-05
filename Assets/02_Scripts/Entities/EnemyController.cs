@@ -1,123 +1,200 @@
+using System;
 using UnityEngine;
 using UnityHFSM;
 
 [RequireComponent(typeof(EnemyMoveModule))]
-[RequireComponent(typeof(EnemyAnimationModule))]
+[RequireComponent(typeof(EnemyAttackModule))]
+[RequireComponent(typeof(EnemyBrain))]
 public class EnemyController : EntityController
 {
-    private EnemyMoveModule enemyMoveModule;
-    private StateMachine<EntityStateId, EntityEvent> moveFsm;
+    [SerializeField] private DataSetUp_Enemy dataSetUp;
+
+    private EnemyMoveModule moveModule;
+    private EnemyAnimationModule animationModule;
+    private EnemyAttackModule attackModule;
+    private EnemyBrain brain;
+
+    private StateMachine<EntityLifeStateId, EnemyAliveStateId, EnemyStateEvent> aliveFsm;
+
+    public event Action<EnemyAliveStateId> OnAliveStateEntered;
+
+    public EnemyAliveStateId CurrentAliveState => aliveFsm.ActiveStateName;
 
     protected override void Awake()
     {
-        if (!TryGetComponent(out enemyMoveModule))
-        {
-#if UNITY_EDITOR
-            Debug.LogError(
-                $"{nameof(EnemyController)} requires a " +
-                $"{nameof(EnemyMoveModule)} component.",
-                this);
-#endif
-            enabled = false;
-            return;
-        }
-
-        MoveModule = enemyMoveModule;
-
-        AnimationModule =
-            GetComponentInChildren<EnemyAnimationModule>();
-
-        if (AnimationModule == null)
-        {
-#if UNITY_EDITOR
-            Debug.LogError(
-                $"{nameof(EnemyController)} requires a " +
-                $"{nameof(EnemyAnimationModule)} component.",
-                this);
-#endif
-            enabled = false;
-            return;
-        }
-
         base.Awake();
-    }
 
-    protected override void Update()
-    {
-        base.Update();
-    }
-
-    protected override StateBase<EntityStateId> CreateMoveState()
-    {
-        if (!TryGetComponent(out EnemyBrain enemyBrain))
+        if (!TryGetComponent(out moveModule))
         {
-            Debug.LogError("Enemybrain 컴포넌트를 가지고 있지 않음");
-            return null;
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a {nameof(EnemyMoveModule)} component.",
+                this);
+            enabled = false;
         }
 
-        moveFsm = new StateMachine<EntityStateId, EntityEvent>();
+        if (!TryGetComponent(out attackModule))
+        {
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a {nameof(EnemyAttackModule)} component.",
+                this);
+            enabled = false;
+        }
 
-        moveFsm.AddState(EntityStateId.Patrol, new PatrolState(this, enemyBrain));
-        moveFsm.AddState(EntityStateId.Chase, new ChaseState(this, enemyBrain));
+        if (!TryGetComponent(out brain))
+        {
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a {nameof(EnemyBrain)} component.",
+                this);
+            enabled = false;
+        }
 
-        moveFsm.SetStartState(EntityStateId.Patrol);
+        animationModule = GetComponentInChildren<EnemyAnimationModule>();
+        if (animationModule == null)
+        {
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a {nameof(EnemyAnimationModule)} component.",
+                this);
+            enabled = false;
+        }
 
-        moveFsm.AddTransition(new PatrolToChaseTransition(this, enemyBrain));
-
-        return moveFsm;
+        if (dataSetUp == null && !TryGetComponent(out dataSetUp))
+        {
+            Debug.LogError(
+                $"{nameof(EnemyController)} requires a {nameof(DataSetUp_Enemy)} component.",
+                this);
+            enabled = false;
+        }
     }
 
-    public void RequestMoveState(EntityStateId moveState)
+    protected override void Start()
     {
-        if (moveFsm.IsInitialized)
+        if (!enabled)
+            return;
+
+        dataSetUp.SetUpData();
+        base.Start();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if (Health != null)
+            Health.OnDamaged += HandleDamaged;
+    }
+
+    protected override void OnDisable()
+    {
+        if (Health != null)
+            Health.OnDamaged -= HandleDamaged;
+
+        if (moveModule != null)
+            moveModule.Stop();
+
+        if (attackModule != null)
+            attackModule.SetAttackZoneActive(false);
+
+        base.OnDisable();
+    }
+
+    protected override StateBase<EntityLifeStateId> CreateAliveState()
+    {
+        aliveFsm = new StateMachine<
+            EntityLifeStateId,
+            EnemyAliveStateId,
+            EnemyStateEvent>();
+
+        aliveFsm.StateChanged += _ =>
+            OnAliveStateEntered?.Invoke(aliveFsm.ActiveStateName);
+
+        aliveFsm.AddState(
+            EnemyAliveStateId.Idle,
+            new EnemyIdleState(moveModule, animationModule, brain));
+        aliveFsm.AddState(
+            EnemyAliveStateId.Patrol,
+            new EnemyPatrolState(moveModule, animationModule, brain));
+        aliveFsm.AddState(
+            EnemyAliveStateId.Chase,
+            new EnemyChaseState(moveModule, animationModule, brain));
+        aliveFsm.AddState(
+            EnemyAliveStateId.Attack,
+            new EnemyAttackState(
+                transform,
+                moveModule,
+                animationModule,
+                attackModule,
+                brain));
+        aliveFsm.AddState(
+            EnemyAliveStateId.Hit,
+            new EnemyHitState(moveModule, animationModule, attackModule));
+
+        aliveFsm.SetStartState(EnemyAliveStateId.Idle);
+
+        RegisterNormalTransitions();
+
+        aliveFsm.AddTriggerTransitionFromAny(
+            EnemyStateEvent.Damaged,
+            EnemyAliveStateId.Hit,
+            forceInstantly: true);
+
+        return aliveFsm;
+    }
+
+    protected override StateBase<EntityLifeStateId> CreateDeadState()
+    {
+        return new EnemyDeadState(moveModule, animationModule, attackModule);
+    }
+
+    private void RegisterNormalTransitions()
+    {
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Idle,
+            EnemyAliveStateId.Chase,
+            _ => brain.CanDetectTarget());
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Idle,
+            EnemyAliveStateId.Patrol,
+            _ => brain.HasPatrolPoint && brain.IsIdleWaitComplete());
+
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Patrol,
+            EnemyAliveStateId.Chase,
+            _ => brain.CanDetectTarget());
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Patrol,
+            EnemyAliveStateId.Idle,
+            _ => moveModule.HasReachedDestination());
+
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Chase,
+            EnemyAliveStateId.Idle,
+            _ => brain.ShouldGiveUpTarget());
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Chase,
+            EnemyAliveStateId.Attack,
+            _ => brain.CanAttack());
+
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Attack,
+            EnemyAliveStateId.Chase,
+            _ => animationModule.IsAnimationComplete(animationModule.Attack));
+        aliveFsm.AddTransition(
+            EnemyAliveStateId.Hit,
+            EnemyAliveStateId.Chase,
+            _ => animationModule.IsAnimationComplete(animationModule.Hit));
+    }
+
+    private void HandleDamaged(float _)
+    {
+        if (!IsAlive || Health.IsDied)
+            return;
+
+        if (aliveFsm.ActiveStateName == EnemyAliveStateId.Hit)
         {
-            moveFsm.RequestStateChange(moveState);
+            aliveFsm.RequestStateChange(EnemyAliveStateId.Hit, forceInstantly: true);
             return;
         }
 
-        moveFsm.SetStartState(moveState);
-    }
-
-    internal void ResetMoveStartState()
-    {
-        moveFsm.SetStartState(EntityStateId.Patrol);
-    }
-
-    protected override void RegisterTransitions()
-    {
-        if (!TryGetComponent(out EnemyBrain enemyBrain))
-        {
-            Debug.LogError("Enemybrain 컴포넌트를 가지고 있지 않음");
-            return;
-        }
-
-        Fsm.AddTriggerTransition(EntityEvent.HitFinished, new HitToChaseTransition(this, enemyBrain));
-
-        base.RegisterTransitions();
-    }
-
-    public void SetMoveDestination(Vector3 destination)
-    {
-        MoveModule.MoveInfo = destination;
-    }
-
-    public void StopMove()
-    {
-        // 기존 Transition이 Move → Idle로 전환하는 조건
-        MoveModule.MoveInfo = Vector3.zero;
-
-        // 이미 이동 중인 NavMeshAgent 정지
-        enemyMoveModule.Stop();
-    }
-
-    public bool HasReachedDestination()
-    {
-        return enemyMoveModule.HasReachedDestination();
-    }
-
-    private void OnDisable()
-    {
-        if (enemyMoveModule != null)
-            StopMove();
+        aliveFsm.Trigger(EnemyStateEvent.Damaged);
     }
 }

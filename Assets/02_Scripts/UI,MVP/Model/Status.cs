@@ -25,6 +25,8 @@ public class Status : Health
 
     public void SetUpData(PlayerData playerData)
     {
+        base.SetUpData(playerData);
+
         maxStamina = playerData.MaxStamina;
         staminaRecoveryDelay = playerData.StaminaRecoveryDelay;
         staminaRecoveryPerSecond = playerData.StaminaRecoveryPerSecond;
@@ -34,8 +36,11 @@ public class Status : Health
 
     public bool TakeStamina(float value)
     {
-        if (IsDied || value <= 0f || currStamina < value)
+        if (!HasStamina(value))
             return false;
+
+        if (value == 0f)
+            return true;
 
         currStamina -= value;
 
@@ -43,6 +48,11 @@ public class Status : Health
 
         OnStaminaChanged?.Invoke();
         return true;
+    }
+
+    public bool HasStamina(float value)
+    {
+        return !IsDied && value >= 0f && currStamina >= value;
     }
 
     private void Update()
