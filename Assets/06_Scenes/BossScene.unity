@@ -1613,7 +1613,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
   playerInput: {fileID: 1543859905}
-  p_Controller: {fileID: 0}
 --- !u!114 &1543859905
 MonoBehaviour:
   m_ObjectHideFlags: 0
