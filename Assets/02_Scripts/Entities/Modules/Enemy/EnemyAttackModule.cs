@@ -1,20 +1,19 @@
 using System;
 using UnityEngine;
 
-public class EnemyAttackModule : MonoBehaviour, IAttackStrategy
+public class EnemyAttackModule : MonoBehaviour, IAttackZoneController
 {
     [SerializeField] private Weapon weapon;
-    public Weapon Weapon { get => weapon; set => weapon = value; }
-    public event Action OnAttack;
+    public event Action<bool> OnAttackZoneChanged;
 
     private void Awake()
     {
         weapon = GetComponentInChildren<Weapon>();
     }
 
-    void Start()
+    private void Start()
     {
-        ActiveAttackZone(false);
+        SetAttackZoneActive(false);
     }
 
     public void SetUpData(EnemyData enemyData)
@@ -22,23 +21,22 @@ public class EnemyAttackModule : MonoBehaviour, IAttackStrategy
         weapon.Damage = enemyData.AttackDamage;
     }
 
-    public void ActiveAttackZone(bool enable)
+    public void SetAttackZoneActive(bool isActive)
     {
-        if (Weapon == null)
+        if (weapon == null)
         {
             Debug.LogError($"EnemyAttackModule : {gameObject.name}의 Weapon이 비어있습니다.");
             return;
         }
-        if (Weapon.AttackZone == null)
+        if (weapon.AttackZone == null)
         {
             Debug.LogError($"EnemyAttackModule : {gameObject.name}의 Weapon.AttackZone이 비어있습니다.");
             return;
         }
-        Weapon.AttackZone.enabled = enable;
-    }
+        if (weapon.AttackZone.enabled == isActive)
+            return;
 
-    public void Attack()
-    {
-        OnAttack?.Invoke();
+        weapon.AttackZone.enabled = isActive;
+        OnAttackZoneChanged?.Invoke(isActive);
     }
 }

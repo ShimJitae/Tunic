@@ -1,22 +1,20 @@
 using System;
 using UnityEngine;
 
-public class PlayerAttackModule : MonoBehaviour, IAttackStrategy
+public class PlayerAttackModule : MonoBehaviour, IAttackZoneController
 {
     [SerializeField] private Weapon weapon;
 
-    public event Action OnAttack;
-
-    public Weapon Weapon { get => weapon; set => weapon = value; }
+    public event Action<bool> OnAttackZoneChanged;
 
     private void Awake()
     {
         weapon = GetComponentInChildren<Weapon>();
     }
 
-    void Start()
+    private void Start()
     {
-        ActiveAttackZone(false);
+        SetAttackZoneActive(false);
     }
 
     public void SetUpData(PlayerData playerData)
@@ -24,23 +22,22 @@ public class PlayerAttackModule : MonoBehaviour, IAttackStrategy
         weapon.Damage = playerData.AttackDamage;
     }
 
-    public void ActiveAttackZone(bool enable)
+    public void SetAttackZoneActive(bool isActive)
     {
-        if (Weapon == null)
+        if (weapon == null)
         {
             Debug.LogError($"PlayerAttackModule : {gameObject.name}의 Weapon이 비어있습니다.");
             return;
         }
-        if (Weapon.AttackZone == null)
+        if (weapon.AttackZone == null)
         {
             Debug.LogError($"PlayerAttackModule : {gameObject.name}의 Weapon.AttackZone이 비어있습니다.");
             return;
         }
-        Weapon.AttackZone.enabled = enable;
-    }
+        if (weapon.AttackZone.enabled == isActive)
+            return;
 
-    public void Attack()
-    {
-        OnAttack?.Invoke();
+        weapon.AttackZone.enabled = isActive;
+        OnAttackZoneChanged?.Invoke(isActive);
     }
 }

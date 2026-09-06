@@ -40,13 +40,14 @@ public class Health : MonoBehaviour, IDamageable
 
         currHP = Mathf.Max(0f, currHP + damage);
 
+        bool diedFromDamage = currHP <= 0f;
+        if (diedFromDamage)
+            IsDied = true;
+
         OnDamaged?.Invoke(damage);
 
-        if (currHP <= 0f)
-        {
-            IsDied = true;
+        if (diedFromDamage)
             OnDied?.Invoke();
-        }
     }
 
     public void RestoreHp(float value)

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,8 @@ public class InputManager : MonoBehaviour
 
     public Vector3 MoveInput { get; private set; }
 
-    [SerializeField] PlayerController p_Controller;
+    public event Action AttackPressed;
+    public event Action DodgePressed;
 
     private void Awake()
     {
@@ -53,17 +55,17 @@ public class InputManager : MonoBehaviour
 
     public void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (!context.performed || p_Controller == null)
+        if (!context.performed)
             return;
 
-        p_Controller.AttackModule.Attack();
+        AttackPressed?.Invoke();
     }
 
     public void OnDodgeInput(InputAction.CallbackContext context)
     {
-        if (!context.performed || p_Controller == null)
+        if (!context.performed)
             return;
 
-        p_Controller.RequestDodge();
+        DodgePressed?.Invoke();
     }
 }
