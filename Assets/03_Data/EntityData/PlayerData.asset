@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a44047cce8eceb849bf93c2b67a6e529, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  maxHP: 100
+  maxHP: 1000
   moveSpeed: 8
   attackDamage: 10
   maxStamina: 50
   staminaRecoveryDelay: 1.5
   staminaRecoveryPerSecond: 15
+  attackStaminaCost: 10
+  dodgeStaminaCost: 5
+  comboInputStartTime: 0.5
+  comboInputEndTime: 0.85
   dodgeDist: 3.5
   dodgeDuration: 0.75
   gravity: -20
