@@ -59,6 +59,17 @@ public class EntityAnimationModule : MonoBehaviour
             && stateInfo.normalizedTime >= 1f;
     }
 
+    public bool TryGetNormalizedTime(int stateHash, out float normalizedTime)
+    {
+        normalizedTime = 0f;
+
+        if (!TryGetStateInfo(stateHash, out AnimatorStateInfo stateInfo))
+            return false;
+
+        normalizedTime = stateInfo.normalizedTime;
+        return true;
+    }
+
     private bool TryGetStateInfo(int stateHash, out AnimatorStateInfo stateInfo)
     {
         stateInfo = default;

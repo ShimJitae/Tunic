@@ -27,9 +27,7 @@ public abstract class EntityController : MonoBehaviour
     {
         if (!TryGetComponent(out health))
         {
-            Debug.LogError(
-                $"{nameof(EntityController)} requires a {nameof(Health)} component.",
-                this);
+            Debug.LogError($"{nameof(EntityController)} requires a {nameof(Health)} component.", this);
 
             enabled = false;
         }
@@ -76,27 +74,20 @@ public abstract class EntityController : MonoBehaviour
     {
         lifeFsm = new StateMachine<EntityLifeStateId, EntityLifeEvent>();
 
-        lifeFsm.StateChanged += _ =>
-            OnLifeStateEntered?.Invoke(lifeFsm.ActiveStateName);
+        lifeFsm.StateChanged += _ => OnLifeStateEntered?.Invoke(lifeFsm.ActiveStateName);
 
         lifeFsm.AddState(EntityLifeStateId.Alive, CreateAliveState());
         lifeFsm.AddState(EntityLifeStateId.Dead, CreateDeadState());
 
-        lifeFsm.AddTriggerTransition(
-            EntityLifeEvent.Died,
-            EntityLifeStateId.Alive,
-            EntityLifeStateId.Dead,
-            forceInstantly: true);
+        // Alive -> Dead, 사망 시 즉시
+        lifeFsm.AddTriggerTransition(EntityLifeEvent.Died, EntityLifeStateId.Alive, EntityLifeStateId.Dead, forceInstantly: true);
 
         EnterInitialLifeState();
     }
 
     private void EnterInitialLifeState()
     {
-        lifeFsm.SetStartState(
-            health.IsDied
-                ? EntityLifeStateId.Dead
-                : EntityLifeStateId.Alive);
+        lifeFsm.SetStartState(health.IsDied ? EntityLifeStateId.Dead : EntityLifeStateId.Alive);
 
         lifeFsm.OnEnter();
     }

@@ -32,6 +32,7 @@ public class Status : Health
         staminaRecoveryPerSecond = playerData.StaminaRecoveryPerSecond;
 
         currStamina = maxStamina;
+        OnStaminaChanged?.Invoke();
     }
 
     public bool TakeStamina(float value)

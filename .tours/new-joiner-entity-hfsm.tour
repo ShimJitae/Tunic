@@ -1,0 +1,114 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Entity HFSM 구조 학습 순서",
+  "description": "공통 생명 상태에서 시작해 Player 입력·전이·상태·모듈을 추적한 뒤 Enemy 판단 흐름으로 확장하는 순서입니다.",
+  "steps": [
+    {
+      "directory": "Assets/02_Scripts/Enums",
+      "title": "1. 상태 머신의 어휘",
+      "description": "EntityLife, PlayerAlive, PlayerLocomotion, PlayerCombat, EnemyAlive와 각 Event enum을 먼저 읽습니다. 이 값들이 전체 상태 그래프의 노드와 트리거이며, 상태를 추가할 때는 여기만 고치지 말고 반드시 Controller의 등록과 State 구현을 함께 확인해야 합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/EntityController.cs",
+      "pattern": "private void CreateLifeStateMachine()",
+      "title": "2. 모든 Entity의 루트 FSM",
+      "description": "공통 계층은 Alive와 Dead만 소유하고, 실제 Alive/Dead 상태 객체는 하위 Controller가 생성합니다. Update는 이 루트 FSM 하나만 구동하므로 중첩 FSM도 여기서 연쇄 실행된다는 점을 먼저 이해합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/UI,MVP/Model/Health.cs",
+      "pattern": "public void TakeDamage(float value)",
+      "title": "3. 피격과 사망의 출발점",
+      "description": "Health는 체력을 바꾸고 OnDamaged와 OnDied를 순서대로 발행합니다. 상태를 직접 바꾸지 않는 데이터 모델이며, 치명타에서는 IsDied가 먼저 설정된 뒤 두 이벤트가 발생한다는 순서가 Controller의 분기 결과를 결정합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Managers/InputManager.cs",
+      "pattern": "public void OnAttackInput(InputAction.CallbackContext context)",
+      "title": "4. 플레이어 의도의 입구",
+      "description": "InputManager는 입력값을 저장하거나 AttackPressed/DodgePressed를 알릴 뿐 HFSM을 모릅니다. 입력 조건이나 상태 전이를 여기 넣으면 다시 결합되므로, 이 파일은 장치 입력을 게임 의도로 바꾸는 경계로만 봅니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/PlayerController.cs",
+      "pattern": "protected override void Awake()",
+      "title": "5. 플레이어 조립 지점",
+      "description": "PlayerController가 이동·공격·애니메이션·데이터 모듈을 모으고 생명주기에서 이벤트를 구독합니다. Controller는 전이와 의존성 연결을 담당하며, 실제 이동이나 공격 판정 구현을 직접 갖지 않는 것이 현재 구조의 기준입니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/PlayerController.cs",
+      "pattern": "protected override StateBase<EntityLifeStateId> CreateAliveState()",
+      "title": "6. Player Alive 계층",
+      "description": "Alive 아래에 Locomotion, Combat, Hit이 서로 배타적인 상태로 등록됩니다. Locomotion에서 Combat으로 가면 이동 하위 FSM이 종료되므로, 공격 중 정지 같은 동작은 이 계층 선택의 직접적인 결과입니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/PlayerController.cs",
+      "pattern": "private void CreateLocomotionStateMachine()",
+      "title": "7. 이동 전이표",
+      "description": "Idle·Move·Dodge 상태와 입력/애니메이션 완료 조건을 한곳에서 비교합니다. 이동 방식은 Module에서, 어느 상태로 바뀌는지는 이 등록부에서 수정해야 하며 Dodge 종료 조건이 애니메이션 경로와 일치하는지도 함께 확인합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/States/States_Player.cs",
+      "pattern": "public sealed class PlayerMoveState",
+      "title": "8. 상태가 행동을 조율하는 방식",
+      "description": "Player 상태들은 주입받은 모듈을 OnEnter/OnLogic/OnExit에서 호출합니다. 상태에는 상태 전환 조건을 추가하지 않고, 그 상태에 들어왔을 때 시작·반복·정리해야 할 행동만 두는 패턴을 Idle, Move, Dodge 순서로 비교합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/PlayerController.cs",
+      "pattern": "public void RequestAttack()",
+      "title": "9. 공격 요청의 검증 경로",
+      "description": "AttackPressed가 여기로 들어오면 생존·현재 상태·스태미나를 검사한 뒤 첫 공격 전이를 트리거하거나 콤보를 예약합니다. 입력 이벤트와 실제 상태 변경 사이의 정책은 이 메서드가 소유합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/PlayerController.cs",
+      "pattern": "private void CreateCombatStateMachine()",
+      "title": "10. 콤보 전이표",
+      "description": "Attack1→2→3 전이와 Combat 탈출이 애니메이션 완료 및 queuedComboFrom으로 결정됩니다. 콤보 허용 시점이나 종료 규칙을 바꾸려면 먼저 이 등록부와 TryQueueComboAttack을 함께 추적해야 합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/States/States_Player.cs",
+      "pattern": "public sealed class PlayerAttackState",
+      "title": "11. 공격 상태의 실행 순서",
+      "description": "각 공격 진입은 판정을 닫고, 현재 입력 방향을 바라본 뒤, 해당 공격 애니메이션을 재생합니다. 콤보 단계마다 같은 클래스가 다른 attackState로 재사용되므로 단계별 차이는 Controller의 상태 ID와 애니메이션 에셋에서 확인해야 합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/Modules/Player/PlayerMoveModule.cs",
+      "pattern": "public void Move(Vector3 input)",
+      "title": "12. 실제 플레이어 이동",
+      "description": "카메라 기준 방향 변환, 가속, 회전, CharacterController 이동과 별도의 중력 갱신이 이 모듈에 있습니다. 이동 수치와 물리 실행은 여기서 바꾸되 HFSM 전이나 스태미나 판단은 넣지 않습니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/Modules/EntityAnimationModule.cs",
+      "pattern": "public bool IsAnimationComplete(int stateHash)",
+      "title": "13. 애니메이션과 HFSM의 경계",
+      "description": "상태는 애니메이션을 재생하고 Controller는 normalizedTime 완료 여부로 전이합니다. 코드의 fullPathHash가 Animator Controller의 실제 Base Layer/서브 스테이트 머신 경로와 다르면 재생과 전이가 동시에 막히므로 에셋 구조까지 한 세트로 확인합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/AnimClipRelay/AttackAnimationEventRelay.cs",
+      "pattern": "public void OpenAttackZone()",
+      "title": "14. 애니메이션 이벤트의 제한된 역할",
+      "description": "Animation Event는 타격 판정 창을 열고 닫는 정확한 타이밍만 전달합니다. 상태 전이, 콤보 예약, 애니메이션 종료를 Relay에 다시 넣지 않는 것이 현재 분리 원칙입니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/Logics/EnemyBrain.cs",
+      "pattern": "private void RefreshChaseSnapshot()",
+      "title": "15. Enemy 판단 데이터",
+      "description": "EnemyBrain은 탐지·추적 포기·공격 가능·목적지를 계산하고 짧은 주기로 결과를 캐시합니다. Brain은 상태를 직접 바꾸지 않고 Controller가 읽을 조건과 State가 사용할 목적지만 제공합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/EnemyController.cs",
+      "pattern": "private void RegisterNormalTransitions()",
+      "title": "16. Enemy 전이표",
+      "description": "Idle·Patrol·Chase·Attack·Hit 전이가 Brain, 이동 완료, 애니메이션 완료 조건으로 연결됩니다. 특히 Hit→Chase와 Attack→Chase가 승인된 복귀 규칙이며, AI 흐름 수정은 여기서 시작합니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Entities/States/States_Enemy.cs",
+      "pattern": "public sealed class EnemyAttackState",
+      "title": "17. Enemy 상태 실행",
+      "description": "Enemy 상태는 Brain의 결과를 받아 이동·회전·공격·애니메이션 모듈을 실행합니다. Player 상태와 비교하면 같은 상태 패턴 안에서 입력 대신 Brain을 의존성으로 받는 차이를 확인할 수 있습니다."
+    },
+    {
+      "file": "Assets/02_Scripts/Tests/EditMode/HealthTests.cs",
+      "pattern": "public class HealthTests",
+      "title": "18. 수정 전후의 안전망",
+      "description": "현재 자동 테스트는 Health와 Status 중심이며 HFSM 전이와 상태별 모듈 호출은 아직 직접 보호하지 않습니다. 구조를 이해한 뒤 첫 개선은 새 추상화보다 공격·피격·사망 이벤트 순서와 주요 전이를 재현하는 작은 테스트를 추가하는 것이 적절합니다."
+    }
+  ]
+}

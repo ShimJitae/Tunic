@@ -17,6 +17,12 @@ public class PlayerData : EntityData
     [SerializeField, Min(0f)] private float dodgeStaminaCost = 5f;
     public float DodgeStaminaCost => dodgeStaminaCost;
 
+    [Header("Combo")]
+    [SerializeField, Range(0f, 1f)] private float comboInputStartTime = 0.5f;
+    public float ComboInputStartTime => comboInputStartTime;
+    [SerializeField, Range(0f, 1f)] private float comboInputEndTime = 0.85f;
+    public float ComboInputEndTime => comboInputEndTime;
+
     [Header("Dodge")]
     [SerializeField] private float dodgeDist = 4f;
     public float DodgeDist => dodgeDist;

@@ -1,6 +1,7 @@
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StatusTests
 {
@@ -48,6 +49,36 @@ public class StatusTests
 
         Assert.That(result, Is.True);
         Assert.That(status.CurrStamina, Is.EqualTo(staminaBeforeUse));
+    }
+
+    [Test]
+    public void SetUpData_RefreshesSubscribedStaminaView()
+    {
+        Assert.That(status.TakeStamina(10f), Is.True);
+
+        GameObject viewObject = new GameObject(nameof(SetUpData_RefreshesSubscribedStaminaView), typeof(RectTransform));
+        StatusPresenter presenter = null;
+
+        try
+        {
+            Slider slider = viewObject.AddComponent<Slider>();
+            GaugeView staminaView = viewObject.AddComponent<GaugeView>();
+            FieldInfo gaugeSliderField = typeof(GaugeView).GetField("gaugeSlider", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            Assert.That(gaugeSliderField, Is.Not.Null);
+            gaugeSliderField.SetValue(staminaView, slider);
+
+            presenter = new StatusPresenter(status, null, staminaView);
+            status.SetUpData(playerData);
+
+            Assert.That(slider.maxValue, Is.EqualTo(status.MaxStamina));
+            Assert.That(slider.value, Is.EqualTo(status.CurrStamina));
+        }
+        finally
+        {
+            presenter?.Dispose();
+            Object.DestroyImmediate(viewObject);
+        }
     }
 
     [Test]
