@@ -47,8 +47,7 @@ public partial class BackStepAction : Action
 
         if (navMeshAgent == null)
         {
-            LogFailure(
-                $"Back Step: {Agent.Value.name}에 NavMeshAgent가 없습니다.");
+            LogFailure($"Back Step: {Agent.Value.name}에 NavMeshAgent가 없습니다.");
 
             return Status.Failure;
         }
@@ -89,9 +88,7 @@ public partial class BackStepAction : Action
             return Status.Failure;
         }
 
-        Vector3 awayDirection =
-            navMeshAgent.transform.position -
-            Target.Value.transform.position;
+        Vector3 awayDirection = navMeshAgent.transform.position - Target.Value.transform.position;
 
         // 높이 차이를 제외하고 XZ 평면에서만 방향을 계산한다.
         awayDirection.y = 0f;
@@ -113,8 +110,7 @@ public partial class BackStepAction : Action
         float moveSpeed = Mathf.Max(0f, Speed.Value);
 
         // NavMesh 위에서 플레이어 반대 방향으로 이동한다.
-        Vector3 movement =
-            awayDirection * moveSpeed * Time.deltaTime;
+        Vector3 movement = awayDirection * moveSpeed * Time.deltaTime;
 
         navMeshAgent.Move(movement);
 
