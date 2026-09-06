@@ -1,9 +1,8 @@
-using UnityEngine;
 using DG.Tweening;
-using System;
+using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
+public class PlayerMoveModule : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -22,23 +21,28 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 
     private CharacterController characterController;
 
-    public event Action OnDodge;
-
     private float currentSpeed;
     private float rotationVelocity;
     private float verticalVelocity;
-
-    public Vector3 MoveInfo { get; set; }
+    private Tween dodgeTween;
 
     private void Awake()
     {
-        cameraTransform = Camera.main != null ? Camera.main.transform : null;
+        if (cameraTransform == null && Camera.main != null)
+            cameraTransform = Camera.main.transform;
+
         if (cameraTransform == null)
         {
             Debug.LogError("PlayerMoveModule : Main 카메라를 찾지 못했습니다. cameraTransform에는 null 값이 할당되어 있습니다.");
         }
 
         characterController = GetComponent<CharacterController>();
+    }
+
+    private void OnDisable()
+    {
+        Stop();
+        CancelDodge();
     }
 
     private void LateUpdate()
@@ -57,15 +61,15 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
         groundedGravity = playerData.GroundedGravity;
     }
 
-    public void Move()
+    public void Move(Vector3 input)
     {
-        Vector3 inputDirection = new Vector3(MoveInfo.x, 0f, MoveInfo.z);
+        Vector3 inputDirection = new Vector3(input.x, 0f, input.z);
         float inputMagnitude = Mathf.Clamp01(inputDirection.magnitude);
 
         if (inputMagnitude <= 0.001f ||
             !TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight))
         {
-            currentSpeed = 0f;
+            Stop();
             return;
         }
 
@@ -79,11 +83,33 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
         characterController.Move(moveDirection * currentSpeed * Time.deltaTime);
     }
 
-    public void Dodge()
+    public void Stop()
     {
-        OnDodge?.Invoke();
+        currentSpeed = 0f;
+    }
 
-        Vector3 inputDirection = InputManager.Instance != null ? InputManager.Instance.MoveInput : MoveInfo;
+    public void FaceInputDirection(Vector3 input)
+    {
+        Vector3 inputDirection = new Vector3(input.x, 0f, input.z);
+        if (inputDirection.sqrMagnitude <= 0.0001f ||
+            !TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight))
+        {
+            return;
+        }
+
+        Vector3 lookDirection = cameraForward * inputDirection.z + cameraRight * inputDirection.x;
+        lookDirection.y = 0f;
+
+        if (lookDirection.sqrMagnitude <= 0.0001f)
+            return;
+
+        rotationVelocity = 0f;
+        transform.rotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
+    }
+
+    public void StartDodge(Vector3 inputDirection)
+    {
+        CancelDodge();
 
         inputDirection.y = 0f;
 
@@ -117,14 +143,25 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
 
         float movedDistance = 0f;
 
-        DOVirtual.Float(0f, dodgeDist, dodgeDuration, distance =>
-        {
-            float deltaDistance = distance - movedDistance;
-            movedDistance = distance;
+        dodgeTween = DOVirtual
+            .Float(0f, dodgeDist, dodgeDuration, distance =>
+            {
+                float deltaDistance = distance - movedDistance;
+                movedDistance = distance;
 
-            characterController.Move(moveDirection * deltaDistance);
-        })
-        .SetEase(Ease.OutCubic);
+                characterController.Move(moveDirection * deltaDistance);
+            })
+            .SetEase(Ease.OutCubic)
+            .SetTarget(this)
+            .OnComplete(() => dodgeTween = null);
+    }
+
+    public void CancelDodge()
+    {
+        if (dodgeTween != null && dodgeTween.IsActive())
+            dodgeTween.Kill();
+
+        dodgeTween = null;
     }
 
     private bool TryGetCameraBasis(out Vector3 cameraForward, out Vector3 cameraRight)
@@ -132,8 +169,11 @@ public class PlayerMoveModule : MonoBehaviour, IMoveStrategy
         cameraForward = Vector3.zero;
         cameraRight = Vector3.zero;
 
-        // if (!TryResolveCamera())
-        //     return false;
+        if (cameraTransform == null && Camera.main != null)
+            cameraTransform = Camera.main.transform;
+
+        if (cameraTransform == null)
+            return false;
 
         cameraForward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up);
 
