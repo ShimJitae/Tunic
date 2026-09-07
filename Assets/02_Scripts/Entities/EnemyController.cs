@@ -70,13 +70,17 @@ public class EnemyController : EntityController
         base.OnEnable();
 
         if (Health != null)
+        {
             Health.OnDamaged += HandleDamaged;
+        }
     }
 
     protected override void OnDisable()
     {
         if (Health != null)
+        {
             Health.OnDamaged -= HandleDamaged;
+        }
 
         if (moveModule != null)
             moveModule.Stop();
@@ -153,5 +157,17 @@ public class EnemyController : EntityController
         }
 
         aliveFsm.Trigger(EnemyStateEvent.Damaged);
+    }
+
+    protected override void HandleDied()
+    {
+        base.HandleDied();
+
+        if (gameObject.TryGetComponent(out Rigidbody rigidbody))
+        {
+            rigidbody.linearVelocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
+            rigidbody.detectCollisions = false;
+        }
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
   maxHP: 1000
   moveSpeed: 8
-  attackDamage: 10
+  attackDamage: 60
   maxStamina: 50
   staminaRecoveryDelay: 1.5
   staminaRecoveryPerSecond: 15
