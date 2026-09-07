@@ -92,7 +92,7 @@ public abstract class EntityController : MonoBehaviour
         lifeFsm.OnEnter();
     }
 
-    private void HandleDied()
+    protected virtual void HandleDied()
     {
         if (lifeFsm == null || !lifeFsm.IsInitialized)
             return;
