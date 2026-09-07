@@ -38,30 +38,56 @@ public class PlayerController : EntityController
 
     protected override void Awake()
     {
+        PlayerController[] players = FindObjectsByType<PlayerController>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None);
+
+        if (players.Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+
         base.Awake();
 
+        // 기존 컴포넌트 초기화 코드
         if (!TryGetComponent(out moveModule))
         {
-            Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerMoveModule)} component.", this);
+            Debug.LogError(
+                $"{nameof(PlayerController)} requires a {nameof(PlayerMoveModule)} component.",
+                this);
+
             enabled = false;
         }
 
         if (!TryGetComponent(out attackModule))
         {
-            Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerAttackModule)} component.", this);
+            Debug.LogError(
+                $"{nameof(PlayerController)} requires a {nameof(PlayerAttackModule)} component.",
+                this);
+
             enabled = false;
         }
 
         animationModule = GetComponentInChildren<PlayerAnimationModule>();
+
         if (animationModule == null)
         {
-            Debug.LogError($"{nameof(PlayerController)} requires a {nameof(PlayerAnimationModule)} component.", this);
+            Debug.LogError(
+                $"{nameof(PlayerController)} requires a {nameof(PlayerAnimationModule)} component.",
+                this);
+
             enabled = false;
         }
 
         if (dataSetUp == null && !TryGetComponent(out dataSetUp))
         {
-            Debug.LogError($"{nameof(PlayerController)} requires a {nameof(DataSetUp_Player)} component.", this);
+            Debug.LogError(
+                $"{nameof(PlayerController)} requires a {nameof(DataSetUp_Player)} component.",
+                this);
+
             enabled = false;
         }
     }
