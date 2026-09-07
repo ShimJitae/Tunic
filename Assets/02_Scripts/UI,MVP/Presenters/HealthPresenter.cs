@@ -14,6 +14,7 @@ public class HealthPresenter : IDisposable
 
         model.OnDamaged += HandleHealthChanged;
         model.OnRestored += HandleHealthChanged;
+        model.OnDied += HandleDied;
     }
 
     private void HandleHealthChanged(float _)
@@ -21,10 +22,18 @@ public class HealthPresenter : IDisposable
         view.SetGauge(model.CurrHP, model.MaxHP);
     }
 
+    private void HandleDied()
+    {
+        if (model.gameObject.CompareTag("Enemy"))
+            view.gameObject.SetActive(false);
+    }
+
+
     public virtual void Dispose()
     {
         model.OnDamaged -= HandleHealthChanged;
         model.OnRestored -= HandleHealthChanged;
+        model.OnDied -= HandleDied;
     }
 
     public virtual void RefreshView()
