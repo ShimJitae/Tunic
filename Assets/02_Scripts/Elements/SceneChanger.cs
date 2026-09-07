@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class SceneChanger : MonoBehaviour
 {
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Skrrr");
-        }
+        if (!other.CompareTag("Player"))
+            return;
+
+        SceneLoadManager.Instance.LoadBossScene();
     }
 }
