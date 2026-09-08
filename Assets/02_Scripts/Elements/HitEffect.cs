@@ -6,6 +6,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
+[RequireComponent(typeof(SFXPlayer))]
 [RequireComponent(typeof(CinemachineImpulseSource))]
 public class HitEffect : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class HitEffect : MonoBehaviour
 
     [Header("카메라 흔들림")]
     [SerializeField, Min(0f)] private float impulseCamera = 1f;
+
+    [Header("피격 시 효과음")]
+    [SerializeField] private SFXPlayer hitSFXPlayer;
 
     private Health health;
     private CinemachineImpulseSource impulseSource;
@@ -28,8 +32,12 @@ public class HitEffect : MonoBehaviour
     private void Awake()
     {
         health = GetComponent<Health>();
-        impulseSource =
-            GetComponent<CinemachineImpulseSource>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+
+        if (hitSFXPlayer == null || !gameObject.TryGetComponent(out hitSFXPlayer))
+        {
+            Debug.LogError($"HitEffect : {gameObject.name}에 SFXPlayer가 연결되지 않았습니다.");
+        }
 
         CacheMaterials();
     }
@@ -37,11 +45,13 @@ public class HitEffect : MonoBehaviour
     private void OnEnable()
     {
         health.OnDamaged += HandleDamaged;
+        health.OnDamaged += hitSFXPlayer.Play;
     }
 
     private void OnDisable()
     {
         health.OnDamaged -= HandleDamaged;
+        health.OnDamaged -= hitSFXPlayer.Play;
 
         hitColorVersion++;
 

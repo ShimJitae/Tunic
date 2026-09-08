@@ -20,7 +20,7 @@ MonoBehaviour:
   staminaRecoveryPerSecond: 15
   attackStaminaCost: 10
   dodgeStaminaCost: 5
-  comboInputStartTime: 0.5
+  comboInputStartTime: 0.25
   comboInputEndTime: 0.85
   dodgeDist: 3.5
   dodgeDuration: 0.75
