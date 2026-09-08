@@ -82,4 +82,9 @@ public sealed class BossAttackModule : MonoBehaviour, IAttackZoneController
         weapon.AttackZone.enabled = false;
         OnAttackZoneChanged?.Invoke(false);
     }
+
+    public void SetUpData(BossData bossData)
+    {
+        weapon.Damage = bossData.AttackDamage;
+    }
 }
