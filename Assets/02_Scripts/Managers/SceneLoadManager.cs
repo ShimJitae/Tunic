@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoadManager : MonoBehaviour
 {
-    private const string BossSceneName = "BossScene";
     private const string StartPointName = "StartPoint";
 
     private static SceneLoadManager instance;
@@ -23,9 +22,6 @@ public class SceneLoadManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        if (player == null)
-            player = FindFirstObjectByType<PlayerController>();
-
         SceneManager.sceneLoaded += HandleSceneLoaded;
     }
 
@@ -38,40 +34,30 @@ public class SceneLoadManager : MonoBehaviour
         instance = null;
     }
 
-    public void LoadBossScene()
+    public void LoadScene(string sceneName)
     {
-        if (!TryCachePlayer())
-            return;
-
-        SceneManager.LoadScene(BossSceneName);
+        SceneManager.LoadScene(sceneName);
     }
 
     private void HandleSceneLoaded(
         Scene scene,
         LoadSceneMode loadSceneMode)
     {
-        if (scene.name != BossSceneName)
-            return;
-
+        SetUpPlayer();
         MovePlayerToStartPoint();
         SetCinemachineTarget();
     }
 
-    private bool TryCachePlayer()
+    private void SetUpPlayer()
     {
-        if (player != null)
-            return true;
+        if (SceneManager.GetActiveScene().name == "TitleScene" && player != null)
+        {
+            GameObject.Destroy(player.gameObject);
+            return;
+        }
 
-        player = FindFirstObjectByType<PlayerController>();
-
-        if (player != null)
-            return true;
-
-        Debug.LogError(
-            $"{nameof(SceneLoadManager)}: PlayerController를 찾지 못했습니다.",
-            this);
-
-        return false;
+        if (player == null)
+            player = FindFirstObjectByType<PlayerController>();
     }
 
     private void MovePlayerToStartPoint()
@@ -80,10 +66,10 @@ public class SceneLoadManager : MonoBehaviour
 
         if (startPoint == null)
         {
-            Debug.LogError(
-                $"{nameof(SceneLoadManager)}: " +
-                $"{BossSceneName}에서 {StartPointName}를 찾지 못했습니다.",
-                this);
+            // Debug.LogError(
+            //     $"{nameof(SceneLoadManager)}: " +
+            //     $"{SceneManager.GetActiveScene().name}에서 {StartPointName}를 찾지 못했습니다.",
+            //     this);
 
             return;
         }
@@ -121,14 +107,24 @@ public class SceneLoadManager : MonoBehaviour
 
         if (cinemachineCamera == null)
         {
-            Debug.LogError(
-                $"{nameof(SceneLoadManager)}: " +
-                "CinemachineCamera를 찾지 못했습니다.",
-                this);
+            // Debug.LogError(
+            //     $"{nameof(SceneLoadManager)}: " +
+            //     "CinemachineCamera를 찾지 못했습니다.",
+            //     this);
 
             return;
         }
 
         cinemachineCamera.Target.TrackingTarget = player.transform;
+    }
+
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
