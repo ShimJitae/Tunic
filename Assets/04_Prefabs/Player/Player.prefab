@@ -1854,10 +1854,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5720671763530157338}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f57fe1a6422e4b0449be737d26b15f03, type: 3}
+  m_Script: {fileID: 11500000, guid: 3152256e2f8717c4b884fa6164abad67, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimClipRelay
-  attackParticleSystem: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::AttackAnimationEventRelay
+  attackParticles: []
 --- !u!1 &5987801657959121439
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,10 +3331,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8699319080733137931}
     m_Modifications:
-    - target: {fileID: 3020563256231523337, guid: d020f8b0b16496b468c452b39696bd40, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6102435735708225087, guid: d020f8b0b16496b468c452b39696bd40, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3378,10 +3374,6 @@ PrefabInstance:
     - target: {fileID: 7127910823143357484, guid: d020f8b0b16496b468c452b39696bd40, type: 3}
       propertyPath: m_Name
       value: Mesh_Warrior_WeaponSword
-      objectReference: {fileID: 0}
-    - target: {fileID: 8851749392043804912, guid: d020f8b0b16496b468c452b39696bd40, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
