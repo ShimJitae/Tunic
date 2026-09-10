@@ -1,16 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(EventTrigger))]
+[RequireComponent(typeof(TriggerEventBlock))]
 public class ActivateObjectOnEnter : MonoBehaviour
 {
     [SerializeField] private List<GameObject> targets = new();
 
-    private EventTrigger eventTrigger;
+    private TriggerEventBlock eventTrigger;
 
     private void Awake()
     {
-        eventTrigger = GetComponent<EventTrigger>();
+        eventTrigger = GetComponent<TriggerEventBlock>();
+    }
+
+    void Start()
+    {
+        foreach (GameObject target in targets)
+        {
+            if (target != null)
+                target.SetActive(false);
+        }
     }
 
     private void OnEnable()

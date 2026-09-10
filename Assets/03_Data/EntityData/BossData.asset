@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7015c1dabf0650d43a8fabd167f114f1, type: 3}
   m_Name: BossData
   m_EditorClassIdentifier: Assembly-CSharp::BossData
-  maxHP: 1000
+  maxHP: 300
   moveSpeed: 3
   attackDamage: 15
   meleeAttackRange: 3.5

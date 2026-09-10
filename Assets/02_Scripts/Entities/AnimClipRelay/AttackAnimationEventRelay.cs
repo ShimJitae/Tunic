@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
+using Unity.Behavior;
 
 public class AttackAnimationEventRelay : MonoBehaviour
 {
+    [SerializeField] private BehaviorGraphAgent behaviorGraphAgent;
+
     [Serializable]
     private sealed class AttackParticleBinding
     {
@@ -93,5 +96,10 @@ public class AttackAnimationEventRelay : MonoBehaviour
 
             binding.particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
+    }
+
+    public void DisableBT()
+    {
+        behaviorGraphAgent.End();
     }
 }
