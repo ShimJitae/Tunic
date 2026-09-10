@@ -5,6 +5,9 @@ public class Weapon : MonoBehaviour
 {
     private Collider attackZone;
 
+    private readonly HashSet<IDamageable> hitTargets = new();
+    private IAttackZoneController attackZoneController;
+
     [SerializeField]
     private List<LayerMask> targetLayers = new();
 
@@ -15,6 +18,7 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         attackZone = GetComponentInChildren<Collider>();
+        attackZoneController = GetComponentInParent<IAttackZoneController>();
 
         if (attackZone == null)
         {
@@ -65,6 +69,24 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (attackZoneController != null)
+            attackZoneController.OnAttackZoneChanged += HandleAttackZoneChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (attackZoneController != null)
+            attackZoneController.OnAttackZoneChanged -= HandleAttackZoneChanged;
+    }
+
+    private void HandleAttackZoneChanged(bool isActive)
+    {
+        if (isActive)
+            hitTargets.Clear();
+    }
+
     private void AddTargetLayer(string layerName)
     {
         LayerMask targetLayer = LayerMask.GetMask(layerName);
@@ -96,6 +118,10 @@ public class Weapon : MonoBehaviour
                 continue;
 
             if (!other.TryGetComponent<IDamageable>(out var damageable))
+                return;
+
+            // 이미 맞힌 대상이면 피해를 주지 않는다.
+            if (!hitTargets.Add(damageable))
                 return;
 
             damageable.TakeDamage(Damage);

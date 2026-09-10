@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -26,8 +24,7 @@ public class HitEffect : MonoBehaviour
     private readonly List<Material> materials = new();
     private readonly List<Color> originalColors = new();
 
-    private int hitColorVersion;
-
+    private Tween hitColorTween;
 
     private void Awake()
     {
@@ -53,14 +50,13 @@ public class HitEffect : MonoBehaviour
         health.OnDamaged -= HandleDamaged;
         health.OnDamaged -= hitSFXPlayer.Play;
 
-        hitColorVersion++;
-
+        hitColorTween?.Kill();
         RestoreOriginalColors();
     }
 
     private void HandleDamaged(float _)
     {
-        PlayHitColorAsync().Forget();
+        PlayHitColor();
         PlayCameraImpulse();
     }
 
@@ -88,26 +84,14 @@ public class HitEffect : MonoBehaviour
         }
     }
 
-    private async UniTask PlayHitColorAsync()
+    private void PlayHitColor()
     {
-        int currentVersion = ++hitColorVersion;
-
+        hitColorTween?.Kill();
         SetMaterialColors(hitColor);
 
-        bool isCanceled = await UniTask
-            .Delay(
-                TimeSpan.FromSeconds(hitColorDuration),
-                cancellationToken:
-                    this.GetCancellationTokenOnDestroy())
-            .SuppressCancellationThrow();
-
-        if (isCanceled ||
-            currentVersion != hitColorVersion)
-        {
-            return;
-        }
-
-        RestoreOriginalColors();
+        hitColorTween = DOVirtual.DelayedCall(
+                hitColorDuration, RestoreOriginalColors, ignoreTimeScale: false)
+            .OnKill(() => hitColorTween = null);
     }
 
     private void SetMaterialColors(Color color)
