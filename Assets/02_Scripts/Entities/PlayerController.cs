@@ -142,7 +142,7 @@ public class PlayerController : EntityController
         aliveFsm.SetStartState(PlayerAliveStateId.Locomotion);
 
         // Locomotion -> Combat, 공격 요청 시
-        aliveFsm.AddTriggerTransition(PlayerStateEvent.AttackRequested, PlayerAliveStateId.Locomotion, PlayerAliveStateId.Combat);
+        aliveFsm.AddTriggerTransition(PlayerStateEvent.AttackRequested, PlayerAliveStateId.Locomotion, PlayerAliveStateId.Combat, _ => locomotionFsm.ActiveStateName != PlayerLocomotionStateId.Dodge);
 
         // Any -> Hit, 피격 시 즉시
         aliveFsm.AddTriggerTransitionFromAny(PlayerStateEvent.Damaged, PlayerAliveStateId.Hit, forceInstantly: true);
