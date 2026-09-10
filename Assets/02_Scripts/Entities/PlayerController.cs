@@ -19,10 +19,6 @@ public class PlayerController : EntityController
     private StateMachine<PlayerAliveStateId, PlayerCombatStateId, PlayerStateEvent> combatFsm;
     private PlayerCombatStateId? queuedComboFrom;
 
-    public event Action<PlayerAliveStateId> OnAliveStateEntered;
-    public event Action<PlayerLocomotionStateId> OnLocomotionStateEntered;
-    public event Action<PlayerCombatStateId> OnCombatStateEntered;
-
     private Status PlayerStatus => Health as Status;
 
     public PlayerAliveStateId CurrentAliveState => aliveFsm.ActiveStateName;
@@ -139,8 +135,6 @@ public class PlayerController : EntityController
 
         aliveFsm = new StateMachine<EntityLifeStateId, PlayerAliveStateId, PlayerStateEvent>();
 
-        aliveFsm.StateChanged += _ => OnAliveStateEntered?.Invoke(aliveFsm.ActiveStateName);
-
         aliveFsm.AddState(PlayerAliveStateId.Locomotion, locomotionFsm);
         aliveFsm.AddState(PlayerAliveStateId.Combat, combatFsm);
         aliveFsm.AddState(PlayerAliveStateId.Hit, new PlayerHitState(animationModule, attackModule));
@@ -148,7 +142,7 @@ public class PlayerController : EntityController
         aliveFsm.SetStartState(PlayerAliveStateId.Locomotion);
 
         // Locomotion -> Combat, 공격 요청 시
-        aliveFsm.AddTriggerTransition(PlayerStateEvent.AttackRequested, PlayerAliveStateId.Locomotion, PlayerAliveStateId.Combat);
+        aliveFsm.AddTriggerTransition(PlayerStateEvent.AttackRequested, PlayerAliveStateId.Locomotion, PlayerAliveStateId.Combat, _ => locomotionFsm.ActiveStateName != PlayerLocomotionStateId.Dodge);
 
         // Any -> Hit, 피격 시 즉시
         aliveFsm.AddTriggerTransitionFromAny(PlayerStateEvent.Damaged, PlayerAliveStateId.Hit, forceInstantly: true);
@@ -205,8 +199,6 @@ public class PlayerController : EntityController
     {
         locomotionFsm = new StateMachine<PlayerAliveStateId, PlayerLocomotionStateId, PlayerStateEvent>(rememberLastState: true);
 
-        locomotionFsm.StateChanged += _ => OnLocomotionStateEntered?.Invoke(locomotionFsm.ActiveStateName);
-
         locomotionFsm.AddState(PlayerLocomotionStateId.Idle, new PlayerIdleState(moveModule, animationModule));
         locomotionFsm.AddState(PlayerLocomotionStateId.Move, new PlayerMoveState(moveModule, animationModule, GetMoveInput));
         locomotionFsm.AddState(PlayerLocomotionStateId.Dodge, new PlayerDodgeState(moveModule, animationModule, Health, GetMoveInput));
@@ -235,8 +227,6 @@ public class PlayerController : EntityController
     private void CreateCombatStateMachine()
     {
         combatFsm = new StateMachine<PlayerAliveStateId, PlayerCombatStateId, PlayerStateEvent>(needsExitTime: true);
-
-        combatFsm.StateChanged += _ => OnCombatStateEntered?.Invoke(combatFsm.ActiveStateName);
 
         combatFsm.AddState(PlayerCombatStateId.Attack1, new PlayerAttackState(PlayerCombatStateId.Attack1, moveModule, animationModule, attackModule, GetMoveInput));
         combatFsm.AddState(PlayerCombatStateId.Attack2, new PlayerAttackState(PlayerCombatStateId.Attack2, moveModule, animationModule, attackModule, GetMoveInput));
