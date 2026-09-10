@@ -2181,6 +2181,18 @@ PrefabInstance:
       propertyPath: m_AgentTypeID
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6350378998074768526, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350378998074768526, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350378998074768526, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8764186899216054300, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3
