@@ -2173,13 +2173,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 613715873261668792, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 967072284434393839, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 967072284434393839, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386386256249058229, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4838343194664889799, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4838343194664889799, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4838343194664889799, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5875442293657707479, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5875442293657707479, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
       propertyPath: m_AgentTypeID
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304449090037036968, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6350378998074768526, guid: b5465e193811bce4f9f0253581c451b4, type: 3}
       propertyPath: m_LocalRotation.w
