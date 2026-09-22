@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 5043408665055915707}
   - component: {fileID: 8345458195364882696}
   - component: {fileID: 2091210436384846050}
-  - component: {fileID: 1212614636801046893}
+  - component: {fileID: 8499831345557616796}
+  - component: {fileID: 2722766643517435306}
   m_Layer: 6
   m_Name: BossProjectile
   m_TagString: Untagged
@@ -91,7 +92,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1212614636801046893
+--- !u!114 &8499831345557616796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +101,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6229187628422815052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21dc415a852125a45b3b6e8c0179c9e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 296915052efa0604b819fcb5d46e79c6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tunic.BossCombat.BossProjectile
-  radius: 0.18
+  m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  targetLayers:
+  - serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &2722766643517435306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6229187628422815052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba0b398e4d317142ab6d64adea3515f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bullet
