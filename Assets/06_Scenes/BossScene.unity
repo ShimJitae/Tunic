@@ -698,7 +698,7 @@ Transform:
   m_GameObject: {fileID: 128858610}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.29322, y: 1.2509999, z: 27.362843}
+  m_LocalPosition: {x: 19.31, y: 1.2509999, z: 27.362843}
   m_LocalScale: {x: 0.1, y: 1.5, z: 50.154934}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2477,7 +2477,7 @@ Transform:
   m_GameObject: {fileID: 940497508}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.895107, y: 1.2509999, z: 27.262844}
+  m_LocalPosition: {x: -20.58, y: 1.2509999, z: 27.262844}
   m_LocalScale: {x: 0.1, y: 1.5, z: 50.154934}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3069,6 +3069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoadManager
   player: {fileID: 0}
+  fadeView: {fileID: 0}
 --- !u!4 &1269652445
 Transform:
   m_ObjectHideFlags: 0
@@ -4451,7 +4452,7 @@ Transform:
   m_GameObject: {fileID: 1749011553}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.7676384, y: 1.2509999, z: 52.235374}
+  m_LocalPosition: {x: -0.77, y: 1.2509999, z: 41.84}
   m_LocalScale: {x: 0.1, y: 1.5, z: 50.154934}
   m_ConstrainProportionsScale: 0
   m_Children: []
