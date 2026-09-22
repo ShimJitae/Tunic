@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,11 +6,15 @@ using UnityEngine.SceneManagement;
 public class SceneLoadManager : MonoBehaviour
 {
     private const string StartPointName = "StartPoint";
+    private const string TitleSceneName = "TitleScene";
 
     private static SceneLoadManager instance;
     public static SceneLoadManager Instance => instance;
 
     [SerializeField] private PlayerController player;
+    [SerializeField] private SceneFadeView fadeView;
+
+    private bool isLoading;
 
     private void Awake()
     {
@@ -21,27 +26,25 @@ public class SceneLoadManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-
-        SceneManager.sceneLoaded += HandleSceneLoaded;
     }
 
     private void OnDestroy()
     {
         if (instance != this)
             return;
-
-        SceneManager.sceneLoaded -= HandleSceneLoaded;
         instance = null;
     }
 
     public void LoadScene(string sceneName)
     {
+        if (isLoading)
+            return;
+
+        LoadSceneAsync(sceneName).Forget();
         SceneManager.LoadScene(sceneName);
     }
 
-    private void HandleSceneLoaded(
-        Scene scene,
-        LoadSceneMode loadSceneMode)
+    private async UniTask LoadSceneAsync(string sceneName)
     {
         SetUpPlayer();
         MovePlayerToStartPoint();
@@ -56,6 +59,67 @@ public class SceneLoadManager : MonoBehaviour
             return;
         }
 
+        isLoading = true;
+
+        try
+        {
+            await fadeView.FadeInAsync(); // 현재 화면을 검게 덮음
+
+            AsyncOperation operation = SceneManager.LoadSceneAsync(
+                sceneName,
+                LoadSceneMode.Single);
+
+            if (operation == null)
+            {
+                Debug.LogError(
+                    $"{nameof(SceneLoadManager)}: " +
+                    $"{sceneName} 씬을 로드할 수 없습니다.",
+                    this);
+
+                await fadeView.FadeOutAsync();
+
+                return;
+            }
+
+            await operation.ToUniTask(); // Scene 로드가 끝날 때까지 대기
+            await UniTask.NextFrame(); // 새 Scene의 초기화를 위해 한 프레임 대기
+
+            Scene loadedScene = SceneManager.GetActiveScene();
+
+            SetUpPlayer(loadedScene);
+
+            if (player != null)
+            {
+                MovePlayerToStartPoint();
+                SetCinemachineTarget();
+            }
+
+            await fadeView.FadeOutAsync();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void SetUpPlayer(Scene scene)
+    {
+        if (scene.name == TitleSceneName)
+        {
+            if (player != null)
+            {
+                Destroy(player.gameObject);
+                player = null;
+            }
+
+            return;
+        }
+
+        if (player == null)
+        {
+            player =
+                FindFirstObjectByType<PlayerController>();
+        }
         if (player == null)
             player = FindFirstObjectByType<PlayerController>();
     }
