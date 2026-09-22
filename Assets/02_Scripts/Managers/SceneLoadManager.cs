@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoadManager : MonoBehaviour
 {
-    private const string BossSceneName = "BossScene";
     private const string StartPointName = "StartPoint";
     private const string TitleSceneName = "TitleScene";
 
@@ -27,14 +26,6 @@ public class SceneLoadManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-<<<<<<< Updated upstream
-
-        if (player == null)
-            player = FindFirstObjectByType<PlayerController>();
-
-        SceneManager.sceneLoaded += HandleSceneLoaded;
-=======
->>>>>>> Stashed changes
     }
 
     private void OnDestroy()
@@ -44,47 +35,30 @@ public class SceneLoadManager : MonoBehaviour
         instance = null;
     }
 
-    public void LoadBossScene()
+    public void LoadScene(string sceneName)
     {
-<<<<<<< Updated upstream
-        if (!TryCachePlayer())
-            return;
-
-        SceneManager.LoadScene(BossSceneName);
-=======
         if (isLoading)
             return;
 
         LoadSceneAsync(sceneName).Forget();
->>>>>>> Stashed changes
+        SceneManager.LoadScene(sceneName);
     }
 
     private async UniTask LoadSceneAsync(string sceneName)
     {
-<<<<<<< Updated upstream
-        if (scene.name != BossSceneName)
-            return;
-
+        SetUpPlayer();
         MovePlayerToStartPoint();
         SetCinemachineTarget();
     }
 
-    private bool TryCachePlayer()
+    private void SetUpPlayer()
     {
-        if (player != null)
-            return true;
+        if (SceneManager.GetActiveScene().name == "TitleScene" && player != null)
+        {
+            GameObject.Destroy(player.gameObject);
+            return;
+        }
 
-        player = FindFirstObjectByType<PlayerController>();
-
-        if (player != null)
-            return true;
-
-        Debug.LogError(
-            $"{nameof(SceneLoadManager)}: PlayerController를 찾지 못했습니다.",
-            this);
-
-        return false;
-=======
         isLoading = true;
 
         try
@@ -146,7 +120,8 @@ public class SceneLoadManager : MonoBehaviour
             player =
                 FindFirstObjectByType<PlayerController>();
         }
->>>>>>> Stashed changes
+        if (player == null)
+            player = FindFirstObjectByType<PlayerController>();
     }
 
     private void MovePlayerToStartPoint()
@@ -155,10 +130,10 @@ public class SceneLoadManager : MonoBehaviour
 
         if (startPoint == null)
         {
-            Debug.LogError(
-                $"{nameof(SceneLoadManager)}: " +
-                $"{BossSceneName}에서 {StartPointName}를 찾지 못했습니다.",
-                this);
+            // Debug.LogError(
+            //     $"{nameof(SceneLoadManager)}: " +
+            //     $"{SceneManager.GetActiveScene().name}에서 {StartPointName}를 찾지 못했습니다.",
+            //     this);
 
             return;
         }
@@ -196,14 +171,24 @@ public class SceneLoadManager : MonoBehaviour
 
         if (cinemachineCamera == null)
         {
-            Debug.LogError(
-                $"{nameof(SceneLoadManager)}: " +
-                "CinemachineCamera를 찾지 못했습니다.",
-                this);
+            // Debug.LogError(
+            //     $"{nameof(SceneLoadManager)}: " +
+            //     "CinemachineCamera를 찾지 못했습니다.",
+            //     this);
 
             return;
         }
 
         cinemachineCamera.Target.TrackingTarget = player.transform;
+    }
+
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

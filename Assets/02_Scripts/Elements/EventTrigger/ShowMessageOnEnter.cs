@@ -1,16 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(EventTrigger))]
+[RequireComponent(typeof(TriggerEventBlock))]
 public class ShowMessageOnEnter : MonoBehaviour
 {
     [SerializeField] private TopMessageUI messageUI;
     [SerializeField, TextArea] private string message;
 
-    private EventTrigger eventTrigger;
+    private TriggerEventBlock eventTrigger;
 
     private void Awake()
     {
-        eventTrigger = GetComponent<EventTrigger>();
+        eventTrigger = GetComponent<TriggerEventBlock>();
     }
 
     private void OnEnable()

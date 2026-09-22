@@ -1,13 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(EventTrigger))]
+[RequireComponent(typeof(TriggerEventBlock))]
 public class LoadSceneOnExit : MonoBehaviour
 {
-    private EventTrigger eventTrigger;
+    [SerializeField] private string sceneName;
+    private TriggerEventBlock eventTrigger;
 
     private void Awake()
     {
-        eventTrigger = GetComponent<EventTrigger>();
+        eventTrigger = GetComponent<TriggerEventBlock>();
     }
 
     private void OnEnable()
@@ -25,6 +26,6 @@ public class LoadSceneOnExit : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        SceneLoadManager.Instance.LoadBossScene();
+        SceneLoadManager.Instance.LoadScene(sceneName);
     }
 }

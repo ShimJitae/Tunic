@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class EventTrigger : MonoBehaviour
+public class TriggerEventBlock : MonoBehaviour
 {
     public event Action<Collider> TriggerEntered;
     public event Action<Collider> TriggerExited;

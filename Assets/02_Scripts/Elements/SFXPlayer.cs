@@ -12,7 +12,7 @@ public class SFXPlayer : MonoBehaviour
     {
         if (audioSource == null)
         {
-            if (!audioSource.TryGetComponent(out audioSource))
+            if (!gameObject.TryGetComponent(out audioSource))
                 Debug.LogError($"SFXPlayer : {gameObject.name}에 AudioSource가 없습니다.");
         }
         else
